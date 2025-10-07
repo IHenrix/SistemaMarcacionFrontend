@@ -20,10 +20,10 @@
 }
 
 .presencial .title h1 {
-  background-color: var(--sunarp-green);
+  background-color: var(--utp-green);
   border-radius: 10px;
   box-shadow: 0 0 15px rgba(0.34, 0.34, 0.34, 0.25);
-  color: var(--sunarp-white);
+  color: var(--utp-white);
   font-family: var(--ff-gotham-bold);
   font-size: 1.6em;
   margin: 20px auto;
@@ -43,7 +43,7 @@
 .presencial .btn-return {
   border: none;
   background-color: transparent;
-  color: var(--sunarp-gray-dark);
+  color: var(--utp-gray-dark);
   font-family: var(--ff-gotham-bold);
   font-size: 0.95em;
   outline: none;
@@ -72,14 +72,14 @@
 }
 
 .presencial .counter h4 {
-  color: var(--sunarp-gray-dark);
+  color: var(--utp-gray-dark);
   font-size: 1em;
   margin: 5px;
   padding: 0;
 }
 
 .presencial .counter p {
-  color: var(--sunarp-cyan);
+  color: var(--utp-cyan);
   font-size: 1.3em;
   margin: 0;
   padding: 0;
@@ -104,8 +104,8 @@
 
 
 .presencial .btn-validate:hover {
-  background-color: var(--sunarp-cyan);
-  color: var(--sunarp-white);
+  background-color: var(--utp-cyan);
+  color: var(--utp-white);
 }
 
 .presencial .marcacion {
@@ -117,7 +117,7 @@
 }
 
 .presencial .marcacion-container .marcacion-image {
-  color: var(--sunarp-white);
+  color: var(--utp-white);
   font-family: var(--ff-gotham-bold);
   position: relative;
   width: 400px;
@@ -156,10 +156,10 @@
 }
 
 .presencial .btn-marcar {
-  background-color: var(--sunarp-yellow);
+  background-color: var(--utp-yellow);
   border-radius: 12px;
   border: none;
-  color: var(--sunarp-white);
+  color: var(--utp-white);
   font-family: var(--ff-gotham-bold);
   font-size: 0.95em;
   outline: none;
@@ -183,15 +183,15 @@
 .presencial .marcacion-option.not-validated .btn-marcar {
   pointer-events: none;
   animation: none;
-  background-color:var(--sunarp-gray-light);
-  color: var(--sunarp-gray-dark);
+  background-color:var(--utp-gray-light);
+  color: var(--utp-gray-dark);
 }
 
 .presencial .marcacion-options.culminated {
   margin-top: 2px;
 }
 
-.alert-sunarp {
+.alert-utp {
   background-color: #d1ecf1;
   color: rgba(12, 83, 96, 0.74);
   font-size: 14px;
@@ -202,22 +202,22 @@
   margin-bottom: 20px;
 }
 
-.alert-sunarp.culminated {
+.alert-utp.culminated {
   width: 60%;
   margin: 0 auto 25px auto;
 }
 
-.alert-sunarp-yellow {
+.alert-utp-yellow {
   background-color: #fff3cd;
   color: #664d03;
 }
 
-.alert-sunarp-green {
+.alert-utp-green {
   background-color: #d1e7dd;
   color: #0f5132;
 }
 
-.alert-sunarp-red {
+.alert-utp-red {
   background-color: #f8d7da;
   color: #842029;
 }

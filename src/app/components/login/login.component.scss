@@ -32,7 +32,7 @@
 
 /* Título principal */
 .login-container .login-form form h1 {
-  color: var(--sunarp-gray-dark);
+  color: var(--utp-gray-dark);
   font-family: var(--ff-gotham-bold);
   font-size: 2em;
   margin-bottom: 20px;
@@ -41,7 +41,7 @@
 
 /* Descripción o texto bajo el título */
 .login-container .login-form form p {
-  color: var(--sunarp-gray-dark);
+  color: var(--utp-gray-dark);
   font-family: var(--ff-avenirLTStd-book);
   margin: 20px auto;
   text-align: center;
@@ -49,12 +49,12 @@
 }
 
 /* Grupo de inputs */
-.login-container .login-form form .form-group-sunarp {
+.login-container .login-form form .form-group-utp {
   margin-bottom: 20px;
 }
 
 /* Botón principal */
-.login-container .login-form form .btn-sunarp-cyan {
+.login-container .login-form form .btn-utp-cyan {
   font-family: var(--ff-gotham-bold);
   margin-top: 10px;
   text-transform: uppercase;
@@ -62,7 +62,7 @@
 
 /* Enlace o texto inferior */
 .login-container .login-form form span {
-  color: var(--sunarp-gray-dark);
+  color: var(--utp-gray-dark);
   cursor: pointer;
   display: inline-block;
   margin-top: 30px;
@@ -166,14 +166,14 @@
   .login-container .login-form form p {
     font-size: 0.95em;
   }
-  .login-container .login-form form .form-group-sunarp .label-sunarp {
+  .login-container .login-form form .form-group-utp .label-utp {
     font-size: var(--font-size-small);
     transition: 300ms all ease;
   }
-  .login-container .login-form form .form-control-sunarp {
+  .login-container .login-form form .form-control-utp {
     font-size: var(--font-size-small);
   }
-  .login-container .login-form form .btn-sunarp-cyan {
+  .login-container .login-form form .btn-utp-cyan {
     font-size: var(--font-size-small);
     transition: 300ms all ease;
   }
@@ -235,7 +235,7 @@
     display: block;
     width: clamp(120px, 28vw, 160px);
     aspect-ratio: 220 / 80;
-    background: center / contain no-repeat url("/img/login/sunarp-logo.svg");
+    background: center / contain no-repeat url("/img/login/utp-logo.svg");
     margin: 0 auto 8px;
   }
 
