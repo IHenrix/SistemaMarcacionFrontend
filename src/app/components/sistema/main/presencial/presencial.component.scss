@@ -163,15 +163,17 @@
   font-family: var(--ff-gotham-bold);
   font-size: 0.95em;
   outline: none;
-  padding: 5px 16px;
+  padding: 5px 30px;
   transition: 300ms all ease;
   animation-name: btn-marcar-animation;
   animation-duration: 3s;
   animation-iteration-count: infinite;
+  margin-top: 10px;
 }
 
 .presencial .btn-marcar:hover {
   animation: none;
+  cursor: pointer;
 }
 
 .presencial .marcacion-option.not-validated {
@@ -181,6 +183,8 @@
 .presencial .marcacion-option.not-validated .btn-marcar {
   pointer-events: none;
   animation: none;
+  background-color:var(--sunarp-gray-light);
+  color: var(--sunarp-gray-dark);
 }
 
 .presencial .marcacion-options.culminated {
@@ -216,4 +220,9 @@
 .alert-sunarp-red {
   background-color: #f8d7da;
   color: #842029;
+}
+@keyframes btn-marcar-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
