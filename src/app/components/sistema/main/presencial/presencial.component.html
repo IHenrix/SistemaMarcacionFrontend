@@ -1,1 +1,56 @@
-<p>presencial works!</p>
+<div class="presencial">
+  <div class="presencial-content">
+    <div class="title">
+      <h1 [ngClass]="{ 'validated': fase > 0, 'culminated': finalizado }" style="margin-bottom: 30px;">
+        Marcación Presencial
+      </h1>
+
+      <button class="btn-return" (click)="retornar()">
+        <i class="fas fa-long-arrow-alt-left icon-sunarp"></i>
+        Regresar
+      </button>
+    </div>
+
+    <div class="alert-sunarp culminated" *ngIf="finalizado">
+      ¡Felicidades! Has culminado con tu marcación del día de hoy: {{ fechaActual }}.
+    </div>
+
+    <div class="counter-container">
+      <div class="counter">
+        <h4>Inicio de jornada</h4>
+        <p>{{ inicioJornada || '--:--' }}</p>
+      </div>
+      <div class="counter">
+        <h4>Inicio de refrigerio</h4>
+        <p>{{ inicioRefrigerio || '--:--' }}</p>
+      </div>
+      <div class="counter">
+        <h4>Fin de refrigerio</h4>
+        <p>{{ finRefrigerio || '--:--' }}</p>
+      </div>
+      <div class="counter">
+        <h4>Fin de marcación</h4>
+        <p>{{ finJornada || '--:--' }}</p>
+      </div>
+    </div>
+
+    <div class="presencial-container">
+      <div class="marcacion" [ngClass]="{ 'validated': fase > 0 }">
+        <div class="marcacion-container">
+          <div class="marcacion-image">
+            <p class="time-label">Hora Actual:</p>
+            <p class="time">{{ horaActual }}</p>
+            <img src="/img/marcacion/time.svg" alt="Marcación Hora" />
+          </div>
+
+          <div class="marcacion-options" [ngClass]="{ 'culminated': finalizado }">
+            <div class="marcacion-option" [ngClass]="{ 'not-validated': finalizado }">
+              <button class="btn-marcar" (click)="siguientePaso()" [disabled]="finalizado">{{ textoBoton }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

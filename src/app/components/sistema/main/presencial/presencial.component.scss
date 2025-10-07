@@ -1,0 +1,219 @@
+
+.presencial {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 100%;
+  width: 92%;
+}
+
+.presencial .presencial-content {
+  width: 100%;
+}
+
+.presencial .title {
+  display: flex;
+  width: 100%;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+.presencial .title h1 {
+  background-color: var(--sunarp-green);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0.34, 0.34, 0.34, 0.25);
+  color: var(--sunarp-white);
+  font-family: var(--ff-gotham-bold);
+  font-size: 1.6em;
+  margin: 20px auto;
+  padding: 6px 16px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.presencial .title h1.validated {
+  margin: 25px auto 60px auto;
+}
+
+.presencial .title h1.culminated {
+  margin: 15px auto 20px auto;
+}
+
+.presencial .btn-return {
+  border: none;
+  background-color: transparent;
+  color: var(--sunarp-gray-dark);
+  font-family: var(--ff-gotham-bold);
+  font-size: 0.95em;
+  outline: none;
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+  transition: 300ms transform ease;
+}
+
+.presencial .btn-return:hover {
+  opacity: 0.85;
+  transform: scale(1.09);
+}
+
+.presencial .counter-container {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 25px auto;
+  width: 80%;
+}
+
+.presencial .counter {
+  font-family: var(--ff-gotham-bold);
+  text-align: center;
+  width: 33%;
+}
+
+.presencial .counter h4 {
+  color: var(--sunarp-gray-dark);
+  font-size: 1em;
+  margin: 5px;
+  padding: 0;
+}
+
+.presencial .counter p {
+  color: var(--sunarp-cyan);
+  font-size: 1.3em;
+  margin: 0;
+  padding: 0;
+}
+
+.presencial .presencial-container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.presencial .validation {
+  width: 60%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.presencial .validation-container {
+  width: 100%;
+}
+
+
+.presencial .btn-validate:hover {
+  background-color: var(--sunarp-cyan);
+  color: var(--sunarp-white);
+}
+
+.presencial .marcacion {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.presencial .marcacion-container .marcacion-image {
+  color: var(--sunarp-white);
+  font-family: var(--ff-gotham-bold);
+  position: relative;
+  width: 400px;
+  margin: 0 auto;
+}
+
+.presencial .marcacion-container .marcacion-image img {
+  width: 400px;
+}
+
+.presencial .marcacion-container .marcacion-image .time-label {
+  font-size: 0.95em;
+  left: 80px;
+  position: absolute;
+  top: 25px;
+}
+
+.presencial .marcacion-container .marcacion-image .time {
+  font-size: 1.05em;
+  left: 80px;
+  position: absolute;
+  top: 47px;
+}
+
+.presencial .marcacion-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 35px;
+  width: 100%;
+}
+
+.presencial .marcacion-option {
+  width: 100%;
+  text-align: center;
+}
+
+.presencial .btn-marcar {
+  background-color: var(--sunarp-yellow);
+  border-radius: 12px;
+  border: none;
+  color: var(--sunarp-white);
+  font-family: var(--ff-gotham-bold);
+  font-size: 0.95em;
+  outline: none;
+  padding: 5px 16px;
+  transition: 300ms all ease;
+  animation-name: btn-marcar-animation;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+.presencial .btn-marcar:hover {
+  animation: none;
+}
+
+.presencial .marcacion-option.not-validated {
+  cursor: not-allowed;
+}
+
+.presencial .marcacion-option.not-validated .btn-marcar {
+  pointer-events: none;
+  animation: none;
+}
+
+.presencial .marcacion-options.culminated {
+  margin-top: 2px;
+}
+
+.alert-sunarp {
+  background-color: #d1ecf1;
+  color: rgba(12, 83, 96, 0.74);
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-family: var(--ff-gotham-medium);
+  margin-bottom: 20px;
+}
+
+.alert-sunarp.culminated {
+  width: 60%;
+  margin: 0 auto 25px auto;
+}
+
+.alert-sunarp-yellow {
+  background-color: #fff3cd;
+  color: #664d03;
+}
+
+.alert-sunarp-green {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.alert-sunarp-red {
+  background-color: #f8d7da;
+  color: #842029;
+}
