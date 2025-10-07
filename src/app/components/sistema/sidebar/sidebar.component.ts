@@ -4,7 +4,7 @@ import { environment } from '../../../../environments/environment';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'sidebar',
+  selector: 'sidebar-seccion',
   standalone: true,
   imports: [],
   templateUrl: './sidebar.component.html',

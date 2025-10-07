@@ -143,7 +143,9 @@
 /* Espaciado y estilo del botón "Salir" */
 .btn-option.sing-out {
   margin-top: 16px;
-  cursor: pointer !important;
+}
+.btn-option.sing-out:hover {
+  cursor: pointer;
 }
 .btn-option.sing-out .btn-outline-sunarp-white {
   height: 35px;
