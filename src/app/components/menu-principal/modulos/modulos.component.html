@@ -1,0 +1,129 @@
+<div class="menu-principal">
+
+  <h1 class="h1-sunarp text-sunarp-gray-dark text-center">
+    BIENVENIDO(A) AL SISTEMA DE MARCACIONES DE LA ZONA IX-LIMA
+  </h1>
+  <div class="menu-items">
+
+    <div class="menu-item" >
+      <div class="card-sunarp" id="presencial">
+        <div class="card-sunarp-header">
+          <i class="fas fa-building"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-sunarp-body">
+          <div class="card-body-title">
+            <h3>Presencial</h3>
+          </div>
+        </div>
+        <div class="card-sunarp-footer">
+          <p>Personal que trabaja presencialmente</p>
+          <button
+            class="btn-outline-sunarp-white"
+            [routerLink]="['/presencial']"
+          >Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="card-sunarp" id="remoto">
+        <div class="card-sunarp-header">
+          <i class="fas fa-laptop"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-sunarp-body">
+          <div class="card-body-title">
+            <h3>Remoto</h3>
+          </div>
+        </div>
+        <div class="card-sunarp-footer">
+          <p>Personal que trabaja de manera remota</p>
+          <button
+            class="btn-outline-sunarp-white"
+            [routerLink]="['/remoto']"
+          >Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="card-sunarp" id="reportes">
+        <div class="card-sunarp-header">
+          <i class="fas fa-clipboard"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-sunarp-body">
+          <div class="card-body-title">
+            <h3>Reportes</h3>
+          </div>
+        </div>
+        <div class="card-sunarp-footer">
+          <p>Ver detalles de las marcaciones</p>
+          <button
+            class="btn-outline-sunarp-white"
+            [routerLink]="['/reportes']"
+          >Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="card-sunarp" id="jefe">
+        <div class="card-sunarp-header">
+          <i class="fas fa-user-tie"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-sunarp-body">
+          <div class="card-body-title">
+            <h3>Encargado de área</h3>
+          </div>
+        </div>
+        <div class="card-sunarp-footer">
+          <p>Para validar trabajo en sobretiempo, obtener reportes</p>
+          <button
+            class="btn-outline-sunarp-white"
+            [routerLink]="['/encargado']"
+          >Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-item">
+      <div class="card-sunarp" id="urh">
+        <div class="card-sunarp-header">
+          <i class="fas fa-users"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-sunarp-body">
+          <div class="card-body-title">
+            <h3>URH</h3>
+          </div>
+        </div>
+        <div class="card-sunarp-footer">
+          <p>Control por parte de URH de las marcaciones</p>
+          <button
+            class="btn-outline-sunarp-white"
+            [routerLink]="['/rrhh']"
+          >Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

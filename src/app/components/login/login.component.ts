@@ -38,7 +38,7 @@ export class LoginComponent {
 
     if ( username != null && username != "" && pass != null && pass != "") {
 
-
+         this.router.navigate(["/menu-principal"]);
 
     } else {
       Swal.fire({
