@@ -1,5 +1,8 @@
 @import "styles/general";
 
+/**************************************************/
+/*                LOGIN CONTAINER                 */
+/**************************************************/
 .login-container {
   background-attachment: fixed;
   background-image: url(/img/login/marcaciones-fondo.svg);
@@ -12,6 +15,9 @@
   width: 100%;
 }
 
+/**************************************************/
+/*                    FORM SECTION                */
+/**************************************************/
 .login-container .login-form {
   align-items: center;
   display: flex;
@@ -20,11 +26,13 @@
   width: 40%;
 }
 
+/* Contenedor principal del formulario */
 .login-container .login-form form {
   position: relative;
   width: 65%;
 }
 
+/* Título principal */
 .login-container .login-form form h1 {
   color: var(--sunarp-gray-dark);
   font-family: var(--ff-gotham-bold);
@@ -33,6 +41,7 @@
   text-align: center;
 }
 
+/* Descripción o texto bajo el título */
 .login-container .login-form form p {
   color: var(--sunarp-gray-dark);
   font-family: var(--ff-avenirLTStd-book);
@@ -41,16 +50,19 @@
   width: 80%;
 }
 
+/* Grupo de inputs */
 .login-container .login-form form .form-group-sunarp {
   margin-bottom: 20px;
 }
 
+/* Botón principal */
 .login-container .login-form form .btn-sunarp-cyan {
   font-family: var(--ff-gotham-bold);
   margin-top: 10px;
   text-transform: uppercase;
 }
 
+/* Enlace o texto inferior */
 .login-container .login-form form span {
   color: var(--sunarp-gray-dark);
   cursor: pointer;
@@ -64,6 +76,7 @@
   opacity: 0.8;
 }
 
+/* Líneas decorativas */
 .login-container .login-form form .line1 {
   bottom: -60px;
   left: -60px;
@@ -75,6 +88,9 @@
   top: -60px;
 }
 
+/**************************************************/
+/*                   IMAGE SECTION                */
+/**************************************************/
 .login-container .login-image {
   align-items: center;
   display: flex;
@@ -83,20 +99,26 @@
   width: 60%;
 }
 
+/* Contenedor de imágenes */
 .login-container .login-image .img-container {
   position: relative;
 }
 
+/* Logo institucional */
 .login-container .login-image .img-container .logo {
   left: calc(50% - 90px);
   position: absolute;
   top: -120px;
   width: 180px;
 }
+
+/* Imagen principal del login */
 .login-container .login-image .img-container .login {
   position: relative;
   width: 450px;
 }
+
+/* Círculos decorativos */
 .login-container .login-image .img-container .circle1 {
   left: -12%;
   position: absolute;
@@ -133,6 +155,11 @@
   top: 25%;
 }
 
+/**************************************************/
+/*                MEDIA QUERIES                   */
+/**************************************************/
+
+/* ----- Ajustes en pantallas medianas ----- */
 @media (max-width: 1122px) {
   .login-container .login-form form h1 {
     font-size: 1.6em;
@@ -160,6 +187,7 @@
   }
 }
 
+/* ----- Ajustes en pantallas más pequeñas ----- */
 @media (max-width: 1058px) {
   .login-container .login-form {
     transform: scale(0.9);
@@ -179,6 +207,7 @@
   }
 }
 
+/* ----- Diseño responsivo para móviles ----- */
 @media (max-width: 848px) {
   .login-container {
     flex-direction: column;
@@ -196,6 +225,8 @@
   .login-container .login-form form .line2 {
     display: none;
   }
+
+  /* Logo y marcaciones dentro del formulario */
   .login-container .login-image .img-container .logo,
   .login-container .login-image .img-container .login {
     display: none !important;
@@ -218,6 +249,8 @@
     background: center / contain no-repeat url("/img/login/marcaciones.svg");
     margin: 8px auto 10px;
   }
+
+  /* Ocultar círculos decorativos en móviles */
   .login-container .login-image .img-container .circle1,
   .login-container .login-image .img-container .circle2,
   .login-container .login-image .img-container .circle3,
@@ -227,11 +260,13 @@
   .login-container .login-image .img-container .circle7 {
     display: none;
   }
+
   .login-container .login-form form p {
     margin-bottom: 8px;
   }
 }
 
+/* ----- Ajustes finales para pantallas muy pequeñas ----- */
 @media (max-width: 562px) {
   .login-container .login-form form h1 {
     font-size: 1.4em;
