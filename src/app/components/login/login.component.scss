@@ -1,7 +1,6 @@
 @import "styles/general";
 
 .login-container {
-
   background-attachment: fixed;
   background-image: url(/img/login/marcaciones-fondo.svg);
   background-position: center center;
@@ -11,261 +10,239 @@
   height: 100vh;
   position: relative;
   width: 100%;
+}
 
-  .login-form {
+.login-container .login-form {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-left: 60px;
+  width: 40%;
+}
 
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    padding-left: 60px;
-    width: 40%;
+.login-container .login-form form {
+  position: relative;
+  width: 65%;
+}
 
-    form {
-      position: relative;
-      width: 65%;
-      h1 {
-        color: var(--sunarp-gray-dark);
-        font-family: var(--ff-gotham-bold);
-        font-size: 2em;
-        margin-bottom: 20px;
-        text-align: center;
-      }
-      p {
-        color: var(--sunarp-gray-dark);
-        font-family: var(--ff-avenirLTStd-book);
-        margin: 20px auto;
-        text-align: center;
-        width: 80%;
-      }
-      .form-group-sunarp {
-        margin-bottom: 20px;
-      }
-      .btn-sunarp-cyan {
-        font-family: var(--ff-gotham-bold);
-        margin-top: 10px;
-        text-transform: uppercase;
-      }
-      span {
-        color: var(--sunarp-gray-dark);
-        cursor: pointer;
-        display: inline-block;
-        margin-top: 30px;
-        text-align: center;
-        transition: 300ms all ease;
-        width: 100%;
-        &:hover {
-          opacity: 0.80;
-        }
-      }
-      .line1 {
-        bottom: -60px;
-        left: -60px;
-        position: absolute;
-      }
-      .line2 {
-        position: absolute;
-        right: -60px;
-        top: -60px;
-      }
-    }
-  }
+.login-container .login-form form h1 {
+  color: var(--sunarp-gray-dark);
+  font-family: var(--ff-gotham-bold);
+  font-size: 2em;
+  margin-bottom: 20px;
+  text-align: center;
+}
 
-  .login-image {
+.login-container .login-form form p {
+  color: var(--sunarp-gray-dark);
+  font-family: var(--ff-avenirLTStd-book);
+  margin: 20px auto;
+  text-align: center;
+  width: 80%;
+}
 
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    padding: 30px 0 0 0;
-    width: 60%;
+.login-container .login-form form .form-group-sunarp {
+  margin-bottom: 20px;
+}
 
-    .img-container {
+.login-container .login-form form .btn-sunarp-cyan {
+  font-family: var(--ff-gotham-bold);
+  margin-top: 10px;
+  text-transform: uppercase;
+}
 
-      position: relative;
+.login-container .login-form form span {
+  color: var(--sunarp-gray-dark);
+  cursor: pointer;
+  display: inline-block;
+  margin-top: 30px;
+  text-align: center;
+  transition: 300ms all ease;
+  width: 100%;
+}
+.login-container .login-form form span:hover {
+  opacity: 0.8;
+}
 
-      .logo {
-        left: calc(50% - 90px);
-        position: absolute;
-        top: -120px;
-        width: 180px;
-      }
-      .login {
-        position: relative;
-        width: 450px;
-      }
-      .circle1 {
-        left: -12%;
-        position: absolute;
-        top: 15%;
-      }
-      .circle2 {
-        left: -6%;
-        position: absolute;
-        top: 30%;
-      }
-      .circle3 {
-        bottom: -5%;
-        left: -8%;
-        position: absolute;
-      }
-      .circle4 {
-        bottom: -25%;
-        left: -18%;
-        position: absolute;
-      }
-      .circle5 {
-        bottom: -40%;
-        left: -28%;
-        position: absolute;
-      }
-      .circle6 {
-        position: absolute;
-        right: -15%;
-        top: 50%;
-      }
-      .circle7 {
-        position: absolute;
-        right: -6%;
-        top: 25%;
-      }
-    }
-  }
+.login-container .login-form form .line1 {
+  bottom: -60px;
+  left: -60px;
+  position: absolute;
+}
+.login-container .login-form form .line2 {
+  position: absolute;
+  right: -60px;
+  top: -60px;
+}
+
+.login-container .login-image {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 30px 0 0 0;
+  width: 60%;
+}
+
+.login-container .login-image .img-container {
+  position: relative;
+}
+
+.login-container .login-image .img-container .logo {
+  left: calc(50% - 90px);
+  position: absolute;
+  top: -120px;
+  width: 180px;
+}
+.login-container .login-image .img-container .login {
+  position: relative;
+  width: 450px;
+}
+.login-container .login-image .img-container .circle1 {
+  left: -12%;
+  position: absolute;
+  top: 15%;
+}
+.login-container .login-image .img-container .circle2 {
+  left: -6%;
+  position: absolute;
+  top: 30%;
+}
+.login-container .login-image .img-container .circle3 {
+  bottom: -5%;
+  left: -8%;
+  position: absolute;
+}
+.login-container .login-image .img-container .circle4 {
+  bottom: -25%;
+  left: -18%;
+  position: absolute;
+}
+.login-container .login-image .img-container .circle5 {
+  bottom: -40%;
+  left: -28%;
+  position: absolute;
+}
+.login-container .login-image .img-container .circle6 {
+  position: absolute;
+  right: -15%;
+  top: 50%;
+}
+.login-container .login-image .img-container .circle7 {
+  position: absolute;
+  right: -6%;
+  top: 25%;
 }
 
 @media (max-width: 1122px) {
-
-  .login-container {
-    .login-form {
-      form {
-        h1 {
-          font-size: 1.6em;
-          transition: 300ms all ease;
-        }
-        p {
-          font-size: 0.95em;
-        }
-        .form-group-sunarp {
-          .label-sunarp {
-            font-size: var(--font-size-small);
-            transition: 300ms all ease;
-          }
-          .form-control-sunarp {
-            font-size: var(--font-size-small);
-          }
-        }
-        .btn-sunarp-cyan {
-          font-size: var(--font-size-small);
-          transition: 300ms all ease;
-        }
-        span {
-          font-size: 0.95em;
-        }
-      }
-    }
-
-    .login-image {
-      transform: scale(0.85);
-    }
+  .login-container .login-form form h1 {
+    font-size: 1.6em;
+    transition: 300ms all ease;
+  }
+  .login-container .login-form form p {
+    font-size: 0.95em;
+  }
+  .login-container .login-form form .form-group-sunarp .label-sunarp {
+    font-size: var(--font-size-small);
+    transition: 300ms all ease;
+  }
+  .login-container .login-form form .form-control-sunarp {
+    font-size: var(--font-size-small);
+  }
+  .login-container .login-form form .btn-sunarp-cyan {
+    font-size: var(--font-size-small);
+    transition: 300ms all ease;
+  }
+  .login-container .login-form form span {
+    font-size: 0.95em;
+  }
+  .login-container .login-image {
+    transform: scale(0.85);
   }
 }
 
 @media (max-width: 1058px) {
-
-  .login-container {
-    .login-form {
-      transform: scale(0.9);
-      form {
-        width: 75%;
-        p {
-          font-size: 0.8em;
-          width: 95%;
-        }
-        span {
-          font-size: 0.8em;
-        }
-      }
-    }
-    .login-image {
-      transform: scale(0.7);
-    }
+  .login-container .login-form {
+    transform: scale(0.9);
   }
-
+  .login-container .login-form form {
+    width: 75%;
+  }
+  .login-container .login-form form p {
+    font-size: 0.8em;
+    width: 95%;
+  }
+  .login-container .login-form form span {
+    font-size: 0.8em;
+  }
+  .login-container .login-image {
+    transform: scale(0.7);
+  }
 }
 
-@media (max-width: 845px) {
-
+@media (max-width: 848px) {
   .login-container {
-    position: relative;
-    .login-form {
-      flex-wrap: wrap;
-      position: relative;
-      width: 100%;
-      padding-top: 30px;
-      padding-left: 0;
-      form {
-        h1 {
-          font-size: 1.8em;
-        }
-        p {
-          margin-bottom: 140px;
-          font-size: 1em;
-        }
-        .line1 {
-          bottom: -40px;
-        }
-        .line2 {
-          top: -100px;
-        }
-        span {
-          font-size: 1em;
-        }
-      }
-    }
-    .login-image {
-      position: absolute;
-      padding: 0;
-      width: 100%;
-      top: 0;
-      left: 0;
-
-      .img-container {
-        transform: scale(0.5);
-        bottom: -190px;
-        left: 0;
-        .logo {
-          left: calc(50% - 130px);
-          position: absolute;
-          top: -440px;
-          width: 260px;
-        }
-        .circle3,
-        .circle4,
-        .circle5 {
-          display: none;
-        }
-      }
-    }
+    flex-direction: column;
+    align-items: center;
   }
 
+  .login-container .login-form {
+    width: 100%;
+    padding-left: 0;
+  }
+  .login-container .login-form form {
+    width: min(520px, 92%);
+  }
+  .login-container .login-form form .line1,
+  .login-container .login-form form .line2 {
+    display: none;
+  }
+  .login-container .login-image .img-container .logo,
+  .login-container .login-image .img-container .login {
+    display: none !important;
+  }
+
+  .login-container .login-form form h1::before {
+    content: "";
+    display: block;
+    width: clamp(120px, 28vw, 160px);
+    aspect-ratio: 220 / 80;
+    background: center / contain no-repeat url("/img/login/sunarp-logo.svg");
+    margin: 0 auto 8px;
+  }
+
+  .login-container .login-form form p::after {
+    content: "";
+    display: block;
+    width: clamp(160px, 45vw, 240px);
+    aspect-ratio: 420 / 280;
+    background: center / contain no-repeat url("/img/login/marcaciones.svg");
+    margin: 8px auto 10px;
+  }
+  .login-container .login-image .img-container .circle1,
+  .login-container .login-image .img-container .circle2,
+  .login-container .login-image .img-container .circle3,
+  .login-container .login-image .img-container .circle4,
+  .login-container .login-image .img-container .circle5,
+  .login-container .login-image .img-container .circle6,
+  .login-container .login-image .img-container .circle7 {
+    display: none;
+  }
+  .login-container .login-form form p {
+    margin-bottom: 8px;
+  }
 }
 
 @media (max-width: 562px) {
-
-  .login-container {
-    .login-form {
-      form {
-        h1 {
-          font-size: 1.4em;
-        }
-        p {
-          font-size: 0.9em;
-        }
-        span {
-          font-size: 0.9em;
-        }
-        .line1 {
-          bottom: -80px;
-        }
-      }
-    }
+  .login-container .login-form form h1 {
+    font-size: 1.4em;
+  }
+  .login-container .login-form form p {
+    font-size: 0.9em;
+  }
+  .login-container .login-form form span {
+    font-size: 0.9em;
+  }
+  .login-container .login-form form .line1 {
+    bottom: -80px;
   }
 }
