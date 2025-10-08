@@ -22,7 +22,7 @@ export class SidebarComponent {
       allowEscapeKey: false,
       allowOutsideClick: false,
       confirmButtonColor: '#00A5A5',
-      confirmButtonText: '<span style="padding: 0 15px;">OK</span>',
+      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>',
     });
     this.router.navigate(['/login']);
   }

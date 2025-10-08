@@ -144,14 +144,14 @@
 .btn-option.sing-out {
   margin-top: 16px;
 }
-.btn-option.sing-out:hover {
-  cursor: pointer;
-}
 .btn-option.sing-out .btn-outline-utp-white {
   height: 35px;
   width: 100px;
 }
+.btn-option.sing-out .btn-outline-utp-white:hover {
+  cursor: pointer;
 
+}
 /* Sección que contiene los datos del usuario */
 .user-data {
   background-color: #fff;

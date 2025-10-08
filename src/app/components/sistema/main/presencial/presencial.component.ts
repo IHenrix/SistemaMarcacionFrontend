@@ -79,7 +79,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
       title: 'Marcación registrada',
       text: `${titulo} realizada correctamente a las ${hora}.`,
       confirmButtonColor: '#00A5A5',
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>'
     });
   }
 
@@ -96,7 +96,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
         </div>
       `,
       confirmButtonColor: '#00A5A5',
-      confirmButtonText: 'Aceptar',
+      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>'
     });
   }
 

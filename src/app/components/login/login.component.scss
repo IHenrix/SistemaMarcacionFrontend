@@ -59,7 +59,9 @@
   margin-top: 10px;
   text-transform: uppercase;
 }
-
+.login-container .login-form form .btn-utp-cyan:hover {
+  cursor: pointer;
+}
 /* Enlace o texto inferior */
 .login-container .login-form form span {
   color: var(--utp-gray-dark);
@@ -102,12 +104,12 @@
   position: relative;
 }
 
-/* Logo institucional */
+/* Logo */
 .login-container .login-image .img-container .logo {
   left: calc(50% - 90px);
   position: absolute;
-  top: -120px;
-  width: 180px;
+  top: -140px;
+  width: 150px;
 }
 
 /* Imagen principal del login */
@@ -233,9 +235,9 @@
   .login-container .login-form form h1::before {
     content: "";
     display: block;
-    width: clamp(120px, 28vw, 160px);
+    width: clamp(150px, 32vw, 200px);
     aspect-ratio: 220 / 80;
-    background: center / contain no-repeat url("/img/login/utp-logo.svg");
+    background: center / contain no-repeat url("/img/login/logo.svg");
     margin: 0 auto 8px;
   }
 
