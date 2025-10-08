@@ -131,6 +131,7 @@
 .menu-principal .menu-items .menu-item .card-utp .card-utp-footer button:hover {
  cursor: pointer;
 }
+
 /* ==============================
    VARIANTES POR TARJETA
 ============================== */
@@ -158,96 +159,72 @@
   background-color: var(--utp-green);
 }
 
-/* Remoto */
-#remoto .card-utp-header {
-  background-color: var(--utp-yellow);
-}
-#remoto .card-utp-header .circle1 {
-  background-color: var(--utp-yellow);
-  right: -32px;
-  top: 18px;
-}
-#remoto .card-utp-header .circle2 {
-  background-color: var(--utp-yellow);
-  left: -22px;
-  top: 10px;
-}
-#remoto .card-utp-header .circle3 {
-  background-color: var(--utp-yellow);
-  bottom: -6px;
-  right: -20px;
-}
-#remoto .card-utp-footer {
-  background-color: var(--utp-yellow);
-}
-
 /* Reportes */
 #reportes .card-utp-header {
-  background-color: var(--utp-cyan);
+  background-color: var(--utp-yellow);
 }
 #reportes .card-utp-header .circle1 {
-  background-color: var(--utp-cyan);
+  background-color: var(--utp-yellow);
   right: -32px;
   top: 6px;
 }
 #reportes .card-utp-header .circle2 {
-  background-color: var(--utp-cyan);
+  background-color: var(--utp-yellow);
   bottom: 26px;
   left: -32px;
 }
 #reportes .card-utp-header .circle3 {
-  background-color: var(--utp-cyan);
+  background-color: var(--utp-yellow);
   bottom: -8px;
   left: -15px;
 }
 #reportes .card-utp-footer {
-  background-color: var(--utp-cyan);
+  background-color: var(--utp-yellow);
 }
 
-/* Jefe */
-#jefe .card-utp-header {
+/* Contacto */
+#contacto .card-utp-header {
   background-color: var(--utp-red);
 }
-#jefe .card-utp-header .circle1 {
+#contacto .card-utp-header .circle1 {
   background-color: var(--utp-red);
   left: -28px;
   top: 16px;
 }
-#jefe .card-utp-header .circle2 {
+#contacto .card-utp-header .circle2 {
   background-color: var(--utp-red);
   bottom: 26px;
   right: -24px;
 }
-#jefe .card-utp-header .circle3 {
+#contacto .card-utp-header .circle3 {
   background-color: var(--utp-red);
   bottom: -4px;
   left: -20px;
 }
-#jefe .card-utp-footer {
+#contacto .card-utp-footer {
   background-color: var(--utp-red);
 }
-
-/* URH */
-#urh .card-utp-header {
-  background-color: var(--utp-green);
+/* Solicitudes o Permisos (verde azulado) */
+#solicitudes .card-utp-header {
+  background-color: var(--utp-cyan);
 }
-#urh .card-utp-header .circle1 {
-  background-color: var(--utp-green);
-  right: -30px;
-  top: 16px;
+#solicitudes .card-utp-header .circle1 {
+  background-color: var(--utp-cyan);
+  right: -28px;
+  top: 14px;
 }
-#urh .card-utp-header .circle2 {
-  background-color: var(--utp-green);
-  left: -24px;
-  top: 20px;
+#solicitudes .card-utp-header .circle2 {
+  background-color: var(--utp-cyan);
+  left: -22px;
+  top: 8px;
 }
-#urh .card-utp-header .circle3 {
-  background-color: var(--utp-green);
+#solicitudes .card-utp-header .circle3 {
+  background-color: var(--utp-cyan);
   bottom: -8px;
-  right: -15px;
+  right: -16px;
 }
-#urh .card-utp-footer {
-  background-color: var(--utp-green);
+#solicitudes .card-utp-footer {
+  background-color: var(--utp-cyan);
 }
 
 /* ==============================
