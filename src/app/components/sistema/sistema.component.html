@@ -1,14 +1,38 @@
 <div class="main-container">
-    <sidebar-seccion></sidebar-seccion>
-    <div class="main-content">
-        <seccion-header></seccion-header>
-        <router-outlet></router-outlet>
-        <div class="circle1"></div>
-        <svg class="circle2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#00A5A5"/></svg>
-        <svg class="circle3" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#00A5A5"/></svg>
-        <div class="circle4"></div>
-        <svg class="circle5 " width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="18" cy="18" r="18" fill="#00A5A5"/></svg>
-        <svg class="circle6" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="10" r="10" fill="#00A5A5"/></svg>
-        <seccion-footer></seccion-footer>
-      </div>
+  <!-- Menú o barra lateral (NAV) -->
+  <!-- Este componente cumple la función del menú principal o navegación del sitio -->
+  <sidebar-seccion></sidebar-seccion>
+  <div class="main-content">
+
+    <!-- Encabezado (HEADER) -->
+    <!-- Aquí va el título del sistema, logo, o nombre del usuario -->
+    <seccion-header></seccion-header>
+
+    <!-- Cuerpo o contenido principal (MAIN) -->
+    <!-- El router-outlet carga las vistas del sistema: inicio, registro, reportes, etc. -->
+    <router-outlet></router-outlet>
+
+
+    <!-- Elementos decorativos -->
+    <!-- Círculos SVG y divs usados solo para diseño visual, sin rol estructural -->
+    <div class="circle1"></div>
+    <svg class="circle2" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="10" cy="10" r="10" fill="#00A5A5" />
+    </svg>
+    <svg class="circle3" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="20" cy="20" r="20" fill="#00A5A5" />
+    </svg>
+    <div class="circle4"></div>
+    <svg class="circle5 " width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="18" fill="#00A5A5" />
+    </svg>
+    <svg class="circle6" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="10" cy="10" r="10" fill="#00A5A5" />
+    </svg>
+
+    <!-- Pie de página (FOOTER) -->
+    <!-- Aquí va la información final: derechos, contacto, etc. -->
+    <seccion-footer></seccion-footer>
+
+  </div>
 </div>
