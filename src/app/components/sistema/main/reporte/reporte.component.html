@@ -1,0 +1,147 @@
+<div class="reporte">
+  <div class="reporte-content">
+    <div class="reporte-title">
+      <h1>REPORTE DE MARCACIONES</h1>
+      <button class="btn-return">
+        <i class="fas fa-long-arrow-alt-left icon-utp"></i>
+        Regresar
+      </button>
+    </div>
+
+    <section class="filters-section">
+      <div class="filters-row">
+        <div class="form-group-utp">
+          <label class="label-utp" for="fecha-desde">Desde</label>
+          <input id="fecha-desde" type="date" class="form-control-utp" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp" for="fecha-hasta">Hasta</label>
+          <input id="fecha-hasta" type="date" class="form-control-utp" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp" for="tipo">Tipo</label>
+          <select id="tipo" class="form-control-utp">
+            <option value="">Todos</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Remoto">Remoto</option>
+          </select>
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp" for="estado">Estado</label>
+          <select id="estado" class="form-control-utp">
+            <option value="">Todos</option>
+            <option value="A tiempo">A tiempo</option>
+            <option value="Tardanza">Tardanza</option>
+            <option value="Falta">Falta</option>
+          </select>
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button class="btn-utp-green">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+        <button class="btn-utp-cyan">
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+        <button class="btn-utp-red">
+          <i class="fas fa-file-export"></i> Exportar
+        </button>
+      </div>
+    </section>
+
+    <section class="table-container">
+      <table class="table-utp">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Entrada</th>
+            <th>Salida</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Observación</th>
+            <th class="th-actions">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>06/10/2025</td>
+            <td>08:01</td>
+            <td>17:00</td>
+            <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
+            <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
+            <td>—</td>
+            <td class="table-actions">
+              <button class="btn-outline-utp-cyan btn-action">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>07/10/2025</td>
+            <td>07:40</td>
+            <td>17:14</td>
+            <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
+            <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
+            <td>—</td>
+            <td class="table-actions">
+              <button class="btn-outline-utp-cyan btn-action">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>08/10/2025</td>
+            <td>08:03</td>
+            <td>17:12</td>
+            <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
+            <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
+            <td>—</td>
+            <td class="table-actions">
+              <button class="btn-outline-utp-cyan btn-action">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>09/10/2025</td>
+            <td>08:22</td>
+            <td>17:04</td>
+            <td><span class="badge-utp badge-utp-cyan">Remoto</span></td>
+            <td><span class="badge-utp badge-utp-yellow">Tardanza</span></td>
+            <td>Tráfico</td>
+            <td class="table-actions">
+              <button class="btn-outline-utp-cyan btn-action">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>10/10/2025</td>
+            <td>—</td>
+            <td>—</td>
+            <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
+            <td><span class="badge-utp badge-utp-red">Falta</span></td>
+            <td>No marcó</td>
+            <td class="table-actions">
+              <button class="btn-outline-utp-cyan btn-action">
+                <i class="fas fa-eye"></i> Ver detalle
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <nav class="pagination-utp" aria-label="Paginación">
+        <button class="page-btn prev" disabled>
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="page-btn is-active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn next">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </nav>
+    </section>
+  </div>
+</div>

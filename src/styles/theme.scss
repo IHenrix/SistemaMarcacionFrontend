@@ -2,10 +2,8 @@
 /*   THEME FOR 'MARCACIONES' PROJECT  */
 /**************************************/
 
-
 /*Importing general variables*/
 @import "styles/general";
-
 
 /*Forms*/
 .form-group-utp {
@@ -27,13 +25,13 @@
 
 /* Form Control */
 .form-group-utp .form-control-utp {
-  border-radius: 12px;
+  border-radius: 8px;
   border: 2px solid var(--utp-cyan);
   color: var(--utp-black);
   font-family: var(--ff-avenirLTStd-book);
   font-size: var(--font-size-normal);
   outline: none;
-  padding: 4px 12px;
+  padding: 4px 20px;
   width: 100%;
 }
 
@@ -47,7 +45,6 @@
 /*Buttons*/
 
 .btn-utp {
-  width: 100%;
   border-radius: 12px;
   border: none;
   outline: none;
@@ -56,6 +53,7 @@
 }
 .btn-utp:hover {
   opacity: 0.8;
+  cursor: pointer;
 }
 
 .btn-utp-cyan {
@@ -174,8 +172,12 @@
 .bg-utp-gray-light {
   background-color: var(--utp-gray-light);
 }
-// .bg-utp-white { background-color: var(--utp-white); }
-// .bg-utp-black { background-color: var(--utp-black); }
+.bg-utp-white {
+  background-color: var(--utp-white);
+}
+.bg-utp-black {
+  background-color: var(--utp-black);
+}
 
 /*General text color classes*/
 
@@ -198,19 +200,7 @@
 
 // /*Buttons style*/
 
-// .btn-utp { ... }
-// .btn-utp-green { ... }
-// .btn-utp-red { ... }
-// .btn-utp-cyan { ... }
-// .btn-utp-yellow { ... }
-// .btn-utp-gray-dark { ... }
-// .btn-utp-gray-light { ... }
-// .icon-utp { ... }
 
-// /*Outline buttons*/
-
-// .btn-outline-utp-green { ... }
-// .btn-outline-utp-red { ... }
 .btn-outline-utp-cyan {
   @extend .btn-utp;
   background-color: var(--utp-white);
