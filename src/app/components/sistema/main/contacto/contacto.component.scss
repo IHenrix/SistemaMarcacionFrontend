@@ -1,0 +1,233 @@
+
+.contacto {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  min-height: 100%;
+  width: 92%;
+}
+
+.contacto .contacto-content {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.contacto .contacto-content .contacto-title {
+  margin: 0 auto;
+  position: relative;
+  width: 90%;
+}
+
+.contacto .contacto-content .contacto-title h1 {
+  background-color: var(--utp-yellow);
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0.34, 0.34, 0.34, 0.25);
+  color: var(--utp-white);
+  font-family: var(--ff-gotham-bold);
+  font-size: 1.6em;
+  margin: 20px auto;
+  padding: 6px 16px;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.btn-return {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  color: var(--utp-gray-dark);
+  font-family: var(--ff-gotham-bold);
+  font-size: 0.95em;
+  margin-top: 25px;
+  outline: none;
+  right: 0;
+  top: 0;
+  transition: 300ms transform ease, 200ms opacity ease;
+}
+.btn-return:hover {
+  opacity: 0.85;
+  transform: scale(1.09);
+  cursor: pointer;
+}
+
+
+.form-section {
+  background-color: var(--utp-white);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  padding: 20px;
+  width: 90%;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+select.form-control-utp {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--utp-gray-dark) 50%),
+    linear-gradient(135deg, var(--utp-gray-dark) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 13px) calc(50% - 3px),
+    calc(100% - 2.2rem) 0.5rem;
+  background-size: 6px 6px, 6px 6px, 1px 1.6rem;
+  background-repeat: no-repeat;
+  padding-right: 2.4rem;
+}
+
+.form-group-utp--file input[type="file"].form-control-utp {
+  padding: 8px 10px;
+}
+
+.msg-error {
+  color: #d33;
+  font-size: 0.78rem;
+  margin-top: -2px;
+}
+
+.help-text {
+  font-size: 0.78rem;
+  color: var(--utp-gray);
+}
+
+.ng-invalid.ng-touched.form-control-utp {
+  border-color: #d33;
+  box-shadow: 0 0 0 3px rgba(211,51,51,0.12);
+}
+
+.check-consent .checkbox-utp {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: var(--utp-gray-dark);
+}
+.check-consent input[type="checkbox"] {
+  width: 18px; height: 18px;
+  accent-color: var(--utp-cyan);
+}
+
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 12px;
+}
+
+
+/* ===========================
+   MULTIMEDIA
+   =========================== */
+.media-container {
+  background-color: var(--utp-white);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  margin: 25px auto 60px auto;
+  overflow: hidden;
+  padding: 20px;
+  width: 90%;
+}
+
+.media-title {
+  font-family: var(--ff-gotham-bold);
+  font-size: 1.1rem;
+  margin-bottom: 14px;
+  color: var(--utp-gray-dark);
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 18px;
+}
+
+.media-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.media-card img,
+.media-card video,
+.media-card audio {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+  outline: none;
+}
+
+.media-card figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--utp-gray-dark);
+}
+
+.media-card audio,
+.media-card video {
+  background: #f8f9fb;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 6px;
+  border-radius: 10px;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 1400px) {
+  .form-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .media-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 750px) {
+  .btn-return {
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .form-actions {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .media-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .contacto .contacto-content .contacto-title h1 {
+    text-align: center;
+  }
+  .btn-return {
+    margin-top: 90px;
+  }
+  .form-actions {
+    button {
+      width: 100%;
+    }
+  }
+}

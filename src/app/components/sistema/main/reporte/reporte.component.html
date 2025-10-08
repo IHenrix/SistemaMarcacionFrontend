@@ -2,13 +2,13 @@
   <div class="reporte-content">
     <div class="reporte-title">
       <h1>REPORTE DE MARCACIONES</h1>
-      <button class="btn-return">
+      <button class="btn-return" [routerLink]="['/menu-principal']">
         <i class="fas fa-long-arrow-alt-left icon-utp"></i>
         Regresar
       </button>
     </div>
 
-    <section class="filters-section">
+    <form class="filters-section">
       <div class="filters-row">
         <div class="form-group-utp">
           <label class="label-utp" for="fecha-desde">Desde</label>
@@ -47,7 +47,7 @@
           <i class="fas fa-file-export"></i> Exportar
         </button>
       </div>
-    </section>
+    </form>
 
     <section class="table-container">
       <table class="table-utp">

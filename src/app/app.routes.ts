@@ -4,6 +4,7 @@ import { SistemaComponent } from './components/sistema/sistema.component';
 import { MainComponent } from './components/sistema/main/main.component';
 import { PresencialComponent } from './components/sistema/main/presencial/presencial.component';
 import { ReporteComponent } from './components/sistema/main/reporte/reporte.component';
+import { ContactoComponent } from './components/sistema/main/contacto/contacto.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 
@@ -15,6 +16,7 @@ export const routes: Routes = [
       { path: '', component: MainComponent },
       { path: 'presencial', component: PresencialComponent },
       { path: 'reporte', component: ReporteComponent },
+      { path: 'contacto', component: ContactoComponent },
     ],
   },
 

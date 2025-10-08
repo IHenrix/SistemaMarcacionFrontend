@@ -1,0 +1,159 @@
+<div class="contacto">
+  <div class="contacto-content">
+    <!-- TITULO -->
+    <div class="contacto-title">
+      <h1>FORMULARIO DE CONTACTO</h1>
+      <button class="btn-return" [routerLink]="['/menu-principal']">
+        <i class="fas fa-long-arrow-alt-left"></i>
+        Regresar
+      </button>
+    </div>
+
+    <!-- FORMULARIO -->
+    <form class="form-section" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group-utp">
+          <label class="label-utp" for="nombre">Nombre completo</label>
+          <input
+            id="nombre"
+            type="text"
+            class="form-control-utp"
+            formControlName="nombre"
+            placeholder="Escribe tu nombre"
+          />
+          <small class="msg-error" *ngIf="submitted && form.controls['nombre'].invalid">
+            Ingresa tu nombre (mín. 3 caracteres).
+          </small>
+        </div>
+
+        <div class="form-group-utp">
+          <label class="label-utp" for="email">Correo electrónico</label>
+          <input
+            id="email"
+            type="email"
+            class="form-control-utp"
+            formControlName="email"
+            placeholder="correo@ejemplo.com"
+          />
+          <small class="msg-error" *ngIf="submitted && form.controls['email'].invalid">
+            Ingresa un correo válido.
+          </small>
+        </div>
+
+        <div class="form-group-utp">
+          <label class="label-utp" for="telefono">Teléfono</label>
+          <input
+            id="telefono"
+            type="tel"
+            class="form-control-utp"
+            formControlName="telefono"
+            placeholder="Opcional"
+          />
+        </div>
+
+        <div class="form-group-utp">
+          <label class="label-utp" for="tipo">Tipo de solicitud</label>
+          <select id="tipo" class="form-control-utp" formControlName="tipo">
+            <option value="">Selecciona</option>
+            <option value="Consulta">Consulta</option>
+            <option value="Reclamo">Reclamo</option>
+            <option value="Sugerencia">Sugerencia</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <small class="msg-error" *ngIf="submitted && form.controls['tipo'].invalid">
+            Selecciona un tipo.
+          </small>
+        </div>
+
+        <div class="form-group-utp">
+          <label class="label-utp" for="asunto">Asunto</label>
+          <input
+            id="asunto"
+            type="text"
+            class="form-control-utp"
+            formControlName="asunto"
+            placeholder="Breve descripción del asunto"
+          />
+          <small class="msg-error" *ngIf="submitted && form.controls['asunto'].invalid">
+            Ingresa un asunto (mín. 5 caracteres).
+          </small>
+        </div>
+
+        <div class="form-group-utp form-group-utp--full">
+          <label class="label-utp" for="mensaje">Mensaje</label>
+          <textarea
+            id="mensaje"
+            rows="5"
+            class="form-control-utp"
+            formControlName="mensaje"
+            placeholder="Describe tu consulta, reclamo o sugerencia"
+          ></textarea>
+          <small class="msg-error" *ngIf="submitted && form.controls['mensaje'].invalid">
+            Escribe tu mensaje (mín. 10 caracteres).
+          </small>
+        </div>
+
+        <div class="form-group-utp form-group-utp--file">
+          <label class="label-utp" for="adjunto">Adjuntar archivo (opcional)</label>
+          <input
+            id="adjunto"
+            type="file"
+            class="form-control-utp"
+            (change)="onFileChange($event)"
+          />
+          <small class="help-text">Formatos: PDF, JPG o PNG (máx. 5MB)</small>
+        </div>
+
+        <div class="form-group-utp form-group-utp--full check-consent">
+          <label class="checkbox-utp">
+            <input type="checkbox" formControlName="consent" />
+            <span>Acepto el uso de mis datos para gestionar mi solicitud.</span>
+          </label>
+          <small class="msg-error" *ngIf="submitted && form.controls['consent'].invalid">
+            Debes aceptar el consentimiento.
+          </small>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-utp-green">
+          <i class="fas fa-paper-plane"></i> Enviar
+        </button>
+        <button type="button" class="btn-utp-cyan" (click)="onReset()">
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+        <button type="button" class="btn-utp-red" (click)="onExportPDF()">
+          <i class="fas fa-file-export"></i> Exportar
+        </button>
+      </div>
+    </form>
+
+    <!-- MULTIMEDIA -->
+    <section class="media-container">
+      <h2 class="media-title">Guías y Recursos</h2>
+
+      <div class="media-grid">
+        <figure class="media-card">
+          <img src="/assets/img/contacto/atencion.jpg" alt="Atención al usuario" />
+          <figcaption>Atención al usuario</figcaption>
+        </figure>
+
+        <figure class="media-card">
+          <audio controls>
+            <source src="/assets/audio/ayuda.mp3" type="audio/mpeg" />
+            Tu navegador no soporta audio HTML5.
+          </audio>
+          <figcaption>Audio: Indicaciones para reclamos</figcaption>
+        </figure>
+
+        <figure class="media-card">
+          <video controls poster="/assets/img/contacto/poster-video.png">
+            <source src="/assets/video/como_reportar.mp4" type="video/mp4" />
+            Tu navegador no soporta video HTML5.
+          </video>
+          <figcaption>Video: ¿Cómo enviar tu consulta?</figcaption>
+        </figure>
+      </div>
+    </section>
+  </div>
+</div>
