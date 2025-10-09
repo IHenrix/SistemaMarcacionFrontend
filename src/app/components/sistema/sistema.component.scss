@@ -1,10 +1,10 @@
-.main-container {
+.layout-container {
   display: flex;
   height: 100vh;
   width: 100%;
 }
 
-.main-content {
+.layout-content {
   height: 100vh;
   margin-left: 300px;
   max-width: calc(100% - 300px);
@@ -14,11 +14,11 @@
   transition: 500ms all ease;
 }
 
-.main-content::-webkit-scrollbar {
+.layout-content::-webkit-scrollbar {
   display: none;
 }
 
-.main-content .circle1 {
+.layout-content .circle1 {
   background-color: var(--utp-cyan);
   border-bottom-left-radius: 1000px;
   height: 90px;
@@ -30,21 +30,21 @@
   z-index: 150;
 }
 
-.main-content .circle2 {
+.layout-content .circle2 {
   position: fixed;
   right: 110px;
   top: 20px;
   z-index: 150;
 }
 
-.main-content .circle3 {
+.layout-content .circle3 {
   position: fixed;
   right: 30px;
   top: 100px;
   z-index: 150;
 }
 
-.main-content .circle4 {
+.layout-content .circle4 {
   background-color: var(--utp-cyan);
   border-top-left-radius: 1000px;
   border-top-right-radius: 1000px;
@@ -56,22 +56,25 @@
   width: 80px;
 }
 
-.main-content .circle5 {
+.layout-content .circle5 {
   bottom: 60px;
   position: fixed;
   right: 30px;
 }
 
-.main-content .circle6 {
+.layout-content .circle6 {
   bottom: 30px;
   position: fixed;
   right: 120px;
 }
 
-/* ------------------ BREAKPOINT ------------------ */
+.layout-content .main-container {
+  display: contents;
+}
 
+/* ------------------ BREAKPOINT ------------------ */
 @media (max-width: 950px) {
-  .main-content {
+  .layout-content {
     margin-left: 0;
     max-width: 100%;
     width: 100%;
@@ -79,35 +82,35 @@
 }
 
 @media (max-width: 750px) {
-  .main-content .circle1 {
+  .layout-content .circle1 {
     height: 30px;
     width: 30px;
   }
 
-  .main-content .circle2 {
+  .layout-content .circle2 {
     right: 40px;
   }
 
-  .main-content .circle3 {
+  .layout-content .circle3 {
     right: 0;
     top: 40px;
     transform: scale(0.4);
   }
 
-  .main-content .circle4,
-  .main-content .circle5,
-  .main-content .circle6 {
+  .layout-content .circle4,
+  .layout-content .circle5,
+  .layout-content .circle6 {
     display: none;
   }
 }
 
 @media (max-width: 470px) {
-  .main-content .circle1,
-  .main-content .circle2,
-  .main-content .circle3,
-  .main-content .circle4,
-  .main-content .circle5,
-  .main-content .circle6 {
+  .layout-content .circle1,
+  .layout-content .circle2,
+  .layout-content .circle3,
+  .layout-content .circle4,
+  .layout-content .circle5,
+  .layout-content .circle6 {
     display: none;
   }
 }
