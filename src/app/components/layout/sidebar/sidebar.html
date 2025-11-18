@@ -1,0 +1,96 @@
+<input id="sideToggle" type="checkbox" class="side-toggle" hidden>
+<label for="sideToggle" class="background-side-bar"></label>
+<label for="sideToggle" class="btn-open-side-bar">
+  <i class="fas fa-arrow-right"></i>
+</label>
+
+<nav class="side-bar">
+  <div class="side-bar-content">
+    <div class="option-collapse">
+      <label for="sideToggle" class="btn-collapse">
+        <i class="fas fa-arrow-left"></i>
+      </label>
+    </div>
+
+    <div class="side-bar-image">
+      <img src="/img/sidebar/man.png" />
+
+      <svg class="circle1" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="9" cy="9" r="9" fill="#fff" />
+      </svg>
+      <svg class="circle2" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="6" cy="6" r="6" fill="#fff" />
+      </svg>
+      <svg class="circle3" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8" cy="8" r="8" fill="#fff" />
+      </svg>
+      <svg class="circle4" width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="5" cy="5" r="5" fill="#fff" />
+      </svg>
+      <svg class="circle5" width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="6" cy="6" r="6" fill="#fff" />
+      </svg>
+    </div>
+
+    <div class="user-data">
+      <div class="user-data-content">
+        <div class="item">
+          <div class="item-title">
+            <i class="fas fa-user-alt"></i>
+            <p>Nombre:</p>
+          </div>
+          <div class="item-body">
+            <p>Ricardo Enrique Prada Guerra</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-title">
+            <i class="fas fa-warehouse"></i>
+            <p>Área:</p>
+          </div>
+          <div class="item-body">
+            <p>Ventas</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-title">
+            <i class="fas fa-user-circle"></i>
+            <p>Perfil</p>
+          </div>
+          <div class="item-body">
+            <p>Operativo</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-title">
+            <i class="fas fa-phone-alt"></i>
+            <p>Teléfono/Celular:</p>
+          </div>
+          <div class="item-body">
+            <p>912016162</p>
+          </div>
+        </div>
+
+        <div class="item">
+          <div class="item-title">
+            <i class="fas fa-envelope"></i>
+            <p>Correo electrónico:</p>
+          </div>
+          <div class="item-body">
+            <p>enrique.pdg&#64;hotmail.com</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-option sing-out">
+      <button class="btn-outline-utp-white" (click)="cerrarSesion()">
+        <i class="fas fa-sign-out-alt"></i>
+        Salir
+      </button>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,58 @@
+<div class="layout-container">
+  <!-- Barra lateral (NAV) -->
+  <sidebar-seccion />
+
+  <div class="layout-content">
+    <!-- Menu principal -->
+    @if(mostrarModulos){
+    <header>
+      <h1 class="h1-utp text-utp-gray-dark text-center">
+        BIENVENIDO(A) AL SISTEMA DE MARCACIONES DE ABRIL DELICIAS Y HELADOS
+      </h1>
+    </header>
+    <router-outlet></router-outlet>
+    }
+    @else {
+    <!-- Cuerpo o contenido principal -->
+    <main class="main-container">
+      <div class="modulo">
+        <div class="modulo-content">
+          <div class="modulo-title">
+            <h1 [style.backgroundColor]="moduloColor">{{ pageTitle }}</h1>
+          </div>
+
+          <div class="modulo-actions">
+            <button class="btn-return" [routerLink]="['/sistema/menu-principal']">
+              <i class="fas fa-long-arrow-alt-left icon-utp"></i>
+              Regresar al Menu Principal
+            </button>
+          </div>
+
+          <section class="modulo-section">
+            <router-outlet></router-outlet>
+          </section>
+        </div>
+      </div>
+    </main>
+    }
+    <!-- Elementos decorativos -->
+    <div class="circle1"></div>
+    <svg class="circle2" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <circle cx="10" cy="10" r="10" fill="#00A5A5" />
+    </svg>
+    <svg class="circle3" width="40" height="40" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="20" fill="#00A5A5" />
+    </svg>
+    <div class="circle4"></div>
+    <svg class="circle5" width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <circle cx="18" cy="18" r="18" fill="#00A5A5" />
+    </svg>
+    <svg class="circle6" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <circle cx="10" cy="10" r="10" fill="#00A5A5" />
+    </svg>
+
+    <!-- Pie de página -->
+    <seccion-footer />
+
+  </div>
+</div>

@@ -1,24 +1,42 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { SistemaComponent } from './components/sistema/sistema.component';
-import { MainComponent } from './components/sistema/main/main.component';
-import { PresencialComponent } from './components/sistema/main/presencial/presencial.component';
-import { ReporteComponent } from './components/sistema/main/reporte/reporte.component';
-import { ContactoComponent } from './components/sistema/main/contacto/contacto.component';
-export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+import { LayoutComponent } from './components/layout/layout';
+// import { authGuard } from './core/guards/auth.guard'; //
 
-  { path: 'login', component: LoginComponent },
+export const appRoutes: Routes = [
   {
-    path: 'menu-principal',
-    component: SistemaComponent,
+    path: 'login',
+    loadComponent: () =>
+      import('./components/login/login').then(m => m.LoginComponent),
+    title: 'Iniciar sesión',
+  },
+  {
+    path: '404',
+    loadComponent: () =>
+      import('./shared/errors/not-found-externo/not-found-externo')
+        .then(m => m.NotFoundComponent),
+    title: 'Página no encontrada',
+  },
+
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login',
+  },
+
+  {
+    path: '',
+    component: LayoutComponent,
+    // canActivate: [authGuard],
+    // canActivateChild: [authGuard],
     children: [
-      { path: '', component: MainComponent },
-      { path: 'presencial', component: PresencialComponent },
-      { path: 'reporte', component: ReporteComponent },
-      { path: 'contacto', component: ContactoComponent },
+      {
+        path: 'sistema',
+        loadChildren: () =>
+          import('./components/sistema/sistema.routes').then(m => m.SISTEMA_ROUTES),
+        // runGuardsAndResolvers: 'always',
+      },
     ],
   },
 
-  { path: '**', redirectTo: 'login' },
+  { path: '**', redirectTo: '404' },
 ];
