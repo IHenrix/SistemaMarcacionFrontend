@@ -1,0 +1,292 @@
+<section class="horarios-page">
+  <header class="page-header">
+    <div>
+      <p class="kicker">Planificador</p>
+      <h1>Horarios y asignaciones</h1>
+      <span class="subtitle">Define turnos, tolerancias y aplícalos a personas sin salir del flujo</span>
+    </div>
+    <div class="cta-group">
+      <button class="btn-utp" type="button" (click)="seleccionarTab('horarios')">
+        <i class="fas fa-plus"></i>
+        Nuevo horario
+      </button>
+      <button class="btn-outline-utp" type="button" (click)="seleccionarTab('asignar')">
+        <i class="fas fa-user-check"></i>
+        Asignar
+      </button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button type="button" [class.active]="selectedTab === 'asignar'" (click)="seleccionarTab('asignar')">
+      <i class="fas fa-users"></i>
+      Asignar horarios
+    </button>
+    <button type="button" [class.active]="selectedTab === 'horarios'" (click)="seleccionarTab('horarios')">
+      <i class="fas fa-clock"></i>
+      Gestionar horarios
+    </button>
+  </div>
+
+  <!-- TAB: ASIGNAR -->
+  <ng-container *ngIf="selectedTab === 'asignar'">
+    <section class="panel card asignaciones">
+      <div class="panel-header">
+        <div>
+          <p class="kicker">Asignador visual</p>
+          <h2>Personas ↔ Horario</h2>
+          <span class="subtitle">Selecciona y aplica vigencias sin perder contexto</span>
+        </div>
+        <div class="chips">
+          <span class="chip">Arrastra la mirada, no los datos</span>
+          <span class="chip soft">Mock frontend</span>
+        </div>
+      </div>
+
+      <div class="asignador">
+        <div class="personas">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              placeholder="Buscar por nombre, área o rol"
+              [(ngModel)]="searchPersona"
+            />
+          </div>
+
+          <div
+            class="persona"
+            *ngFor="let p of personasFiltradas"
+            [class.activa]="p.id === asignacionForm.value.persona"
+            (click)="asignacionForm.patchValue({ persona: p.id })"
+          >
+            <div class="persona-header">
+              <div class="persona-icon"><i class="fas fa-user-circle"></i></div>
+              <div>
+                <p class="nombre">{{ p.nombre }}</p>
+                <p class="detalle">{{ p.area }} · {{ p.rol }}</p>
+              </div>
+              <span class="chip soft" *ngIf="p.excepcion">{{ p.excepcion }}</span>
+            </div>
+            <div class="persona-body">
+              <div class="hora-actual">
+                <small>Horario actual</small>
+                <p>
+                  {{ horarioActual(p)?.nombre }}
+                  <span class="vigencia">Desde {{ p.desde }} {{ p.hasta ? '· Hasta ' + p.hasta : '' }}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty" *ngIf="personasFiltradas.length === 0">
+            <i class="fas fa-user-slash"></i>
+            <span>No se ha encontrado al empleado</span>
+          </div>
+        </div>
+
+        <div class="asignar-form">
+          <form [formGroup]="asignacionForm">
+            <label class="field">
+              <span>Persona</span>
+              <div class="search-box-inline">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  placeholder="Buscar persona"
+                  [(ngModel)]="searchPersonaSelect"
+                  name="buscarPersonaSelect"
+                />
+              </div>
+              <select formControlName="persona">
+                <option [ngValue]="null" disabled>Selecciona persona</option>
+                <option *ngFor="let p of personasFiltradasSelect" [ngValue]="p.id">{{ p.nombre }} · {{ p.area }}</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Horario</span>
+              <div class="search-box-inline">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  placeholder="Buscar horario"
+                  [(ngModel)]="searchHorario"
+                  name="buscarHorario"
+                />
+              </div>
+              <select formControlName="horarioId">
+                <option [ngValue]="null" disabled>Selecciona horario</option>
+                <option *ngFor="let h of horariosFiltrados" [ngValue]="h.id">{{ h.nombre }}</option>
+              </select>
+            </label>
+
+            <div class="field inline">
+              <label>
+                <span>Desde</span>
+                <input type="date" formControlName="fechaInicio" />
+              </label>
+              <label>
+                <span>Hasta (opcional)</span>
+                <input type="date" formControlName="fechaFin" />
+              </label>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn-utp" type="button" (click)="asignarHorario()">
+                <i class="fas fa-check"></i>
+                Aplicar
+              </button>
+              <button class="btn-outline-utp" type="button" (click)="asignacionForm.reset({ persona: null, horarioId: selectedHorarioId, fechaInicio: asignacionForm.value.fechaInicio, fechaFin: null })">
+                <i class="fas fa-times"></i>
+                Limpiar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+  <!-- TAB: HORARIOS -->
+  <ng-container *ngIf="selectedTab === 'horarios'">
+    <div class="grid">
+      <section class="card panel formulario">
+        <div class="panel-header">
+          <div>
+            <p class="kicker">Construye horarios</p>
+            <h2>Plantillas de jornada</h2>
+          </div>
+          <span class="chip soft">Solo frontend (mock)</span>
+        </div>
+
+        <form [formGroup]="horarioForm" class="form-grid">
+          <label class="field">
+            <span>Nombre</span>
+            <input type="text" formControlName="nombre" placeholder="Ej. Turno extendido" />
+          </label>
+          <label class="field">
+            <span>Entrada</span>
+            <input type="time" formControlName="entrada" />
+          </label>
+          <label class="field">
+            <span>Inicio refri</span>
+            <input type="time" formControlName="inicioRefri" />
+          </label>
+          <label class="field">
+            <span>Fin refri</span>
+            <input type="time" formControlName="finRefri" />
+          </label>
+          <label class="field">
+            <span>Salida</span>
+            <input type="time" formControlName="salida" />
+          </label>
+          <label class="field">
+            <span>Tolerancia entrada (min)</span>
+            <input type="number" min="0" formControlName="toleranciaEntrada" />
+          </label>
+          <label class="field">
+            <span>Tolerancia salida (min)</span>
+            <input type="number" min="0" formControlName="toleranciaSalida" />
+          </label>
+          <label class="field">
+            <span>Flex refri (min)</span>
+            <input type="number" min="0" formControlName="toleranciaRefri" />
+          </label>
+
+          <div class="field full">
+            <span>Días aplicables</span>
+            <div class="chips">
+              <button
+                type="button"
+                class="chip"
+                [class.active]="esDiaActivo(dia)"
+                *ngFor="let dia of diasSemana"
+                (click)="toggleDia(dia)"
+              >
+                {{ dia }}
+              </button>
+            </div>
+          </div>
+
+          <div class="form-actions full">
+            <button class="btn-utp" type="button" (click)="crearHorario()">
+              <i class="fas fa-save"></i>
+              Guardar horario
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <section class="panel card catalogo">
+        <div class="panel-header">
+          <div>
+            <p class="kicker">Catálogo</p>
+            <h2>Horarios activos</h2>
+          </div>
+          <span class="chip">Vista previa</span>
+        </div>
+
+        <div class="horarios-lista">
+          <article
+            class="horario-card"
+            *ngFor="let h of horarios"
+            [class.vigente]="h.vigente"
+            [style.--color]="h.color"
+            (click)="selectedHorarioId = h.id; asignacionForm.patchValue({ horarioId: h.id })"
+          >
+            <header>
+              <div class="title">
+                <div class="dot"></div>
+                <div>
+                  <p class="kicker">{{ h.vigente ? 'Vigente' : 'Disponible' }}</p>
+                  <h3>{{ h.nombre }}</h3>
+                </div>
+              </div>
+              <div class="tags">
+                <span class="chip">{{ formatoDias(h.dias) }}</span>
+                <span class="chip soft">{{ h.uso }} uso(s)</span>
+              </div>
+            </header>
+
+            <div class="timeline">
+              <div class="track">
+                <div
+                  class="segment"
+                  *ngFor="let seg of timelineSegments(h)"
+                  [style.width.%]="seg.width"
+                  [ngClass]="seg.class"
+                >
+                  <small>{{ seg.label }}</small>
+                </div>
+              </div>
+              <div class="marks">
+                <span>Entrada {{ h.entrada }}</span>
+                <span>Refri {{ h.inicioRefri }} - {{ h.finRefri }}</span>
+                <span>Salida {{ h.salida }}</span>
+              </div>
+            </div>
+
+            <footer>
+              <div class="info">
+                <span>Tolerancia entrada: {{ h.toleranciaEntrada }} min</span>
+                <span>Salida: {{ h.toleranciaSalida }} min</span>
+                <span>Refri: {{ h.toleranciaRefri }} min</span>
+              </div>
+              <div class="acciones">
+                <button class="ghost" type="button" (click)="duplicarHorario(h); $event.stopPropagation()">
+                  <i class="fas fa-clone"></i>
+                  Duplicar
+                </button>
+                <button class="ghost danger" type="button" (click)="$event.stopPropagation(); accionPendienteBackend()">
+                  <i class="fas fa-power-off"></i>
+                  Activar/pausar
+                </button>
+              </div>
+            </footer>
+          </article>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+</section>

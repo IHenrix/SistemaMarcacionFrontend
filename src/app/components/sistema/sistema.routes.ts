@@ -18,7 +18,13 @@ export const SISTEMA_ROUTES: Routes = [
     title: 'Marcación presencial',
     data: { color: 'var(--utp-green)' },
   },
-    {
+  {
+    path: 'horarios',
+    loadComponent: () => import('./horarios/horarios').then((m) => m.HorariosComponent),
+    title: 'Horarios',
+    data: { color: 'var(--utp-cyan)' },
+  },
+  {
     path: 'reportes',
     loadComponent: () => import('./reporte/reporte').then((m) => m.ReporteComponent),
     title: 'Reportes',

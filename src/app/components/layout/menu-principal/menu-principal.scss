@@ -192,26 +192,26 @@
 #contacto .card-utp-footer {
   background-color: var(--utp-red);
 }
-/* Solicitudes o Permisos (verde azulado) */
-#solicitudes .card-utp-header {
+/* Horarios (verde azulado) */
+#horarios .card-utp-header {
   background-color: var(--utp-cyan);
 }
-#solicitudes .card-utp-header .circle1 {
+#horarios .card-utp-header .circle1 {
   background-color: var(--utp-cyan);
   right: -28px;
   top: 14px;
 }
-#solicitudes .card-utp-header .circle2 {
+#horarios .card-utp-header .circle2 {
   background-color: var(--utp-cyan);
   left: -22px;
   top: 8px;
 }
-#solicitudes .card-utp-header .circle3 {
+#horarios .card-utp-header .circle3 {
   background-color: var(--utp-cyan);
   bottom: -8px;
   right: -16px;
 }
-#solicitudes .card-utp-footer {
+#horarios .card-utp-footer {
   background-color: var(--utp-cyan);
 }
 
