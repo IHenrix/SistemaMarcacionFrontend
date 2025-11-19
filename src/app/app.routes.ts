@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './components/layout/layout';
-// import { authGuard } from './core/guards/auth.guard'; //
+import { authGuard } from './guards/auth.guard';
 
 export const appRoutes: Routes = [
   {
@@ -26,14 +26,13 @@ export const appRoutes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    // canActivate: [authGuard],
-    // canActivateChild: [authGuard],
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'sistema',
         loadChildren: () =>
           import('./components/sistema/sistema.routes').then(m => m.SISTEMA_ROUTES),
-        // runGuardsAndResolvers: 'always',
       },
     ],
   },

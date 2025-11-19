@@ -40,7 +40,7 @@
             <p>Nombre:</p>
           </div>
           <div class="item-body">
-            <p>Ricardo Enrique Prada Guerra</p>
+            <p>{{ usuario?.nombre || 'Cargando...' }}</p>
           </div>
         </div>
 
@@ -50,7 +50,7 @@
             <p>Área:</p>
           </div>
           <div class="item-body">
-            <p>Ventas</p>
+            <p>{{ usuario?.area?.nombre || 'Sin área asignada' }}</p>
           </div>
         </div>
 
@@ -60,7 +60,7 @@
             <p>Perfil</p>
           </div>
           <div class="item-body">
-            <p>Operativo</p>
+            <p>{{ usuario?.perfil || 'Sin perfil' }}</p>
           </div>
         </div>
 
@@ -70,7 +70,7 @@
             <p>Teléfono/Celular:</p>
           </div>
           <div class="item-body">
-            <p>912016162</p>
+            <p>{{ usuario?.telefono || 'No disponible' }}</p>
           </div>
         </div>
 
@@ -80,7 +80,7 @@
             <p>Correo electrónico:</p>
           </div>
           <div class="item-body">
-            <p>enrique.pdg&#64;hotmail.com</p>
+            <p>{{ usuario?.email || 'No disponible' }}</p>
           </div>
         </div>
       </div>
