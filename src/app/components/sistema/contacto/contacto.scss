@@ -1,63 +1,7 @@
-.contacto {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-height: 100%;
-  width: 92%;
-}
-
-.contacto .contacto-content {
-  width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-.contacto .contacto-content .contacto-title {
-  margin: 0 auto;
-  position: relative;
-  width: 90%;
-}
-
-.contacto .contacto-content .contacto-title h1 {
-  background-color: var(--utp-red);
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0.34, 0.34, 0.34, 0.25);
-  color: var(--utp-white);
-  font-family: var(--ff-gotham-bold);
-  font-size: 1.6em;
-  margin: 20px auto;
-  padding: 6px 16px;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.btn-return {
-  position: absolute;
-  background-color: transparent;
-  border: none;
-  color: var(--utp-gray-dark);
-  font-family: var(--ff-gotham-bold);
-  font-size: 0.95em;
-  margin-top: 25px;
-  outline: none;
-  right: 0;
-  top: 0;
-  transition: 300ms transform ease, 200ms opacity ease;
-}
-.btn-return:hover {
-  opacity: 0.85;
-  transform: scale(1.09);
-  cursor: pointer;
-}
-
 .form-section {
-  background-color: var(--utp-white);
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
-  padding: 20px;
-  width: 90%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .form-row {
@@ -99,9 +43,10 @@
   background: linear-gradient(180deg, #ffffff 0%, #fafbfc 100%);
   border-radius: 16px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
-  width: 90%;
+  max-width: 1400px;
+  width: calc(100% - 40px);
   margin: 28px auto 70px auto;
-  padding: 24px 22px;
+  padding: 32px 28px;
   overflow: hidden;
 }
 
@@ -250,8 +195,12 @@
 }
 
 @media (max-width: 750px) {
-  .btn-return {
-    margin-top: 50px;
+  .form-section {
+    width: calc(100% - 32px);
+    padding: 24px;
+  }
+  .media-container {
+    width: calc(100% - 32px);
   }
 }
 
@@ -271,11 +220,13 @@
 }
 
 @media (max-width: 500px) {
-  .contacto .contacto-content .contacto-title h1 {
-    text-align: center;
+  .form-section {
+    width: calc(100% - 30px);
+    padding: 20px;
   }
-  .btn-return {
-    margin-top: 90px;
+  .media-container {
+    width: calc(100% - 30px);
+    padding: 20px 16px;
   }
   .form-actions {
     button {

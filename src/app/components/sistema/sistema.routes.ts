@@ -13,30 +13,22 @@ export const SISTEMA_ROUTES: Routes = [
     title: 'Menú principal',
   },
   {
-    path: 'contacto',
-    loadComponent: () => import('./contacto/contacto.component').then((m) => m.ContactoComponent),
-    title: 'Contacto',
-    data: { color: 'var(--utp-red)' },
-  },
-  {
     path: 'presencial',
-    loadComponent: () => import('./presencial/presencial.component').then((m) => m.PresencialComponent),
-    title: 'Presencial',
-    data: { color: 'var(--utp-cyan)' },
-  },
-  {
-    path: 'ejemplos-ui',
-    loadComponent: () =>
-      import('../layout/ejemplos-ui/ejemplos-ui').then((m) => m.EjemplosUiComponent),
-    title: 'Ejemplos UI',
-    data: { color: 'var(--utp-cyan)' },
+    loadComponent: () => import('./presencial/presencial').then((m) => m.PresencialComponent),
+    title: 'Marcación presencial',
+    data: { color: 'var(--utp-green)' },
   },
     {
-    path: 'ejemplos-ui-material',
-    loadComponent: () =>
-      import('../layout/demo-material/demo-material').then((m) => m.DemoMaterialComponent),
-    title: 'Ejemplos Angular Material UI',
-    data: { color: 'var(--utp-cyan)' },
+    path: 'reportes',
+    loadComponent: () => import('./reporte/reporte').then((m) => m.ReporteComponent),
+    title: 'Marcación presencial',
+    data: { color: 'var(--utp-green)' },
+  },
+  {
+    path: 'contacto',
+    loadComponent: () => import('./contacto/contacto').then((m) => m.ContactoComponent),
+    title: 'Formulario de contacto',
+    data: { color: 'var(--utp-red)' },
   },
   {
     path: '**',

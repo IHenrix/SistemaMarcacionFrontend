@@ -1,63 +1,7 @@
-.reporte {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  min-height: 100%;
-  width: 92%;
-}
-
-.reporte .reporte-content {
-  width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-.reporte .reporte-content .reporte-title {
-  margin: 0 auto;
-  position: relative;
-  width: 90%;
-}
-
-.reporte .reporte-content .reporte-title h1 {
-  background-color: var(--utp-yellow);
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0.34, 0.34, 0.34, 0.25);
-  color: var(--utp-white);
-  font-family: var(--ff-gotham-bold);
-  font-size: 1.6em;
-  margin: 20px auto;
-  padding: 6px 16px;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.btn-return {
-  position: absolute;
-  background-color: transparent;
-  border: none;
-  color: var(--utp-gray-dark);
-  font-family: var(--ff-gotham-bold);
-  font-size: 0.95em;
-  margin-top: 25px;
-  outline: none;
-  right: 0;
-  top: 0;
-  transition: 300ms transform ease;
-}
-.btn-return:hover {
-  opacity: 0.85;
-  transform: scale(1.09);
-  cursor: pointer;
-}
-
 .filters-section {
-  background-color: var(--utp-white);
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   margin: 20px auto;
-  padding: 20px;
-  width: 90%;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .filters-row {
@@ -76,11 +20,12 @@
 .table-container {
   background-color: var(--utp-white);
   border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   margin: 25px auto 60px auto;
   overflow-x: auto;
-  padding: 20px;
+  padding: 28px;
   width: 90%;
+  transition: box-shadow 0.3s ease;
 }
 
 .table-utp {
@@ -102,8 +47,9 @@
 }
 
 .table-utp thead th {
-  padding: 14px 16px;
+  padding: 16px 18px;
   text-align: left;
+  letter-spacing: 0.3px;
 }
 
 .table-utp tbody tr:nth-child(odd) {
@@ -111,13 +57,15 @@
 }
 
 .table-utp tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-size: 0.92rem;
 }
 
 .table-utp tbody tr:hover {
-  background-color: rgba(0, 165, 165, 0.08);
+  background-color: rgba(0, 165, 165, 0.06);
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 .table-utp thead th.th-actions,
 .table-utp td.table-actions {
@@ -128,10 +76,16 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 0.85rem;
   border-radius: 8px;
   white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.table-actions .btn-action:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 165, 165, 0.15);
 }
 
 .pagination-utp {
@@ -151,17 +105,19 @@
   background: #fff;
   color: var(--utp-gray-dark);
   font-family: var(--ff-gotham-bold);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.15s ease,
+  transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
 }
-.pagination-utp .page-btn:hover {
+.pagination-utp .page-btn:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   cursor: pointer;
 }
+
 .pagination-utp .page-btn.is-active {
   background: var(--utp-cyan);
   color: var(--utp-white);
   border-color: var(--utp-cyan);
+  box-shadow: 0 2px 8px rgba(0, 165, 165, 0.25);
 }
 .pagination-utp .page-btn:disabled {
   opacity: 0.5;

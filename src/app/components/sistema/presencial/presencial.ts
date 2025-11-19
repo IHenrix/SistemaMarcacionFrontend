@@ -5,10 +5,9 @@ import { SharedImports } from '@app/shared/shared.imports';
 
 @Component({
   selector: 'app-presencial',
-  templateUrl: './presencial.component.html',
-  standalone: true,
   imports: [SharedImports],
-  styleUrls: ['./presencial.component.scss'],
+  styleUrls: ['./presencial.scss'],
+  templateUrl: './presencial.html',
 })
 export class PresencialComponent implements OnInit, OnDestroy {
   protected horaActual = '';
@@ -79,7 +78,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
       title: 'Marcación registrada',
       text: `${titulo} realizada correctamente a las ${hora}.`,
       confirmButtonColor: '#00A5A5',
-      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>'
+      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>',
     });
   }
 
@@ -96,7 +95,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
         </div>
       `,
       confirmButtonColor: '#00A5A5',
-      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>'
+      confirmButtonText: '<span style="padding: 0 15px;">Aceptar</span>',
     });
   }
 
@@ -123,9 +122,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
     const mm = String(minutos).padStart(2, '0');
     const ss = String(segundos).padStart(2, '0');
 
-    return mostrarSegundos
-      ? `${hh} : ${mm} : ${ss} ${ampm}`
-      : `${hh}:${mm} ${ampm}`;
+    return mostrarSegundos ? `${hh} : ${mm} : ${ss} ${ampm}` : `${hh}:${mm} ${ampm}`;
   }
 
   protected retornar(): void {

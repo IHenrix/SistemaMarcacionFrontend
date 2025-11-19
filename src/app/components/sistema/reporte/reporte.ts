@@ -3,10 +3,9 @@ import { SharedImports } from '@app/shared/shared.imports';
 
 @Component({
   selector: 'app-reporte',
-  standalone: true,
   imports: [SharedImports],
-  templateUrl: './reporte.component.html',
-  styleUrl: './reporte.component.scss'
+  templateUrl: './reporte.html',
+  styleUrl: './reporte.scss'
 })
 export class ReporteComponent {
 
