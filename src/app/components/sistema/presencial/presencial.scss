@@ -1,24 +1,5 @@
 
-.btn-return {
-  border: none;
-  background-color: transparent;
-  color: var(--utp-gray-dark);
-  font-family: var(--ff-gotham-bold);
-  font-size: 0.95em;
-  outline: none;
-  position: absolute;
-  right: 0;
-  bottom: 10px;
-  transition: 300ms transform ease;
-}
-
-.btn-return:hover {
-  opacity: 0.85;
-  transform: scale(1.09);
-  cursor: pointer;
-}
-
-.presencial .counter-container {
+.counter-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
@@ -27,49 +8,49 @@
   width: 80%;
 }
 
-.presencial .counter {
+.counter {
   font-family: var(--ff-gotham-bold);
   text-align: center;
   width: 100%;
 }
 
-.presencial .counter h4 {
+.counter h4 {
   color: var(--utp-gray-dark);
   font-size: 1em;
   margin: 5px;
   padding: 0;
 }
 
-.presencial .counter p {
+.counter p {
   color: var(--utp-cyan);
   font-size: 1.3em;
   margin: 0;
   padding: 0;
 }
 
-.presencial .presencial-container {
+.presencial-container {
   display: flex;
   flex-wrap: wrap;
   width: 100%;
 }
 
-.presencial .validation {
+.validation {
   width: 60%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.presencial .validation-container {
+.validation-container {
   width: 100%;
 }
 
-.presencial .btn-validate:hover {
+.btn-validate:hover {
   background-color: var(--utp-cyan);
   color: var(--utp-white);
 }
 
-.presencial .marcacion {
+.marcacion {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -77,7 +58,7 @@
   width: 100%;
 }
 
-.presencial .marcacion-container .marcacion-image {
+.marcacion-container .marcacion-image {
   color: var(--utp-white);
   font-family: var(--ff-gotham-bold);
   position: relative;
@@ -85,25 +66,25 @@
   margin: 0 auto;
 }
 
-.presencial .marcacion-container .marcacion-image img {
+.marcacion-container .marcacion-image img {
   width: 400px;
 }
 
-.presencial .marcacion-container .marcacion-image .time-label {
+.marcacion-container .marcacion-image .time-label {
   font-size: 0.95em;
   left: 80px;
   position: absolute;
   top: 25px;
 }
 
-.presencial .marcacion-container .marcacion-image .time {
+.marcacion-container .marcacion-image .time {
   font-size: 1.05em;
   left: 80px;
   position: absolute;
   top: 47px;
 }
 
-.presencial .marcacion-options {
+.marcacion-options {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -111,12 +92,12 @@
   width: 100%;
 }
 
-.presencial .marcacion-option {
+.marcacion-option {
   width: 100%;
   text-align: center;
 }
 
-.presencial .btn-marcar {
+.btn-marcar {
   background-color: var(--utp-yellow);
   border-radius: 12px;
   border: none;
@@ -132,23 +113,23 @@
   margin-top: 10px;
 }
 
-.presencial .btn-marcar:hover {
+.btn-marcar:hover {
   animation: none;
   cursor: pointer;
 }
 
-.presencial .marcacion-option.not-validated {
+.marcacion-option.not-validated {
   cursor: not-allowed;
 }
 
-.presencial .marcacion-option.not-validated .btn-marcar {
+.marcacion-option.not-validated .btn-marcar {
   pointer-events: none;
   animation: none;
   background-color: var(--utp-gray-light);
   color: var(--utp-gray-dark);
 }
 
-.presencial .marcacion-options.culminated {
+.marcacion-options.culminated {
   margin-top: 2px;
 }
 
@@ -196,49 +177,28 @@
 }
 
 @media (max-width: 1200px) {
-  .presencial .counter-container {
+  .counter-container {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 900px) {
-  .presencial .counter-container {
+  .counter-container {
     grid-template-columns: repeat(2, 1fr);
     width: 90%;
   }
 }
 
-@media (max-width: 750px) {
-  .btn-return {
-    margin-top: 50px;
-  }
-}
-
-@media (max-width: 520px) {
-  .presencial {
-    margin-top: 50px;
-  }
-
-  .presencial .counter-container {
-    grid-template-columns: 1fr;
-    width: 100%;
-    gap: 10px;
-  }
-
-  .btn-return {
-    margin-top: 120px;
-  }
-}
 
 @media (max-width: 450px) {
-  .presencial .marcacion-container .marcacion-image {
+  .marcacion-container .marcacion-image {
     width: 300px;
   }
-  .presencial .marcacion-container .marcacion-image img {
+  .marcacion-container .marcacion-image img {
     width: 100%;
   }
-  .presencial .marcacion-container .marcacion-image .time-label,
-  .presencial .marcacion-container .marcacion-image .time {
+  .marcacion-container .marcacion-image .time-label,
+  .marcacion-container .marcacion-image .time {
     font-size: 0.6em;
     left: 60px;
   }
