@@ -21,8 +21,8 @@ export const SISTEMA_ROUTES: Routes = [
     {
     path: 'reportes',
     loadComponent: () => import('./reporte/reporte').then((m) => m.ReporteComponent),
-    title: 'Marcación presencial',
-    data: { color: 'var(--utp-green)' },
+    title: 'Reportes',
+    data: { color: 'var(--utp-yellow)' },
   },
   {
     path: 'contacto',
