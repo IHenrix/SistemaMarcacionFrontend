@@ -6,11 +6,12 @@ import { PersonaAsignacionDTO } from '@app/models/usuario.model';
 import { Usuario } from '@app/models/auth.model';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-reporte',
   standalone: true,
-  imports: [SharedImports],
+  imports: [SharedImports, NgSelectModule],
   templateUrl: './reporte.html',
   styleUrls: ['./reporte.scss'],
 })
@@ -30,7 +31,6 @@ export class ReporteComponent implements OnInit {
 
   protected filtrosGeneral = {
     id_persona: null as number | null,
-    personaTerm: '',
     desde: '',
     hasta: '',
     tardanza: '',
@@ -101,37 +101,8 @@ export class ReporteComponent implements OnInit {
   }
 
   protected limpiarGeneral(): void {
-    this.filtrosGeneral = { id_persona: null, personaTerm: '', desde: '', hasta: '', tardanza: '' };
+    this.filtrosGeneral = { id_persona: null, desde: '', hasta: '', tardanza: '' };
     this.buscarGeneral();
-  }
-
-  protected seleccionarPersona(id: number | null) {
-    this.filtrosGeneral.id_persona = id;
-  }
-
-  protected onPersonaInput(term: string) {
-    this.filtrosGeneral.personaTerm = term;
-    const encontrada = this.personas.find(
-      (p) =>
-        this.displayPersona(p).toLowerCase() === term.trim().toLowerCase() ||
-        (p.dni && p.dni === term.trim())
-    );
-    this.filtrosGeneral.id_persona = encontrada ? encontrada.id_persona : null;
-  }
-
-  protected personasFiltradas(): PersonaAsignacionDTO[] {
-    const term = this.filtrosGeneral.personaTerm.trim().toLowerCase();
-    if (!term) return this.personas;
-    return this.personas.filter(
-      (p) =>
-        p.nombres.toLowerCase().includes(term) ||
-        p.apellidos.toLowerCase().includes(term) ||
-        (p.dni || '').toLowerCase().includes(term)
-    );
-  }
-
-  protected displayPersona(p: PersonaAsignacionDTO): string {
-    return `${p.nombres} ${p.apellidos} - ${p.dni || ''}`.trim();
   }
 
   protected estadoTexto(item: MarcacionReporteItem): string {
@@ -226,6 +197,15 @@ export class ReporteComponent implements OnInit {
     if (valor === '0') return false;
     return undefined;
   }
+
+  protected searchPersona = (term: string, item: PersonaAsignacionDTO) => {
+    const normalized = term.toLowerCase();
+    return (
+      item.nombres.toLowerCase().includes(normalized) ||
+      item.apellidos.toLowerCase().includes(normalized) ||
+      (item.dni || '').toLowerCase().includes(normalized)
+    );
+  };
 
   private cargarPersonas(): void {
     this.usuarioService.listarUsuarios().subscribe({

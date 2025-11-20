@@ -95,23 +95,23 @@
       <div class="filters-row">
         <div class="form-group-utp">
           <label class="label-utp">Persona</label>
-          <input
-            type="text"
+          <ng-select
             class="form-control-utp"
+            [items]="personas"
+            bindLabel="nombres"
+            bindValue="id_persona"
+            [searchFn]="searchPersona"
+            [clearable]="true"
             placeholder="Buscar por nombre o DNI"
-            [(ngModel)]="filtrosGeneral.personaTerm"
-            (input)="onPersonaInput($any($event.target).value)"
-          />
-          <select
-            class="form-control-utp small-select"
-            size="6"
-            (change)="seleccionarPersona($any($event.target).value ? +$any($event.target).value : null)"
+            [(ngModel)]="filtrosGeneral.id_persona"
           >
-            <option [value]="''">Todos</option>
-            <option *ngFor="let p of personasFiltradas()" [value]="p.id_persona">
-              {{ displayPersona(p) }}
-            </option>
-          </select>
+            <ng-template ng-option-tmp let-item="item">
+              {{ item.nombres }} {{ item.apellidos }} - {{ item.dni }}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+              {{ item.nombres }} {{ item.apellidos }}
+            </ng-template>
+          </ng-select>
         </div>
         <div class="form-group-utp">
           <label class="label-utp">Desde</label>
