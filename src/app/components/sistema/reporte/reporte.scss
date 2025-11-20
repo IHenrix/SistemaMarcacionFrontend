@@ -47,6 +47,17 @@
   gap: 12px;
   flex-wrap: wrap;
 }
+.filters-actions .btn-utp-yellow {
+  background: #f0ad4e;
+  color: #fff;
+  border: none;
+}
+
+.filters-actions .btn-utp-red {
+  background: #d9534f;
+  color: #fff;
+  border: none;
+}
 
 .table-container {
   background-color: var(--utp-white);

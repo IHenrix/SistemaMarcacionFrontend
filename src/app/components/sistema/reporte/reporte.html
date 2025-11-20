@@ -1,9 +1,9 @@
-﻿<div class="reporte-wrapper">
+<div class="reporte-wrapper">
   <div class="tabs">
     <button class="tab-btn" [class.active]="tab === 'personal'" (click)="setTab('personal')">
       Mi reporte
     </button>
-    <button class="tab-btn" [class.active]="tab === 'general'" (click)="setTab('general')">
+    <button class="tab-btn" [class.active]="tab === 'general'" (click)="setTab('general')" [disabled]="!esAdmin">
       Reporte general
     </button>
   </div>
@@ -35,6 +35,12 @@
         </button>
         <button type="button" class="btn-utp-cyan" (click)="limpiarPersonal()">
           <i class="fas fa-eraser"></i> Limpiar
+        </button>
+        <button type="button" class="btn-utp-yellow" (click)="exportarExcel()">
+          <i class="fas fa-file-excel"></i> Exportar Excel
+        </button>
+        <button type="button" class="btn-utp-red" (click)="exportarPDF()">
+          <i class="fas fa-file-pdf"></i> Exportar PDF
         </button>
       </div>
     </div>
@@ -131,6 +137,12 @@
         <button type="button" class="btn-utp-cyan" (click)="limpiarGeneral()">
           <i class="fas fa-eraser"></i> Limpiar
         </button>
+        <button type="button" class="btn-utp-yellow" (click)="exportarExcel()" [disabled]="!esAdmin">
+          <i class="fas fa-file-excel"></i> Exportar Excel
+        </button>
+        <button type="button" class="btn-utp-red" (click)="exportarPDF()" [disabled]="!esAdmin">
+          <i class="fas fa-file-pdf"></i> Exportar PDF
+        </button>
       </div>
     </div>
 
@@ -180,3 +192,4 @@
     </section>
   </section>
 </div>
+
