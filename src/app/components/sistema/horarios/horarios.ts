@@ -1,23 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SharedImports } from '@app/shared/shared.imports';
-
-interface Horario {
-  id: number;
-  nombre: string;
-  entrada: string;
-  inicioRefri: string;
-  finRefri: string;
-  salida: string;
-  toleranciaEntrada: number;
-  toleranciaSalida: number;
-  toleranciaRefri: number;
-  dias: string[];
-  color: string;
-  uso: number;
-  vigente?: boolean;
-}
+import { HorarioService } from '@app/services/horario.service';
+import { AsignacionHorario, Horario, HorarioRequest } from '@app/models/horario.model';
+import { UsuarioService } from '@app/services/usuario.service';
+import { PersonaAsignacionDTO } from '@app/models/usuario.model';
 
 interface PersonaAsignacion {
   id: number;
@@ -37,67 +25,19 @@ interface PersonaAsignacion {
   templateUrl: './horarios.html',
   styleUrl: './horarios.scss',
 })
-export class HorariosComponent {
+export class HorariosComponent implements OnInit {
   protected readonly diasSemana = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
   protected selectedTab: 'asignar' | 'horarios' = 'asignar';
   protected searchPersona = '';
   protected searchPersonaSelect = '';
   protected searchHorario = '';
 
-  protected horarios: Horario[] = [
-    {
-      id: 1,
-      nombre: 'Turno regular',
-      entrada: '08:00',
-      inicioRefri: '13:00',
-      finRefri: '14:00',
-      salida: '17:30',
-      toleranciaEntrada: 10,
-      toleranciaSalida: 5,
-      toleranciaRefri: 10,
-      dias: ['L', 'M', 'X', 'J', 'V'],
-      color: 'var(--utp-cyan)',
-      uso: 18,
-      vigente: true,
-    },
-    {
-      id: 2,
-      nombre: 'Sábado corto',
-      entrada: '09:00',
-      inicioRefri: '12:30',
-      finRefri: '13:00',
-      salida: '14:00',
-      toleranciaEntrada: 5,
-      toleranciaSalida: 5,
-      toleranciaRefri: 5,
-      dias: ['S'],
-      color: 'var(--utp-yellow)',
-      uso: 6,
-    },
-    {
-      id: 3,
-      nombre: 'Turno noche',
-      entrada: '22:00',
-      inicioRefri: '02:00',
-      finRefri: '02:30',
-      salida: '06:00',
-      toleranciaEntrada: 5,
-      toleranciaSalida: 5,
-      toleranciaRefri: 5,
-      dias: ['L', 'M', 'X', 'J', 'V'],
-      color: 'var(--utp-purple, #7136f2)',
-      uso: 4,
-    },
-  ];
+  protected horarios: Horario[] = [];
+  protected personas: PersonaAsignacion[] = [];
 
-  protected personas: PersonaAsignacion[] = [
-    { id: 1, nombre: 'Ricardo Prada', area: 'Ventas', rol: 'ADMIN', horarioId: 1, desde: '01/11', excepcion: 'N/A' },
-    { id: 2, nombre: 'Fabrizzio Cornejo', area: 'Operaciones', rol: 'OPERATIVO', horarioId: 1, desde: '05/11' },
-    { id: 3, nombre: 'Jenniffer Rodríguez', area: 'Operaciones', rol: 'OPERATIVO', horarioId: 2, desde: '12/11' },
-    { id: 4, nombre: 'Juan Morales', area: 'Soporte', rol: 'ADMIN', horarioId: 3, desde: '15/11', excepcion: 'Feriado 25/12' },
-  ];
-
-  protected selectedHorarioId = this.horarios[0]?.id ?? null;
+  protected selectedHorarioId: number | null = null;
+  protected loadingHorarios = false;
+  protected loadingAsignaciones = false;
 
   protected horarioForm = new FormGroup({
     nombre: new FormControl('', [Validators.required, Validators.minLength(3)]),
@@ -118,6 +58,14 @@ export class HorariosComponent {
     fechaInicio: new FormControl<string>(this.hoyISO(), Validators.required),
     fechaFin: new FormControl<string | null>(null),
   });
+
+  private readonly horarioService = inject(HorarioService);
+  private readonly usuarioService = inject(UsuarioService);
+
+  ngOnInit(): void {
+    this.cargarPersonas();
+    this.cargarHorarios();
+  }
 
   protected get personasFiltradas(): PersonaAsignacion[] {
     const term = this.searchPersona.trim().toLowerCase();
@@ -163,46 +111,51 @@ export class HorariosComponent {
       return;
     }
 
-    const nuevo: Horario = {
-      id: Date.now(),
+    const payload: HorarioRequest = {
       nombre: this.horarioForm.value.nombre!.trim(),
       entrada: this.horarioForm.value.entrada!,
-      inicioRefri: this.horarioForm.value.inicioRefri!,
-      finRefri: this.horarioForm.value.finRefri!,
+      inicio_refri: this.horarioForm.value.inicioRefri!,
+      fin_refri: this.horarioForm.value.finRefri!,
       salida: this.horarioForm.value.salida!,
-      toleranciaEntrada: this.horarioForm.value.toleranciaEntrada ?? 0,
-      toleranciaSalida: this.horarioForm.value.toleranciaSalida ?? 0,
-      toleranciaRefri: this.horarioForm.value.toleranciaRefri ?? 0,
-      dias: this.horarioForm.value.dias ?? [],
-      color: this.horarioForm.value.color ?? 'var(--utp-cyan)',
-      uso: 0,
+      tol_entrada_min: this.horarioForm.value.toleranciaEntrada ?? 0,
+      tol_salida_min: this.horarioForm.value.toleranciaSalida ?? 0,
+      tol_refri_min: this.horarioForm.value.toleranciaRefri ?? 0,
+      dias: (this.horarioForm.value.dias as string[] | number[]).map((d) => Number(d)),
+      color: this.horarioForm.value.color ?? null,
     };
 
-    this.horarios = [nuevo, ...this.horarios];
-    this.selectedHorarioId = nuevo.id;
-    this.asignacionForm.patchValue({ horarioId: nuevo.id });
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Horario creado',
-      text: `${nuevo.nombre} ahora está disponible para asignar.`,
-      confirmButtonColor: '#00A5A5',
-      timer: 1600,
-      timerProgressBar: true,
-      showConfirmButton: false,
-    });
-
-    this.horarioForm.reset({
-      nombre: '',
-      entrada: '08:00',
-      inicioRefri: '13:00',
-      finRefri: '14:00',
-      salida: '17:30',
-      toleranciaEntrada: 10,
-      toleranciaSalida: 5,
-      toleranciaRefri: 10,
-      dias: ['L', 'M', 'X', 'J', 'V'],
-      color: 'var(--utp-cyan)',
+    this.horarioService.crearHorario(payload).subscribe({
+      next: () => {
+        this.cargarHorarios();
+        Swal.fire({
+          icon: 'success',
+          title: 'Horario creado',
+          text: `${payload.nombre} ahora está disponible para asignar.`,
+          confirmButtonColor: '#00A5A5',
+          timer: 1600,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+        this.horarioForm.reset({
+          nombre: '',
+          entrada: '08:00',
+          inicioRefri: '13:00',
+          finRefri: '14:00',
+          salida: '17:30',
+          toleranciaEntrada: 10,
+          toleranciaSalida: 5,
+          toleranciaRefri: 10,
+          dias: ['L', 'M', 'X', 'J', 'V'],
+          color: 'var(--utp-cyan)',
+        });
+      },
+      error: (err) =>
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo crear',
+          text: err.error?.message || 'Error al guardar el horario.',
+          confirmButtonColor: '#00A5A5',
+        }),
     });
   }
 
@@ -218,36 +171,61 @@ export class HorariosComponent {
     }
 
     const personaId = Number(this.asignacionForm.value.persona);
-    const horarioId = this.asignacionForm.value.horarioId as number;
-    const desde = this.asignacionForm.value.fechaInicio;
-    const hasta = this.asignacionForm.value.fechaFin ?? undefined;
+    const payload = {
+      id_horario: this.asignacionForm.value.horarioId as number,
+      fecha_inicio: this.asignacionForm.value.fechaInicio!,
+      fecha_fin: this.asignacionForm.value.fechaFin ?? null,
+      prioridad: 'PERSONA' as const,
+      id_persona: personaId,
+    };
 
-    this.personas = this.personas.map((p) =>
-      p.id === personaId ? { ...p, horarioId, desde: this.formatFecha(desde), hasta } : p
-    );
-
-    Swal.fire({
-      icon: 'success',
-      title: 'Horario asignado',
-      text: 'La persona tendrá el nuevo horario desde la fecha indicada.',
-      confirmButtonColor: '#00A5A5',
-      timer: 1400,
-      timerProgressBar: true,
-      showConfirmButton: false,
+    this.horarioService.asignarHorario(payload).subscribe({
+      next: () => {
+        this.cargarAsignaciones();
+        Swal.fire({
+          icon: 'success',
+          title: 'Horario asignado',
+          text: 'La persona tendrá el nuevo horario desde la fecha indicada.',
+          confirmButtonColor: '#00A5A5',
+          timer: 1400,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      },
+      error: (err) =>
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo asignar',
+          text: err.error?.message || 'Error al asignar el horario.',
+          confirmButtonColor: '#00A5A5',
+        }),
     });
   }
 
   protected duplicarHorario(horario: Horario) {
-    const copia: Horario = {
-      ...horario,
-      id: Date.now(),
+    const copia: HorarioRequest = {
       nombre: `${horario.nombre} (copia)`,
-      vigente: false,
-      uso: 0,
+      entrada: horario.entrada,
+      inicio_refri: horario.inicio_refri,
+      fin_refri: horario.fin_refri,
+      salida: horario.salida,
+      tol_entrada_min: horario.tol_entrada_min,
+      tol_salida_min: horario.tol_salida_min,
+      tol_refri_min: horario.tol_refri_min,
+      dias: horario.dias,
+      color: horario.color ?? null,
     };
-    this.horarios = [copia, ...this.horarios];
-    this.selectedHorarioId = copia.id;
-    this.asignacionForm.patchValue({ horarioId: copia.id });
+
+    this.horarioService.crearHorario(copia).subscribe({
+      next: () => this.cargarHorarios(),
+      error: (err) =>
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudo duplicar',
+          text: err.error?.message || 'Error al duplicar.',
+          confirmButtonColor: '#00A5A5',
+        }),
+    });
   }
 
   protected accionPendienteBackend() {
@@ -261,9 +239,9 @@ export class HorariosComponent {
 
   protected timelineSegments(horario: Horario) {
     const total = this.diffMin(horario.entrada, horario.salida);
-    const antesRefri = this.diffMin(horario.entrada, horario.inicioRefri);
-    const refri = this.diffMin(horario.inicioRefri, horario.finRefri);
-    const despuesRefri = this.diffMin(horario.finRefri, horario.salida);
+    const antesRefri = this.diffMin(horario.entrada, horario.inicio_refri);
+    const refri = this.diffMin(horario.inicio_refri, horario.fin_refri);
+    const despuesRefri = this.diffMin(horario.fin_refri, horario.salida);
 
     const pct = (min: number) => Math.max(5, Math.round((min / total) * 100));
 
@@ -275,19 +253,99 @@ export class HorariosComponent {
   }
 
   protected horarioActual(persona: PersonaAsignacion) {
-    return this.horarios.find((h) => h.id === persona.horarioId);
+    return this.horarios.find((h) => h.id_horario === persona.horarioId);
   }
 
-  protected resolverDias(dias: string[]) {
-    return this.diasSemana.map((d) => ({
-      dia: d,
-      activo: dias.includes(d),
+  protected resolverDias(dias: number[]) {
+    return this.diasSemana.map((_, idx) => ({
+      dia: this.diasSemana[idx],
+      activo: dias.includes(idx),
     }));
   }
 
-  protected formatoDias(dias: string[]) {
+  protected formatoDias(dias: number[]) {
     if (!dias || dias.length === 0) return 'Sin días';
-    return dias.join(' · ');
+    return dias
+      .map((d) => this.diasSemana[d] ?? d)
+      .join(' · ');
+  }
+
+  private cargarPersonas() {
+    this.usuarioService.listarUsuarios().subscribe({
+      next: (res) => {
+        const personasDto: PersonaAsignacionDTO[] = res.data ?? [];
+        this.personas = personasDto.map((p) => ({
+          id: p.id_persona,
+          nombre: `${p.nombres} ${p.apellidos}`,
+          area: p.area_nombre ?? 'Área',
+          rol: p.roles?.[0] ?? 'N/A',
+          horarioId: 0,
+          desde: '',
+        }));
+        this.cargarAsignaciones(); // después de tener personas, aplicamos asignaciones
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudieron cargar personas',
+          text: err.error?.message || 'Error al cargar la lista de personas.',
+          confirmButtonColor: '#00A5A5',
+        });
+      },
+    });
+  }
+
+  private cargarHorarios() {
+    this.loadingHorarios = true;
+    this.horarioService.listarHorarios().subscribe({
+      next: (res) => {
+        this.horarios = (res.data ?? []).map((h) => ({
+          ...h,
+          color: h.color ?? 'var(--utp-cyan)',
+        }));
+        this.selectedHorarioId = this.horarios[0]?.id_horario ?? null;
+        this.asignacionForm.patchValue({ horarioId: this.selectedHorarioId });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudieron cargar los horarios',
+          text: err.error?.message || 'Error de carga de horarios.',
+          confirmButtonColor: '#00A5A5',
+        });
+      },
+      complete: () => (this.loadingHorarios = false),
+    });
+  }
+
+  private cargarAsignaciones() {
+    this.loadingAsignaciones = true;
+    this.horarioService.listarAsignaciones().subscribe({
+      next: (res) => {
+        const asignaciones: AsignacionHorario[] = res.data ?? [];
+        this.personas = this.personas.map((p) => {
+          const asign = asignaciones.find((a) => a.id_persona === p.id);
+          if (asign) {
+            return {
+              ...p,
+              horarioId: asign.id_horario,
+              desde: this.formatFecha(asign.fecha_inicio),
+              hasta: asign.fecha_fin ? this.formatFecha(asign.fecha_fin) : undefined,
+            };
+          }
+          return p;
+        });
+      },
+      error: (err) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'No se pudieron cargar asignaciones',
+          text: err.error?.message || 'Error de carga de asignaciones.',
+          confirmButtonColor: '#00A5A5',
+        });
+      },
+      complete: () => (this.loadingAsignaciones = false),
+    });
   }
 
   private diffMin(inicio: string, fin: string): number {
@@ -308,6 +366,6 @@ export class HorariosComponent {
   private formatFecha(fechaIso?: string | null) {
     if (!fechaIso) return '';
     const [yyyy, mm, dd] = fechaIso.split('-');
-    return `${dd}/${mm}`;
+    return `${dd}/${mm}/${yyyy}`;
   }
 }

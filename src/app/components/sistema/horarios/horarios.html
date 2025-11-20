@@ -117,9 +117,9 @@
               </div>
               <select formControlName="horarioId">
                 <option [ngValue]="null" disabled>Selecciona horario</option>
-                <option *ngFor="let h of horariosFiltrados" [ngValue]="h.id">{{ h.nombre }}</option>
-              </select>
-            </label>
+              <option *ngFor="let h of horariosFiltrados" [ngValue]="h.id_horario">{{ h.nombre }}</option>
+            </select>
+          </label>
 
             <div class="field inline">
               <label>
@@ -231,21 +231,21 @@
           <article
             class="horario-card"
             *ngFor="let h of horarios"
-            [class.vigente]="h.vigente"
+            [class.vigente]="h.estado === 1"
             [style.--color]="h.color"
-            (click)="selectedHorarioId = h.id; asignacionForm.patchValue({ horarioId: h.id })"
+            (click)="selectedHorarioId = h.id_horario; asignacionForm.patchValue({ horarioId: h.id_horario })"
           >
             <header>
               <div class="title">
                 <div class="dot"></div>
                 <div>
-                  <p class="kicker">{{ h.vigente ? 'Vigente' : 'Disponible' }}</p>
+                  <p class="kicker">{{ h.estado === 1 ? 'Vigente' : 'Inactivo' }}</p>
                   <h3>{{ h.nombre }}</h3>
                 </div>
               </div>
               <div class="tags">
                 <span class="chip">{{ formatoDias(h.dias) }}</span>
-                <span class="chip soft">{{ h.uso }} uso(s)</span>
+                <span class="chip soft">ID {{ h.id_horario }}</span>
               </div>
             </header>
 
@@ -262,16 +262,16 @@
               </div>
               <div class="marks">
                 <span>Entrada {{ h.entrada }}</span>
-                <span>Refri {{ h.inicioRefri }} - {{ h.finRefri }}</span>
+                <span>Refri {{ h.inicio_refri }} - {{ h.fin_refri }}</span>
                 <span>Salida {{ h.salida }}</span>
               </div>
             </div>
 
             <footer>
               <div class="info">
-                <span>Tolerancia entrada: {{ h.toleranciaEntrada }} min</span>
-                <span>Salida: {{ h.toleranciaSalida }} min</span>
-                <span>Refri: {{ h.toleranciaRefri }} min</span>
+                <span>Tolerancia entrada: {{ h.tol_entrada_min }} min</span>
+                <span>Salida: {{ h.tol_salida_min }} min</span>
+                <span>Refri: {{ h.tol_refri_min }} min</span>
               </div>
               <div class="acciones">
                 <button class="ghost" type="button" (click)="duplicarHorario(h); $event.stopPropagation()">

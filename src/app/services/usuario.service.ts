@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { ApiResponse, Usuario } from '@app/models/auth.model';
+import { PersonaAsignacionDTO } from '@app/models/usuario.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class UsuarioService {
 
   registrarUsuario(data: RegistrarUsuarioRequest): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/usuario/registrar.php`, data);
+  }
+
+  listarUsuarios(): Observable<ApiResponse<PersonaAsignacionDTO[]>> {
+    return this.http.get<ApiResponse<PersonaAsignacionDTO[]>>(`${this.apiUrl}/usuario/listar.php`);
   }
 }
 

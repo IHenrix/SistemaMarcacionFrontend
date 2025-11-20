@@ -27,10 +27,6 @@ header {
   transition: 500ms all ease;
   z-index: 0;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
   .circle1 {
     background-color: var(--utp-cyan);
     border-bottom-left-radius: 1000px;
