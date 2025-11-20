@@ -113,12 +113,17 @@
     <div class="form-actions">
       <button type="submit" class="btn-utp-green" [disabled]="f.invalid || cargando">
         <i class="fas fa-paper-plane"></i>
-        Enviar
+        <span *ngIf="!cargando">Enviar</span>
+        <span *ngIf="cargando">Enviando...</span>
       </button>
       <button type="reset" class="btn-utp-cyan" (click)="fileInput.value=''; archivoSeleccionado=null">
         <i class="fas fa-eraser"></i>
         Limpiar
       </button>
+    </div>
+    <div class="loading-inline" *ngIf="cargando">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Enviando tu solicitud...</span>
     </div>
   </form>
 

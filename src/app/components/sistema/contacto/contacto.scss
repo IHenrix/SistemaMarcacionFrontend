@@ -29,6 +29,15 @@
   justify-content: flex-end;
 }
 
+.loading-inline {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--utp-gray-dark);
+  font-size: 14px;
+}
+
 .media-container {
   margin-top: 20px;
 }
