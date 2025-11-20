@@ -22,6 +22,19 @@
     </div>
   </div>
 
+  <div class="ultimo-panel" *ngIf="ultimaCompleta">
+    <div class="ultimo-header">
+      <strong>Última marcación completa</strong>
+      <span class="ultimo-fecha">{{ ultimaCompleta.fecha }}</span>
+    </div>
+    <div class="ultimo-grid">
+      <div><small>Entrada</small><p>{{ ultimaCompleta.entrada }}</p></div>
+      <div><small>Inicio refri</small><p>{{ ultimaCompleta.inicio_refri }}</p></div>
+      <div><small>Fin refri</small><p>{{ ultimaCompleta.fin_refri }}</p></div>
+      <div><small>Salida</small><p>{{ ultimaCompleta.salida }}</p></div>
+    </div>
+  </div>
+
   <div class="presencial-container">
     <div class="marcacion" [ngClass]="{ 'validated': fase > 0 }">
       <div class="marcacion-container">
