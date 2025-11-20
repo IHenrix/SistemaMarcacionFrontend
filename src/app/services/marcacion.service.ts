@@ -40,6 +40,12 @@ export interface MarcacionReporteItem {
   minutos_tarde: number | null;
 }
 
+export interface UltimaMarcacion {
+  fecha: string | null;
+  marcaciones: MarcacionItem[];
+  completado: boolean;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -88,5 +94,9 @@ export class MarcacionService {
       `${this.apiUrl}/marcacion/reporte.php`,
       { params: httpParams }
     );
+  }
+
+  ultima(): Observable<ApiResponse<UltimaMarcacion>> {
+    return this.http.get<ApiResponse<UltimaMarcacion>>(`${this.apiUrl}/marcacion/ultima.php`);
   }
 }
