@@ -82,6 +82,12 @@
   left: 80px;
   position: absolute;
   top: 47px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.marcacion-container .marcacion-image .time.late {
+  color: #d9534f;
+  transform: scale(1.04);
 }
 
 .marcacion-options {
@@ -95,6 +101,18 @@
 .marcacion-option {
   width: 100%;
   text-align: center;
+}
+
+.hint {
+  color: var(--utp-gray-dark);
+  font-size: 0.85em;
+  margin-top: 8px;
+}
+
+.tardanza {
+  color: #d9534f;
+  font-size: 0.95em;
+  margin-top: 10px;
 }
 
 .btn-marcar {

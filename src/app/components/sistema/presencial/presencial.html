@@ -1,6 +1,6 @@
 <div class="presencial-content">
   <div class="alert-utp culminated" *ngIf="finalizado">
-    ¡Felicidades! Has culminado con tu marcación del día de hoy: {{ fechaActual }}.
+    Felicidades! Has culminado con tu marcacion del dia de hoy: {{ fechaActual }}.
   </div>
 
   <div class="counter-container">
@@ -17,7 +17,7 @@
       <p>{{ finRefrigerio || '--:--' }}</p>
     </div>
     <div class="counter">
-      <h4>Fin de marcación</h4>
+      <h4>Fin de marcacion</h4>
       <p>{{ finJornada || '--:--' }}</p>
     </div>
   </div>
@@ -27,13 +27,26 @@
       <div class="marcacion-container">
         <div class="marcacion-image">
           <p class="time-label">Hora Actual:</p>
-          <p class="time">{{ horaActual }}</p>
-          <img src="/img/marcacion/time.svg" alt="Marcación Hora" />
+          <p class="time" [ngClass]="{ late: tardanzaActual }">{{ horaActual }}</p>
+          <img src="/img/marcacion/time.svg" alt="Marcacion Hora" />
+          <div class="tardanza" *ngIf="tardanzaMensaje">{{ tardanzaMensaje }}</div>
         </div>
 
         <div class="marcacion-options" [ngClass]="{ 'culminated': finalizado }">
           <div class="marcacion-option" [ngClass]="{ 'not-validated': finalizado }">
-            <button class="btn-marcar" (click)="siguientePaso()" [disabled]="finalizado">{{ textoBoton }}</button>
+            <button
+              class="btn-marcar"
+              (click)="siguientePaso()"
+              [disabled]="finalizado || sinPerfil || (pruebaExposicion === 0 && bloqueoMarcacion)"
+            >
+              {{ textoBoton }}
+            </button>
+            <div class="hint" *ngIf="sinPerfil">
+              No puedes marcar porque tu usuario no tiene una persona asociada.
+            </div>
+            <div class="hint" *ngIf="!sinPerfil && pruebaExposicion === 0 && bloqueoMarcacion">
+              Ya registraste marcaciones hoy. Se muestra el resumen.
+            </div>
           </div>
         </div>
       </div>
@@ -41,3 +54,7 @@
   </div>
 
 </div>
+
+
+
+

@@ -1,135 +1,182 @@
-<form class="filters-section">
-  <div class="filters-row">
-    <div class="form-group-utp">
-      <label class="label-utp" for="fecha-desde">Desde</label>
-      <input id="fecha-desde" type="date" class="form-control-utp" />
-    </div>
-    <div class="form-group-utp">
-      <label class="label-utp" for="fecha-hasta">Hasta</label>
-      <input id="fecha-hasta" type="date" class="form-control-utp" />
-    </div>
-    <div class="form-group-utp">
-      <label class="label-utp" for="tipo">Tipo</label>
-      <select id="tipo" class="form-control-utp">
-        <option value="">Todos</option>
-        <option value="Presencial">Presencial</option>
-        <option value="Remoto">Remoto</option>
-      </select>
-    </div>
-    <div class="form-group-utp">
-      <label class="label-utp" for="estado">Estado</label>
-      <select id="estado" class="form-control-utp">
-        <option value="">Todos</option>
-        <option value="A tiempo">A tiempo</option>
-        <option value="Tardanza">Tardanza</option>
-        <option value="Falta">Falta</option>
-      </select>
-    </div>
-  </div>
-  <div class="filters-actions">
-    <button class="btn-utp-green">
-      <i class="fas fa-search"></i> Buscar
+﻿<div class="reporte-wrapper">
+  <div class="tabs">
+    <button class="tab-btn" [class.active]="tab === 'personal'" (click)="setTab('personal')">
+      Mi reporte
     </button>
-    <button class="btn-utp-cyan">
-      <i class="fas fa-eraser"></i> Limpiar
-    </button>
-    <button class="btn-utp-red">
-      <i class="fas fa-file-export"></i> Exportar
+    <button class="tab-btn" [class.active]="tab === 'general'" (click)="setTab('general')">
+      Reporte general
     </button>
   </div>
-</form>
 
-<section class="table-container">
-  <table class="table-utp">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Entrada</th>
-        <th>Salida</th>
-        <th>Tipo</th>
-        <th>Estado</th>
-        <th>Observación</th>
-        <th class="th-actions">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>06/10/2025</td>
-        <td>08:01</td>
-        <td>17:00</td>
-        <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
-        <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
-        <td>—</td>
-        <td class="table-actions">
-          <button class="btn-outline-utp-cyan btn-action">
-            <i class="fas fa-eye"></i> Ver detalle
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>07/10/2025</td>
-        <td>07:40</td>
-        <td>17:14</td>
-        <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
-        <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
-        <td>—</td>
-        <td class="table-actions">
-          <button class="btn-outline-utp-cyan btn-action">
-            <i class="fas fa-eye"></i> Ver detalle
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>08/10/2025</td>
-        <td>08:03</td>
-        <td>17:12</td>
-        <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
-        <td><span class="badge-utp badge-utp-green">A tiempo</span></td>
-        <td>—</td>
-        <td class="table-actions">
-          <button class="btn-outline-utp-cyan btn-action">
-            <i class="fas fa-eye"></i> Ver detalle
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>09/10/2025</td>
-        <td>08:22</td>
-        <td>17:04</td>
-        <td><span class="badge-utp badge-utp-cyan">Remoto</span></td>
-        <td><span class="badge-utp badge-utp-yellow">Tardanza</span></td>
-        <td>Tráfico</td>
-        <td class="table-actions">
-          <button class="btn-outline-utp-cyan btn-action">
-            <i class="fas fa-eye"></i> Ver detalle
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <td>10/10/2025</td>
-        <td>—</td>
-        <td>—</td>
-        <td><span class="badge-utp badge-utp-cyan">Presencial</span></td>
-        <td><span class="badge-utp badge-utp-red">Falta</span></td>
-        <td>No marcó</td>
-        <td class="table-actions">
-          <button class="btn-outline-utp-cyan btn-action">
-            <i class="fas fa-eye"></i> Ver detalle
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- Reporte Personal -->
+  <section *ngIf="tab === 'personal'">
+    <div class="filters-section">
+      <div class="filters-row">
+        <div class="form-group-utp">
+          <label class="label-utp">Desde</label>
+          <input type="date" class="form-control-utp" [(ngModel)]="filtrosPersonal.desde" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Hasta</label>
+          <input type="date" class="form-control-utp" [(ngModel)]="filtrosPersonal.hasta" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Tardanza</label>
+          <select class="form-control-utp" [(ngModel)]="filtrosPersonal.tardanza">
+            <option value="">Todos</option>
+            <option value="1">Con tardanza</option>
+            <option value="0">Sin tardanza</option>
+          </select>
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button type="button" class="btn-utp-green" (click)="buscarPersonal()">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+        <button type="button" class="btn-utp-cyan" (click)="limpiarPersonal()">
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+      </div>
+    </div>
 
-  <nav class="pagination-utp" aria-label="Paginación">
-    <button class="page-btn prev" disabled>
-      <i class="fas fa-chevron-left"></i>
-    </button>
-    <button class="page-btn is-active">1</button>
-    <button class="page-btn">2</button>
-    <button class="page-btn">3</button>
-    <button class="page-btn next">
-      <i class="fas fa-chevron-right"></i>
-    </button>
-  </nav>
-</section>
+    <section class="table-container">
+      <div class="table-header">
+        <h3>Mis marcaciones</h3>
+        <div class="badge summary" *ngIf="resultadosPersonal.length">
+          {{ resultadosPersonal.length }} registros
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="empty">Cargando...</div>
+      <div *ngIf="!cargando && !resultadosPersonal.length" class="empty">
+        No hay registros para los filtros seleccionados.
+      </div>
+
+      <table class="table-utp" *ngIf="!cargando && resultadosPersonal.length">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Horario</th>
+            <th>Entrada</th>
+            <th>Inicio refr.</th>
+            <th>Fin refr.</th>
+            <th>Salida</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of resultadosPersonal">
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.horario_nombre || 'Sin horario' }}</td>
+            <td>{{ item.entrada || 'Pendiente' }}</td>
+            <td>{{ item.inicio_refri || 'Pendiente' }}</td>
+            <td>{{ item.fin_refri || 'Pendiente' }}</td>
+            <td>{{ item.salida || 'Pendiente' }}</td>
+            <td>
+              <span class="badge-utp" [ngClass]="item.tardanza ? 'badge-utp-red' : 'badge-utp-green'">
+                {{ estadoTexto(item) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+
+  <!-- Reporte General -->
+  <section *ngIf="tab === 'general'">
+    <div class="filters-section">
+      <div class="filters-row">
+        <div class="form-group-utp">
+          <label class="label-utp">Persona</label>
+          <input
+            type="text"
+            class="form-control-utp"
+            placeholder="Buscar por nombre o DNI"
+            [(ngModel)]="filtrosGeneral.personaTerm"
+            (input)="onPersonaInput($any($event.target).value)"
+          />
+          <select
+            class="form-control-utp small-select"
+            size="6"
+            (change)="seleccionarPersona($any($event.target).value ? +$any($event.target).value : null)"
+          >
+            <option [value]="''">Todos</option>
+            <option *ngFor="let p of personasFiltradas()" [value]="p.id_persona">
+              {{ displayPersona(p) }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Desde</label>
+          <input type="date" class="form-control-utp" [(ngModel)]="filtrosGeneral.desde" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Hasta</label>
+          <input type="date" class="form-control-utp" [(ngModel)]="filtrosGeneral.hasta" />
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Tardanza</label>
+          <select class="form-control-utp" [(ngModel)]="filtrosGeneral.tardanza">
+            <option value="">Todos</option>
+            <option value="1">Con tardanza</option>
+            <option value="0">Sin tardanza</option>
+          </select>
+        </div>
+      </div>
+      <div class="filters-actions">
+        <button type="button" class="btn-utp-green" (click)="buscarGeneral()">
+          <i class="fas fa-search"></i> Buscar
+        </button>
+        <button type="button" class="btn-utp-cyan" (click)="limpiarGeneral()">
+          <i class="fas fa-eraser"></i> Limpiar
+        </button>
+      </div>
+    </div>
+
+    <section class="table-container">
+      <div class="table-header">
+        <h3>Marcaciones por persona</h3>
+        <div class="badge summary" *ngIf="resultadosGeneral.length">
+          {{ resultadosGeneral.length }} registros
+        </div>
+      </div>
+
+      <div *ngIf="cargando" class="empty">Cargando...</div>
+      <div *ngIf="!cargando && !resultadosGeneral.length" class="empty">
+        No hay datos con los filtros aplicados.
+      </div>
+
+      <table class="table-utp" *ngIf="!cargando && resultadosGeneral.length">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Persona</th>
+            <th>Horario</th>
+            <th>Entrada</th>
+            <th>Inicio refr.</th>
+            <th>Fin refr.</th>
+            <th>Salida</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of resultadosGeneral">
+            <td>{{ item.fecha }}</td>
+            <td>{{ item.nombres }} {{ item.apellidos }} (DNI: {{ item.dni || '-' }})</td>
+            <td>{{ item.horario_nombre || 'Sin horario' }}</td>
+            <td>{{ item.entrada || 'Pendiente' }}</td>
+            <td>{{ item.inicio_refri || 'Pendiente' }}</td>
+            <td>{{ item.fin_refri || 'Pendiente' }}</td>
+            <td>{{ item.salida || 'Pendiente' }}</td>
+            <td>
+              <span class="badge-utp" [ngClass]="item.tardanza ? 'badge-utp-red' : 'badge-utp-green'">
+                {{ estadoTexto(item) }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </section>
+</div>
