@@ -144,9 +144,9 @@ export class HorariosComponent implements OnInit {
           title: this.editingHorarioId ? 'Horario actualizado' : 'Horario creado',
           text: `${payload.nombre} ahora está disponible.`,
           confirmButtonColor: '#00A5A5',
-          timer: 1600,
+          confirmButtonText: 'Aceptar',
+          timer: 1800,
           timerProgressBar: true,
-          showConfirmButton: false,
         });
         this.resetHorarioForm();
       },
@@ -193,9 +193,9 @@ export class HorariosComponent implements OnInit {
           title: asignacionExistente ? 'Horario actualizado' : 'Horario asignado',
           text: 'La persona tendrá el horario desde la fecha indicada.',
           confirmButtonColor: '#00A5A5',
-          timer: 1400,
+          confirmButtonText: 'Aceptar',
+          timer: 1800,
           timerProgressBar: true,
-          showConfirmButton: false,
         });
       },
       error: (err) =>
@@ -307,9 +307,10 @@ export class HorariosComponent implements OnInit {
             Swal.fire({
               icon: 'success',
               title: 'Asignación eliminada',
-              timer: 1300,
+              confirmButtonColor: '#00A5A5',
+              confirmButtonText: 'Aceptar',
+              timer: 1600,
               timerProgressBar: true,
-              showConfirmButton: false,
             });
           },
           error: (err) =>
@@ -411,9 +412,10 @@ export class HorariosComponent implements OnInit {
             Swal.fire({
               icon: 'success',
               title: 'Horario eliminado',
-              timer: 1200,
+              confirmButtonColor: '#00A5A5',
+              confirmButtonText: 'Aceptar',
+              timer: 1600,
               timerProgressBar: true,
-              showConfirmButton: false,
             });
           },
           error: (err) =>
