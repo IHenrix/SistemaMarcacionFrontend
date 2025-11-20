@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { adminGuard } from '@app/guards/auth.guard';
 
 export const SISTEMA_ROUTES: Routes = [
   {
@@ -23,6 +24,7 @@ export const SISTEMA_ROUTES: Routes = [
     loadComponent: () => import('./horarios/horarios').then((m) => m.HorariosComponent),
     title: 'Horarios',
     data: { color: 'var(--utp-cyan)' },
+    canActivate: [adminGuard],
   },
   {
     path: 'reportes',

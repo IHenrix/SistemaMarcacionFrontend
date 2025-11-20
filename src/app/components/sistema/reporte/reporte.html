@@ -3,7 +3,12 @@
     <button class="tab-btn" [class.active]="tab === 'personal'" (click)="setTab('personal')">
       Mi reporte
     </button>
-    <button class="tab-btn" [class.active]="tab === 'general'" (click)="setTab('general')" [disabled]="!esAdmin">
+    <button
+      *ngIf="esAdmin"
+      class="tab-btn"
+      [class.active]="tab === 'general'"
+      (click)="setTab('general')"
+    >
       Reporte general
     </button>
   </div>

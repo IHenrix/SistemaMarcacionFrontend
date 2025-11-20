@@ -10,7 +10,7 @@
           class="form-control-utp"
           placeholder="Escribe tu nombre"
           [(ngModel)]="modelo.nombre"
-          [readonly]="soloLecturaNombre"
+          [disabled]="soloLecturaNombre"
           required
         />
       </div>
@@ -24,7 +24,7 @@
           class="form-control-utp"
           placeholder="ejemplo@dominio.com"
           [(ngModel)]="modelo.email"
-          [readonly]="soloLecturaEmail"
+          [disabled]="soloLecturaEmail"
           required
         />
       </div>

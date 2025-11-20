@@ -51,10 +51,10 @@ export class ReporteComponent implements OnInit {
       return;
     }
     this.tab = tab;
-    if (tab === 'personal' && this.resultadosPersonal.length === 0) {
+    if (tab === 'personal') {
       this.buscarPersonal();
     }
-    if (tab === 'general' && this.resultadosGeneral.length === 0) {
+    if (tab === 'general') {
       this.buscarGeneral();
     }
   }
@@ -220,6 +220,9 @@ export class ReporteComponent implements OnInit {
         const usuario: Usuario | undefined = res.data;
         const roles = usuario?.roles?.map((r) => r.nombre?.toUpperCase()) || [];
         this.esAdmin = roles.includes('ADMINISTRADOR');
+        if (this.esAdmin && this.tab === 'general') {
+          this.buscarGeneral();
+        }
       },
       error: () => {
         this.esAdmin = false;
