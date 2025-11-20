@@ -546,6 +546,27 @@
       font-size: 12px;
       margin-left: 6px;
     }
+
+    .persona-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+
+      .ghost {
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: #fff;
+        color: var(--utp-gray-dark);
+        border-radius: 10px;
+        padding: 6px 10px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+
+      .danger {
+        color: var(--utp-red);
+        border-color: rgba(255, 0, 0, 0.15);
+      }
+    }
   }
 
   .asignar-form {

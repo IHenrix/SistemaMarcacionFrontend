@@ -27,6 +27,10 @@ export class HorarioService {
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/horario/actualizar.php`, payload);
   }
 
+  eliminarHorario(id_horario: number): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/horario/eliminar.php`, { id_horario });
+  }
+
   cambiarEstado(id_horario: number, estado: number): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/horario/cambiar_estado.php`, {
       id_horario,
@@ -49,6 +53,16 @@ export class HorarioService {
       `${this.apiUrl}/horario/asignar.php`,
       payload
     );
+  }
+
+  actualizarAsignacion(payload: AsignacionRequest & { id_asignacion: number }): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/horario/actualizar_asignacion.php`, payload);
+  }
+
+  eliminarAsignacion(id_asignacion: number): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/horario/eliminar_asignacion.php`, {
+      id_asignacion,
+    });
   }
 
   actualizarAsignacionEstado(id_asignacion: number, estado: number): Observable<ApiResponse<any>> {

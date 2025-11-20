@@ -13,6 +13,7 @@ interface PersonaAsignacion {
   area: string;
   rol: string;
   horarioId: number;
+  asignacionId?: number;
   desde: string;
   hasta?: string;
   excepcion?: string;
@@ -26,7 +27,7 @@ interface PersonaAsignacion {
   styleUrl: './horarios.scss',
 })
 export class HorariosComponent implements OnInit {
-  protected readonly diasSemana = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  protected readonly diasSemana = ['L', 'M', 'X', 'J', 'V', 'S', 'D']; // etiquetas
   protected selectedTab: 'asignar' | 'horarios' = 'asignar';
   protected searchPersona = '';
   protected searchPersonaSelect = '';
@@ -48,7 +49,8 @@ export class HorariosComponent implements OnInit {
     toleranciaEntrada: new FormControl(10, [Validators.required, Validators.min(0)]),
     toleranciaSalida: new FormControl(5, [Validators.required, Validators.min(0)]),
     toleranciaRefri: new FormControl(10, [Validators.required, Validators.min(0)]),
-    dias: new FormControl<string[]>(['L', 'M', 'X', 'J', 'V'], Validators.required),
+    // almacenamos índices numéricos (0..6) para evitar duplicados en backend
+    dias: new FormControl<number[]>([0, 1, 2, 3, 4], Validators.required),
     color: new FormControl('var(--utp-cyan)'),
   });
 
@@ -58,6 +60,8 @@ export class HorariosComponent implements OnInit {
     fechaInicio: new FormControl<string>(this.hoyISO(), Validators.required),
     fechaFin: new FormControl<string | null>(null),
   });
+
+  private editingHorarioId: number | null = null;
 
   private readonly horarioService = inject(HorarioService);
   private readonly usuarioService = inject(UsuarioService);
@@ -87,16 +91,20 @@ export class HorariosComponent implements OnInit {
 
   protected seleccionarTab(tab: 'asignar' | 'horarios') {
     this.selectedTab = tab;
+    if (tab === 'asignar') {
+      this.cargarPersonas();
+      this.cargarAsignaciones();
+    }
   }
 
-  protected toggleDia(dia: string) {
-    const dias = this.horarioForm.get('dias')?.value ?? [];
+  protected toggleDia(dia: number) {
+    const dias: number[] = this.horarioForm.get('dias')?.value ?? [];
     const existe = dias.includes(dia);
     const next = existe ? dias.filter((d) => d !== dia) : [...dias, dia];
     this.horarioForm.patchValue({ dias: next });
   }
 
-  protected esDiaActivo(dia: string): boolean {
+  protected esDiaActivo(dia: number): boolean {
     return this.horarioForm.get('dias')?.value?.includes(dia) ?? false;
   }
 
@@ -120,39 +128,32 @@ export class HorariosComponent implements OnInit {
       tol_entrada_min: this.horarioForm.value.toleranciaEntrada ?? 0,
       tol_salida_min: this.horarioForm.value.toleranciaSalida ?? 0,
       tol_refri_min: this.horarioForm.value.toleranciaRefri ?? 0,
-      dias: (this.horarioForm.value.dias as string[] | number[]).map((d) => Number(d)),
+      dias: (this.horarioForm.value.dias as number[] | undefined) ?? [],
       color: this.horarioForm.value.color ?? null,
     };
 
-    this.horarioService.crearHorario(payload).subscribe({
+    const request$ = this.editingHorarioId
+      ? this.horarioService.actualizarHorario({ ...payload, id_horario: this.editingHorarioId })
+      : this.horarioService.crearHorario(payload);
+
+    request$.subscribe({
       next: () => {
         this.cargarHorarios();
         Swal.fire({
           icon: 'success',
-          title: 'Horario creado',
-          text: `${payload.nombre} ahora está disponible para asignar.`,
+          title: this.editingHorarioId ? 'Horario actualizado' : 'Horario creado',
+          text: `${payload.nombre} ahora está disponible.`,
           confirmButtonColor: '#00A5A5',
           timer: 1600,
           timerProgressBar: true,
           showConfirmButton: false,
         });
-        this.horarioForm.reset({
-          nombre: '',
-          entrada: '08:00',
-          inicioRefri: '13:00',
-          finRefri: '14:00',
-          salida: '17:30',
-          toleranciaEntrada: 10,
-          toleranciaSalida: 5,
-          toleranciaRefri: 10,
-          dias: ['L', 'M', 'X', 'J', 'V'],
-          color: 'var(--utp-cyan)',
-        });
+        this.resetHorarioForm();
       },
       error: (err) =>
         Swal.fire({
           icon: 'error',
-          title: 'No se pudo crear',
+          title: this.editingHorarioId ? 'No se pudo actualizar' : 'No se pudo crear',
           text: err.error?.message || 'Error al guardar el horario.',
           confirmButtonColor: '#00A5A5',
         }),
@@ -179,13 +180,18 @@ export class HorariosComponent implements OnInit {
       id_persona: personaId,
     };
 
-    this.horarioService.asignarHorario(payload).subscribe({
+    const asignacionExistente = this.personas.find((p) => p.id === personaId)?.asignacionId;
+    const request$ = asignacionExistente
+      ? this.horarioService.actualizarAsignacion({ ...payload, id_asignacion: asignacionExistente })
+      : this.horarioService.asignarHorario(payload);
+
+    request$.subscribe({
       next: () => {
         this.cargarAsignaciones();
         Swal.fire({
           icon: 'success',
-          title: 'Horario asignado',
-          text: 'La persona tendrá el nuevo horario desde la fecha indicada.',
+          title: asignacionExistente ? 'Horario actualizado' : 'Horario asignado',
+          text: 'La persona tendrá el horario desde la fecha indicada.',
           confirmButtonColor: '#00A5A5',
           timer: 1400,
           timerProgressBar: true,
@@ -270,7 +276,56 @@ export class HorariosComponent implements OnInit {
       .join(' · ');
   }
 
+  protected formatFechaISO(fechaDDMMYYYY: string | null | undefined): string | null {
+    if (!fechaDDMMYYYY) return null;
+    const parts = fechaDDMMYYYY.split('/');
+    if (parts.length === 3) {
+      const [dd, mm, yyyy] = parts;
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    return fechaDDMMYYYY;
+  }
+
+  protected eliminarAsignacion(idAsignacion: number) {
+    if (!idAsignacion) {
+      return;
+    }
+    Swal.fire({
+      icon: 'warning',
+      title: '¿Eliminar asignación?',
+      text: 'Esta acción quitará el horario asignado a la persona.',
+      showCancelButton: true,
+      confirmButtonColor: '#00A5A5',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.horarioService.eliminarAsignacion(idAsignacion).subscribe({
+          next: () => {
+            this.cargarAsignaciones();
+            Swal.fire({
+              icon: 'success',
+              title: 'Asignación eliminada',
+              timer: 1300,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+          },
+          error: (err) =>
+            Swal.fire({
+              icon: 'error',
+              title: 'No se pudo eliminar',
+              text: err.error?.message || 'Error al eliminar la asignación.',
+              confirmButtonColor: '#00A5A5',
+            }),
+        });
+      }
+    });
+  }
+
   private cargarPersonas() {
+    this.personas = [];
     this.usuarioService.listarUsuarios().subscribe({
       next: (res) => {
         const personasDto: PersonaAsignacionDTO[] = res.data ?? [];
@@ -318,6 +373,77 @@ export class HorariosComponent implements OnInit {
     });
   }
 
+  protected editarHorario(horario: Horario, event?: Event) {
+    event?.stopPropagation();
+    this.editingHorarioId = horario.id_horario;
+    this.horarioForm.patchValue({
+      nombre: horario.nombre,
+      entrada: horario.entrada,
+      inicioRefri: horario.inicio_refri,
+      finRefri: horario.fin_refri,
+      salida: horario.salida,
+      toleranciaEntrada: horario.tol_entrada_min,
+      toleranciaSalida: horario.tol_salida_min,
+      toleranciaRefri: horario.tol_refri_min,
+      dias: horario.dias,
+      color: horario.color ?? 'var(--utp-cyan)',
+    });
+    this.selectedTab = 'horarios';
+  }
+
+  protected eliminarHorario(horario: Horario, event?: Event) {
+    event?.stopPropagation();
+    Swal.fire({
+      icon: 'warning',
+      title: 'Eliminar horario',
+      text: 'Esto eliminará el horario si no tiene marcaciones ni asignaciones.',
+      showCancelButton: true,
+      confirmButtonColor: '#00A5A5',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.horarioService.eliminarHorario(horario.id_horario).subscribe({
+          next: () => {
+            this.cargarHorarios();
+            this.cargarAsignaciones();
+            Swal.fire({
+              icon: 'success',
+              title: 'Horario eliminado',
+              timer: 1200,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+          },
+          error: (err) =>
+            Swal.fire({
+              icon: 'error',
+              title: 'No se pudo eliminar',
+              text: err.error?.message || 'Error al eliminar el horario.',
+              confirmButtonColor: '#00A5A5',
+            }),
+        });
+      }
+    });
+  }
+
+  private resetHorarioForm() {
+    this.editingHorarioId = null;
+    this.horarioForm.reset({
+      nombre: '',
+      entrada: '08:00',
+      inicioRefri: '13:00',
+      finRefri: '14:00',
+      salida: '17:30',
+      toleranciaEntrada: 10,
+      toleranciaSalida: 5,
+      toleranciaRefri: 10,
+      dias: [0, 1, 2, 3, 4],
+      color: 'var(--utp-cyan)',
+    });
+  }
+
   private cargarAsignaciones() {
     this.loadingAsignaciones = true;
     this.horarioService.listarAsignaciones().subscribe({
@@ -329,11 +455,18 @@ export class HorariosComponent implements OnInit {
             return {
               ...p,
               horarioId: asign.id_horario,
+              asignacionId: asign.id_asignacion,
               desde: this.formatFecha(asign.fecha_inicio),
               hasta: asign.fecha_fin ? this.formatFecha(asign.fecha_fin) : undefined,
             };
           }
-          return p;
+          return {
+            ...p,
+            horarioId: 0,
+            asignacionId: undefined,
+            desde: '',
+            hasta: undefined,
+          };
         });
       },
       error: (err) => {

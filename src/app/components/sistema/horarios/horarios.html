@@ -58,13 +58,13 @@
             class="persona"
             *ngFor="let p of personasFiltradas"
             [class.activa]="p.id === asignacionForm.value.persona"
-            (click)="asignacionForm.patchValue({ persona: p.id })"
+            (click)="asignacionForm.patchValue({ persona: p.id, horarioId: p.horarioId || selectedHorarioId, fechaInicio: asignacionForm.value.fechaInicio, fechaFin: p.hasta ? formatFechaISO(p.hasta) : null })"
           >
             <div class="persona-header">
               <div class="persona-icon"><i class="fas fa-user-circle"></i></div>
               <div>
-                <p class="nombre">{{ p.nombre }}</p>
-                <p class="detalle">{{ p.area }} · {{ p.rol }}</p>
+                <p class="nombre">{{ p.nombre || 'Sin nombre' }}</p>
+                <p class="detalle">{{ (p.area || 'Área') + ' · ' + (p.rol || 'N/A') }}</p>
               </div>
               <span class="chip soft" *ngIf="p.excepcion">{{ p.excepcion }}</span>
             </div>
@@ -72,9 +72,17 @@
               <div class="hora-actual">
                 <small>Horario actual</small>
                 <p>
-                  {{ horarioActual(p)?.nombre }}
-                  <span class="vigencia">Desde {{ p.desde }} {{ p.hasta ? '· Hasta ' + p.hasta : '' }}</span>
+                  {{ horarioActual(p)?.nombre || 'Sin horario' }}
+                  <span class="vigencia" *ngIf="p.desde">Desde {{ p.desde }} {{ p.hasta ? '· Hasta ' + p.hasta : '' }}</span>
                 </p>
+                <div class="persona-actions" *ngIf="p.asignacionId">
+                  <button class="ghost" type="button" (click)="asignacionForm.patchValue({ persona: p.id, horarioId: p.horarioId, fechaInicio: formatFechaISO(p.desde), fechaFin: p.hasta ? formatFechaISO(p.hasta) : null }); selectedTab = 'asignar'; $event.stopPropagation();">
+                    Editar
+                  </button>
+                  <button class="ghost danger" type="button" (click)="eliminarAsignacion(p.asignacionId || 0); $event.stopPropagation();">
+                    Eliminar
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -200,9 +208,9 @@
               <button
                 type="button"
                 class="chip"
-                [class.active]="esDiaActivo(dia)"
-                *ngFor="let dia of diasSemana"
-                (click)="toggleDia(dia)"
+                [class.active]="esDiaActivo(idx)"
+                *ngFor="let dia of diasSemana; let idx = index"
+                (click)="toggleDia(idx)"
               >
                 {{ dia }}
               </button>
@@ -278,9 +286,13 @@
                   <i class="fas fa-clone"></i>
                   Duplicar
                 </button>
-                <button class="ghost danger" type="button" (click)="$event.stopPropagation(); accionPendienteBackend()">
-                  <i class="fas fa-power-off"></i>
-                  Activar/pausar
+                <button class="ghost" type="button" (click)="editarHorario(h, $event)">
+                  <i class="fas fa-edit"></i>
+                  Editar
+                </button>
+                <button class="ghost danger" type="button" (click)="eliminarHorario(h, $event)">
+                  <i class="fas fa-trash-alt"></i>
+                  Eliminar
                 </button>
               </div>
             </footer>
