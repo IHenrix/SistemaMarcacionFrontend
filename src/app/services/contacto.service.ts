@@ -11,7 +11,6 @@ export interface ContactoRequest {
   tipo: string;
   asunto: string;
   mensaje: string;
-  emailOpcional?: string;
 }
 
 @Injectable({
@@ -21,7 +20,7 @@ export class ContactoService {
   private readonly http = inject(HttpClient);
   private readonly apiUrl = environment.urlEndPoint;
 
-  enviar(payload: ContactoRequest): Observable<ApiResponse<any>> {
+  enviar(payload: FormData | ContactoRequest): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.apiUrl}/contacto/registrar.php`, payload);
   }
 }

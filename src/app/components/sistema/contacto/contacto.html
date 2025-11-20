@@ -1,9 +1,8 @@
-
 <div class="contacto-wrapper">
   <form class="form-section" #f="ngForm" (ngSubmit)="enviar(f)" novalidate>
     <div class="form-row">
       <div class="form-group-utp">
-        <label class="label-utp" for="nombre"> Nombre completo </label>
+        <label class="label-utp" for="nombre">Nombre completo</label>
         <input
           id="nombre"
           name="nombre"
@@ -11,13 +10,13 @@
           class="form-control-utp"
           placeholder="Escribe tu nombre"
           [(ngModel)]="modelo.nombre"
-          [disabled]="soloLecturaNombre"
+          [readonly]="soloLecturaNombre"
           required
         />
       </div>
 
       <div class="form-group-utp">
-        <label class="label-utp" for="email"> Correo electrónico </label>
+        <label class="label-utp" for="email">Correo electronico</label>
         <input
           id="email"
           name="email"
@@ -25,29 +24,35 @@
           class="form-control-utp"
           placeholder="ejemplo@dominio.com"
           [(ngModel)]="modelo.email"
-          [disabled]="soloLecturaEmail"
+          [readonly]="soloLecturaEmail"
           required
         />
       </div>
 
       <div class="form-group-utp">
-        <label class="label-utp" for="telefono"> Teléfono </label>
+        <label class="label-utp" for="telefono">Telefono</label>
         <input
           id="telefono"
           name="telefono"
           type="tel"
           class="form-control-utp"
-          placeholder="Ingresa tu Teléfono"
+          placeholder="Ingresa tu telefono"
           [(ngModel)]="modelo.telefono"
-          pattern="[0-9+\\s()-]{6,}"
-          title="Ingresa un Teléfono válido"
-          [disabled]="soloLecturaTelefono"
+          required
+          pattern="[0-9 +()-]{6,}"
+          title="Ingresa un telefono valido"
         />
       </div>
 
       <div class="form-group-utp">
-        <label class="label-utp" for="tipo"> Tipo de solicitud </label>
-        <select id="tipo" name="tipo" class="form-control-utp" [(ngModel)]="modelo.tipo" required>
+        <label class="label-utp" for="tipo">Tipo de solicitud</label>
+        <select
+          id="tipo"
+          name="tipo"
+          class="form-control-utp"
+          [(ngModel)]="modelo.tipo"
+          required
+        >
           <option value="">Selecciona</option>
           <option value="Consulta">Consulta</option>
           <option value="Reclamo">Reclamo</option>
@@ -57,13 +62,13 @@
       </div>
 
       <div class="form-group-utp form-group-utp--full">
-        <label class="label-utp" for="asunto"> Asunto </label>
+        <label class="label-utp" for="asunto">Asunto</label>
         <input
           id="asunto"
           name="asunto"
           type="text"
           class="form-control-utp"
-          placeholder="Breve descripción del asunto"
+          placeholder="Breve descripcion del asunto"
           [(ngModel)]="modelo.asunto"
           required
           minlength="5"
@@ -71,43 +76,46 @@
       </div>
 
       <div class="form-group-utp form-group-utp--full">
-        <label class="label-utp" for="mensaje"> Mensaje </label>
+        <label class="label-utp" for="mensaje">Mensaje</label>
         <textarea
           id="mensaje"
           name="mensaje"
           rows="5"
           class="form-control-utp"
-          placeholder="Describe tu consulta, reclamo o sugerencia"
+          placeholder="Describe tu consulta, reclamo o sugerencia (minimo 10 caracteres)"
           [(ngModel)]="modelo.mensaje"
           required
-          minlength="10"
+          minlength="5"
         ></textarea>
       </div>
 
       <div class="form-group-utp form-group-utp--file">
-        <label class="label-utp" for="adjunto">
-          Adjuntar archivo (opcional)
-        </label>
-        <input id="adjunto" type="file" class="form-control-utp" accept=".pdf,.jpg,.jpeg,.png" />
-        <small class="help-text">Formatos: PDF, JPG o PNG (m�x. 5MB)</small>
+        <label class="label-utp" for="adjunto">Adjuntar archivo (opcional)</label>
+        <input
+          #fileInput
+          id="adjunto"
+          type="file"
+          class="form-control-utp"
+          accept=".pdf,.jpg,.jpeg,.png"
+          (change)="onFileChange($event)"
+        />
+        <small class="help-text">Formatos: PDF, JPG o PNG (max. 5MB)</small>
       </div>
 
       <div class="form-group-utp form-group-utp--full check-consent">
         <label class="checkbox-utp">
-          <input type="checkbox" required />
-          <span>
-            Acepto el uso de mis datos para gestionar mi solicitud.
-          </span>
+          <input type="checkbox" name="consentimiento" [(ngModel)]="consentimiento" required />
+          <span>Acepto el uso de mis datos para gestionar mi solicitud.</span>
         </label>
       </div>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn-utp-green" [disabled]="f.invalid">
+      <button type="submit" class="btn-utp-green" [disabled]="f.invalid || cargando">
         <i class="fas fa-paper-plane"></i>
         Enviar
       </button>
-      <button type="reset" class="btn-utp-cyan">
+      <button type="reset" class="btn-utp-cyan" (click)="fileInput.value=''; archivoSeleccionado=null">
         <i class="fas fa-eraser"></i>
         Limpiar
       </button>
@@ -115,15 +123,13 @@
   </form>
 
   <section class="media-container">
-    <h2 class="media-title">Guías y Recursos</h2>
+    <h2 class="media-title">Guias y Recursos</h2>
 
     <div class="media-grid">
       <figure class="media-card">
-        <img src="/img/contacto/contacto.jpg" alt="Atención al usuario" />
+        <img src="/img/contacto/contacto.jpg" alt="Atencion al usuario" />
         <figcaption>
-          <a href="/archivo/contacto/guia-contacto.pdf" target="_blank">
-            Abrir guía de contacto
-          </a>
+          <a href="/archivo/contacto/guia-contacto.pdf" target="_blank">Abrir guia de contacto</a>
         </figcaption>
       </figure>
 
@@ -140,11 +146,8 @@
           <source src="/video/contacto/explicacion-contacto.mp4" type="video/mp4" />
           Tu navegador no soporta video HTML5.
         </video>
-        <figcaption>Video: ¿Cómo enviar tu consulta?</figcaption>
+        <figcaption>Video: Como enviar tu consulta?</figcaption>
       </figure>
     </div>
   </section>
 </div>
-
-
-
