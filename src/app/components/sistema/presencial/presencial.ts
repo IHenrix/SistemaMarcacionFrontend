@@ -33,18 +33,10 @@ export class PresencialComponent implements OnInit, OnDestroy {
   protected finJornada: string | null = null;
   protected tardanzaMensaje: string | null = null;
   protected tardanzaActual = false;
-  protected ultimaCompleta: {
-    fecha: string;
-    entrada: string | null;
-    inicio_refri: string | null;
-    fin_refri: string | null;
-    salida: string | null;
-  } | null = null;
 
   private temporizador: any;
 
   ngOnInit(): void {
-    this.cargarUltimaCompletaGuardada();
     this.actualizarHora();
     this.temporizador = setInterval(() => this.actualizarHora(), 1000);
     this.fechaActual = this.formatearFecha(new Date());
@@ -123,14 +115,6 @@ export class PresencialComponent implements OnInit, OnDestroy {
           this.evaluarTardanza('SALIDA', horaActualHumana);
           this.finalizado = true;
           this.textoBoton = 'Marcacion finalizada';
-          this.ultimaCompleta = {
-            fecha: this.formatearFecha(new Date(ahora)),
-            entrada: this.inicioJornada,
-            inicio_refri: this.inicioRefrigerio,
-            fin_refri: this.finRefrigerio,
-            salida: this.finJornada,
-          };
-          this.guardarUltimaCompleta();
           this.mostrarResumen();
         });
         break;
@@ -229,14 +213,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
             this.evaluarTardanza('SALIDA', horaHumana);
             this.finalizado = true;
             this.textoBoton = 'Marcacion finalizada';
-            this.ultimaCompleta = {
-              fecha: this.formatearFecha(baseDate),
-              entrada: this.inicioJornada,
-              inicio_refri: this.inicioRefrigerio,
-              fin_refri: this.finRefrigerio,
-              salida: this.finJornada,
-            };
-            this.guardarUltimaCompleta();
+            localStorage.setItem('pruebaExposicionCompleta', '1');
             break;
         }
         this.fase++;
@@ -256,10 +233,11 @@ export class PresencialComponent implements OnInit, OnDestroy {
   }
 
   private evaluarSiguienteDiaDemo() {
-    // Solo mostrar si estamos en demo y existe una marcacion previa registrada
+    // Solo mostrar si estamos en demo, existe una marcacion previa registrada y se completo un ciclo
     const ultima = localStorage.getItem('pruebaExposicionUltima');
     const tieneRegistro = localStorage.getItem('pruebaExposicionTieneRegistro') === '1';
-    if (!ultima || !tieneRegistro) {
+    const cicloCompleto = localStorage.getItem('pruebaExposicionCompleta') === '1';
+    if (!ultima || !tieneRegistro || !cicloCompleto) {
       return;
     }
     const siguiente = this.sumarDias(ultima, 1);
@@ -301,6 +279,9 @@ export class PresencialComponent implements OnInit, OnDestroy {
     this.finRefrigerio = null;
     this.finJornada = null;
     localStorage.removeItem('pruebaExposicionTieneRegistro');
+    localStorage.removeItem('pruebaExposicionCompleta');
+    localStorage.removeItem('pruebaExposicionUltima');
+    localStorage.removeItem('pruebaExposicionBase');
   }
 
   private aplicarOffset(hhmm: string, offsetMin: number): string {
@@ -368,7 +349,7 @@ export class PresencialComponent implements OnInit, OnDestroy {
       next: (res) => {
         const datos = res.data;
         if (!datos || !datos.marcaciones || datos.marcaciones.length === 0) return;
-        this.bloqueoMarcacion = true;
+        this.bloqueoMarcacion = this.pruebaExposicion === 0;
         this.textoBoton = 'Marcacion registrada';
         for (const m of datos.marcaciones) {
           const horaHumana = this.formatearHoraDemo(m.hora);
@@ -397,24 +378,28 @@ export class PresencialComponent implements OnInit, OnDestroy {
             this.evaluarTardanza(ultimoTipo, horaHumana);
           }
         }
-        // Si ya tiene las cuatro, guardamos como ultima completa
+        // Si ya tiene las cuatro, marcamos como finalizado (en modo normal se bloquea; en demo puede continuar)
         const completadas = this.inicioJornada && this.inicioRefrigerio && this.finRefrigerio && this.finJornada;
         if (completadas) {
-          this.ultimaCompleta = {
-            fecha: this.formatearFecha(new Date(datos.fecha || this.fechaActual)),
-            entrada: this.inicioJornada,
-            inicio_refri: this.inicioRefrigerio,
-            fin_refri: this.finRefrigerio,
-            salida: this.finJornada,
-          };
-          this.guardarUltimaCompleta();
+          this.finalizado = this.pruebaExposicion === 0;
+          this.textoBoton = this.pruebaExposicion === 0 ? 'Marcacion finalizada' : 'Continuar marcacion';
         }
-        Swal.fire({
-          icon: 'info',
-          title: 'Marcaciones de hoy',
-          text: 'Ya existen registros hoy. Se muestra el resumen.',
-          confirmButtonColor: '#00A5A5',
-        });
+        // Solo advertencia si ya tuvo marcacion previa; en demo no se bloquea
+        if (this.pruebaExposicion === 0) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Marcaciones de hoy',
+            text: 'Ya existen registros hoy. Se muestra el resumen.',
+            confirmButtonColor: '#00A5A5',
+          });
+        } else if (datos.marcaciones.length > 0) {
+          Swal.fire({
+            icon: 'info',
+            title: 'Ya tienes marcaciones',
+            text: 'Puedes seguir registrando en modo demo.',
+            confirmButtonColor: '#00A5A5',
+          });
+        }
       },
       error: () => {
         // silencioso
@@ -460,36 +445,6 @@ export class PresencialComponent implements OnInit, OnDestroy {
       return `${match[1]}:${match[2]}`;
     }
     return horaHumana;
-  }
-
-  private crearUltimaCompleta(fecha: Date) {
-    return {
-      fecha: this.formatearFecha(fecha),
-      entrada: this.inicioJornada,
-      inicio_refri: this.inicioRefrigerio,
-      fin_refri: this.finRefrigerio,
-      salida: this.finJornada,
-    };
-  }
-
-  private guardarUltimaCompleta() {
-    if (!this.ultimaCompleta) return;
-    localStorage.setItem('ultimaMarcacionCompleta', JSON.stringify(this.ultimaCompleta));
-  }
-
-  private cargarUltimaCompletaGuardada() {
-    const guardada = localStorage.getItem('ultimaMarcacionCompleta');
-    if (!guardada) return;
-    try {
-      const data = JSON.parse(guardada);
-      this.ultimaCompleta = data;
-      this.inicioJornada = data.entrada || this.inicioJornada;
-      this.inicioRefrigerio = data.inicio_refri || this.inicioRefrigerio;
-      this.finRefrigerio = data.fin_refri || this.finRefrigerio;
-      this.finJornada = data.salida || this.finJornada;
-    } catch (_) {
-      // ignore parse errors
-    }
   }
 
   private verificarPerfil() {
