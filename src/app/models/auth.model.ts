@@ -20,7 +20,7 @@ export interface Usuario {
   nombre: string;
   nombres: string;
   apellidos: string;
-  email: string;
+  correo: string;
   telefono: string;
   area: Area | null;
   roles: Rol[];

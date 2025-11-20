@@ -29,22 +29,26 @@ export class ContactoComponent {
   protected cargando = false;
   protected soloLecturaNombre = false;
   protected soloLecturaEmail = false;
+  protected soloLecturaTelefono = false;
 
   ngOnInit(): void {
     this.usuarioService.obtenerPerfil().subscribe({
       next: (res) => {
         const user: Usuario | undefined = res.data;
+        console.log(user)
         if (user) {
           this.modelo.nombre = `${user.nombres || ''} ${user.apellidos || ''}`.trim();
-          this.modelo.email = user.email || '';
+          this.modelo.email = user.correo || '';
           this.modelo.telefono = user.telefono || '';
           this.soloLecturaNombre = !!this.modelo.nombre.trim();
           this.soloLecturaEmail = !!this.modelo.email;
+          this.soloLecturaTelefono = !!this.modelo.telefono;
         }
       },
       error: () => {
         this.soloLecturaNombre = false;
         this.soloLecturaEmail = false;
+        this.soloLecturaTelefono = false
       },
     });
   }
