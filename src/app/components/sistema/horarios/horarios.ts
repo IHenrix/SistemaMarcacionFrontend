@@ -6,6 +6,7 @@ import { HorarioService } from '@app/services/horario.service';
 import { AsignacionHorario, Horario, HorarioRequest } from '@app/models/horario.model';
 import { UsuarioService } from '@app/services/usuario.service';
 import { PersonaAsignacionDTO } from '@app/models/usuario.model';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 interface PersonaAsignacion {
   id: number;
@@ -22,7 +23,7 @@ interface PersonaAsignacion {
 @Component({
   selector: 'app-horarios',
   standalone: true,
-  imports: [SharedImports],
+  imports: [SharedImports, NgSelectModule],
   templateUrl: './horarios.html',
   styleUrl: './horarios.scss',
 })
@@ -30,8 +31,9 @@ export class HorariosComponent implements OnInit {
   protected readonly diasSemana = ['L', 'M', 'X', 'J', 'V', 'S', 'D']; // etiquetas
   protected selectedTab: 'asignar' | 'horarios' = 'asignar';
   protected searchPersona = '';
-  protected searchPersonaSelect = '';
   protected searchHorario = '';
+  protected searchPersonaFn = (term: string, item: PersonaAsignacion) =>
+    `${item.nombre} ${item.area} ${item.rol}`.toLowerCase().includes(term.toLowerCase());
 
   protected horarios: Horario[] = [];
   protected personas: PersonaAsignacion[] = [];
@@ -73,12 +75,6 @@ export class HorariosComponent implements OnInit {
 
   protected get personasFiltradas(): PersonaAsignacion[] {
     const term = this.searchPersona.trim().toLowerCase();
-    if (!term) return this.personas;
-    return this.personas.filter((p) => `${p.nombre} ${p.area} ${p.rol}`.toLowerCase().includes(term));
-  }
-
-  protected get personasFiltradasSelect(): PersonaAsignacion[] {
-    const term = this.searchPersonaSelect.trim().toLowerCase();
     if (!term) return this.personas;
     return this.personas.filter((p) => `${p.nombre} ${p.area} ${p.rol}`.toLowerCase().includes(term));
   }
@@ -260,6 +256,13 @@ export class HorariosComponent implements OnInit {
 
   protected horarioActual(persona: PersonaAsignacion) {
     return this.horarios.find((h) => h.id_horario === persona.horarioId);
+  }
+
+  protected onPersonaSearch(event: any) {
+    const term = typeof event === 'string' ? event : event?.term;
+    if (term && this.asignacionForm.get('persona')?.value !== null) {
+      this.asignacionForm.patchValue({ persona: null });
+    }
   }
 
   protected resolverDias(dias: number[]) {

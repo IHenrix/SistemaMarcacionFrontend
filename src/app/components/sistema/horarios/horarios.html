@@ -1,4 +1,4 @@
-<section class="horarios-page">
+﻿<section class="horarios-page">
   <header class="page-header">
     <div>
       <p class="kicker">Planificador</p>
@@ -31,17 +31,7 @@
   <!-- TAB: ASIGNAR -->
   <ng-container *ngIf="selectedTab === 'asignar'">
     <section class="panel card asignaciones">
-      <div class="panel-header">
-        <div>
-          <p class="kicker">Asignador visual</p>
-          <h2>Personas ↔ Horario</h2>
-          <span class="subtitle">Selecciona y aplica vigencias sin perder contexto</span>
-        </div>
-        <div class="chips">
-          <span class="chip">Arrastra la mirada, no los datos</span>
-          <span class="chip soft">Mock frontend</span>
-        </div>
-      </div>
+
 
       <div class="asignador">
         <div class="personas">
@@ -64,7 +54,7 @@
               <div class="persona-icon"><i class="fas fa-user-circle"></i></div>
               <div>
                 <p class="nombre">{{ p.nombre || 'Sin nombre' }}</p>
-                <p class="detalle">{{ (p.area || 'Área') + ' · ' + (p.rol || 'N/A') }}</p>
+                <p class="detalle">{{ (p.area || 'Área') + ' - ' + (p.rol || 'N/A') }}</p>
               </div>
               <span class="chip soft" *ngIf="p.excepcion">{{ p.excepcion }}</span>
             </div>
@@ -97,21 +87,36 @@
           <form [formGroup]="asignacionForm">
             <label class="field">
               <span>Persona</span>
-              <div class="search-box-inline">
-                <i class="fas fa-search"></i>
-                <input
-                  type="text"
-                  placeholder="Buscar persona"
-                  [(ngModel)]="searchPersonaSelect"
-                  name="buscarPersonaSelect"
-                />
-              </div>
-              <select formControlName="persona">
-                <option [ngValue]="null" disabled>Selecciona persona</option>
-                <option *ngFor="let p of personasFiltradasSelect" [ngValue]="p.id">{{ p.nombre }} · {{ p.area }}</option>
-              </select>
+              <ng-select
+                formControlName="persona"
+                [items]="personas"
+                bindLabel="nombre"
+                bindValue="id"
+                [searchable]="true"
+                [clearable]="true"
+                [clearSearchOnAdd]="true"
+                [closeOnSelect]="true"
+                [dropdownPosition]="'auto'"
+                [searchFn]="searchPersonaFn"
+                (search)="onPersonaSearch($event)"
+                placeholder="Selecciona persona"
+                notFoundText="Sin coincidencias"
+                class="ng-select-persona"
+              >
+                <ng-template ng-option-tmp let-item="item">
+                  <div class="opt-main">
+                    <span class="opt-name">{{ item.nombre || 'Sin nombre' }}</span>
+                    <small class="opt-meta">{{ (item.area || 'Area') + ' - ' + (item.rol || 'N/A') }}</small>
+                  </div>
+                </ng-template>
+                <ng-template ng-label-tmp let-item="item">
+                  <div class="opt-main">
+                    <span class="opt-name">{{ item.nombre || 'Sin nombre' }}</span>
+                    <small class="opt-meta">{{ (item.area || 'Area') + ' - ' + (item.rol || 'N/A') }}</small>
+                  </div>
+                </ng-template>
+              </ng-select>
             </label>
-
             <label class="field">
               <span>Horario</span>
               <div class="search-box-inline">
@@ -119,7 +124,7 @@
                 <input
                   type="text"
                   placeholder="Buscar horario"
-                  [(ngModel)]="searchHorario"
+                  [(ngModel)]="searchHorario" [ngModelOptions]="{standalone: true}"
                   name="buscarHorario"
                 />
               </div>
@@ -302,3 +307,4 @@
     </div>
   </ng-container>
 </section>
+
