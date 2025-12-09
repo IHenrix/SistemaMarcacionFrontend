@@ -38,16 +38,18 @@
             <button
               class="audio-button"
               [class.audio-button-active]="speakingMessageIndex === i && isSpeaking"
+              [class.audio-button-paused]="speakingMessageIndex === i && isPaused"
+              [class.audio-button-loading]="speakingMessageIndex === i && isLoadingAudio"
               (click)="speakMessage(msg.message, i)"
-              [disabled]="isSpeaking && speakingMessageIndex !== i"
-              title="Escuchar mensaje"
+              [disabled]="false"
+              [title]="speakingMessageIndex === i ? (isLoadingAudio ? 'Cancelar' : (isSpeaking ? 'Pausar' : (isPaused ? 'Continuar' : 'Escuchar mensaje'))) : 'Escuchar mensaje'"
             >
-              @if (speakingMessageIndex === i && isSpeaking) {
-                <div class="audio-loading">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
+              @if (speakingMessageIndex === i && isLoadingAudio) {
+                <i class="fas fa-times"></i>
+              } @else if (speakingMessageIndex === i && isSpeaking) {
+                <i class="fas fa-pause"></i>
+              } @else if (speakingMessageIndex === i && isPaused) {
+                <i class="fas fa-play"></i>
               } @else {
                 <i class="fas fa-volume-up"></i>
               }

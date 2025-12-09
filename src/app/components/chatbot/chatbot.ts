@@ -27,6 +27,8 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
   // Estados de voz
   protected isRecording = false;
   protected isSpeaking = false;
+  protected isPaused = false;
+  protected isLoadingAudio = false;
   protected speakingMessageIndex: number | null = null;
 
   private subscriptions: Subscription[] = [];
@@ -39,9 +41,12 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
       }),
       this.speechService.isSpeaking$.subscribe(isSpeaking => {
         this.isSpeaking = isSpeaking;
-        if (!isSpeaking) {
-          this.speakingMessageIndex = null;
-        }
+      }),
+      this.speechService.isPaused$.subscribe(isPaused => {
+        this.isPaused = isPaused;
+      }),
+      this.speechService.isLoading$.subscribe(isLoading => {
+        this.isLoadingAudio = isLoading;
       }),
       this.speechService.recognizedText$.subscribe(text => {
         // Agregar texto reconocido al input
@@ -67,6 +72,11 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
       this.speechService.error$.subscribe(error => {
         console.error('Error en Speech Service:', error);
         alert(error);
+      }),
+      this.speechService.audioEnded$.subscribe(() => {
+        // Resetear índice cuando el audio termina completamente
+        console.log('Audio terminado - reseteando speakingMessageIndex');
+        this.speakingMessageIndex = null;
       })
     );
   }
@@ -201,20 +211,46 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
   }
 
   speakMessage(message: string, index: number): void {
-    if (this.isSpeaking && this.speakingMessageIndex === index) {
-      // Si ya está hablando este mensaje, detenerlo
-      this.speechService.stopSpeaking();
-      this.speakingMessageIndex = null;
-    } else {
-      // Detener cualquier audio anterior
-      this.speechService.stopSpeaking();
-      // Reproducir nuevo mensaje
-      this.speakingMessageIndex = index;
-      this.speechService.speakText(message).catch(error => {
-        console.error('Error al reproducir mensaje:', error);
+    console.log('Click en botón de audio. Index:', index, 'Speaking index:', this.speakingMessageIndex);
+    console.log('Estados - Loading:', this.isLoadingAudio, 'Speaking:', this.isSpeaking, 'Paused:', this.isPaused);
+
+    // Si es el mismo mensaje
+    if (this.speakingMessageIndex === index) {
+      // Si está cargando → cancelar
+      if (this.isLoadingAudio) {
+        console.log('Cancelando carga de audio');
+        this.speechService.stopSpeaking();
         this.speakingMessageIndex = null;
-      });
+        return;
+      }
+
+      // Si está hablando → pausar
+      if (this.isSpeaking) {
+        console.log('Pausando audio');
+        this.speechService.pauseSpeaking();
+        return;
+      }
+
+      // Si está pausado → reanudar
+      if (this.isPaused) {
+        console.log('Reanudando audio');
+        this.speechService.resumeSpeaking();
+        return;
+      }
     }
+
+    // Si hay otro mensaje reproduciéndose, detenerlo
+    this.speechService.stopSpeaking();
+
+    // Marcar este mensaje como el que se está reproduciendo
+    this.speakingMessageIndex = index;
+    console.log('Iniciando reproducción del mensaje', index);
+
+    // Reproducir el mensaje
+    this.speechService.speakText(message).catch(error => {
+      console.error('Error al reproducir mensaje:', error);
+      // El índice se reseteará automáticamente con el observable audioEnded$
+    });
   }
 
   ngOnDestroy(): void {

@@ -11,13 +11,17 @@ export class SpeechService {
   private audioConfig: sdk.AudioConfig;
   private recognizer?: sdk.SpeechRecognizer;
   private synthesizer?: sdk.SpeechSynthesizer;
+  private player?: sdk.SpeakerAudioDestination;
 
   // Observables para estados
   public isRecording$ = new Subject<boolean>();
   public isSpeaking$ = new Subject<boolean>();
+  public isPaused$ = new Subject<boolean>();
+  public isLoading$ = new Subject<boolean>(); // Nuevo: indica si está cargando desde Azure
   public recognizedText$ = new Subject<string>();
   public error$ = new Subject<string>();
   public autoSendMessage$ = new Subject<string>(); // Nuevo: para auto-envío
+  public audioEnded$ = new Subject<void>(); // Nuevo: emite cuando el audio termina completamente
 
   private silenceTimer?: any;
   private lastRecognizedText = '';
@@ -122,42 +126,62 @@ export class SpeechService {
   speakText(text: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
-        // Crear sintetizador
-        const audioConfig = sdk.AudioConfig.fromDefaultSpeakerOutput();
-        this.synthesizer = new sdk.SpeechSynthesizer(this.speechConfig, audioConfig);
+        // Indicar que está cargando
+        this.isLoading$.next(true);
+        this.isPaused$.next(false);
 
-        this.isSpeaking$.next(true);
+        // Crear player con control manual
+        this.player = new sdk.SpeakerAudioDestination();
+        const audioConfig = sdk.AudioConfig.fromSpeakerOutput(this.player);
+        this.synthesizer = new sdk.SpeechSynthesizer(this.speechConfig, audioConfig);
 
         this.synthesizer.speakTextAsync(
           text,
           (result) => {
             if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-              console.log('Audio sintetizado correctamente');
-              this.isSpeaking$.next(false);
-              this.synthesizer?.close();
-              this.synthesizer = undefined;
-              resolve();
+              console.log('Audio sintetizado correctamente - cambiando a isSpeaking');
+              // IMPORTANTE: Emitir isSpeaking ANTES de isLoading para evitar race condition
+              this.isSpeaking$.next(true);
+              this.isLoading$.next(false);
+
+              // Configurar evento cuando termine el audio
+              this.player!.onAudioEnd = () => {
+                console.log('Audio terminado - reseteando estados');
+                this.isLoading$.next(false);
+                this.isSpeaking$.next(false);
+                this.isPaused$.next(false);
+                this.audioEnded$.next(); // Emitir evento de audio terminado
+                this.synthesizer?.close();
+                this.synthesizer = undefined;
+                this.player = undefined;
+                resolve();
+              };
             } else {
               console.error('Error en síntesis:', result.errorDetails);
               this.error$.next(`Error en síntesis: ${result.errorDetails}`);
+              this.isLoading$.next(false);
               this.isSpeaking$.next(false);
               this.synthesizer?.close();
               this.synthesizer = undefined;
+              this.player = undefined;
               reject(result.errorDetails);
             }
           },
           (error) => {
             console.error('Error al sintetizar audio:', error);
             this.error$.next(`Error: ${error}`);
+            this.isLoading$.next(false);
             this.isSpeaking$.next(false);
             this.synthesizer?.close();
             this.synthesizer = undefined;
+            this.player = undefined;
             reject(error);
           }
         );
       } catch (error) {
         console.error('Error al configurar síntesis:', error);
         this.error$.next('Error al reproducir audio');
+        this.isLoading$.next(false);
         this.isSpeaking$.next(false);
         reject(error);
       }
@@ -165,14 +189,70 @@ export class SpeechService {
   }
 
   /**
-   * Detiene la reproducción de audio
+   * Pausa la reproducción de audio
+   */
+  pauseSpeaking(): void {
+    if (this.player) {
+      try {
+        this.player.pause();
+        this.isPaused$.next(true);
+        this.isSpeaking$.next(false);
+        console.log('Audio pausado');
+      } catch (error) {
+        console.error('Error al pausar audio:', error);
+      }
+    }
+  }
+
+  /**
+   * Reanuda la reproducción de audio
+   */
+  resumeSpeaking(): void {
+    if (this.player) {
+      try {
+        this.player.resume();
+        this.isPaused$.next(false);
+        this.isSpeaking$.next(true);
+        console.log('Audio reanudado');
+      } catch (error) {
+        console.error('Error al reanudar audio:', error);
+      }
+    }
+  }
+
+  /**
+   * Detiene completamente la reproducción de audio
    */
   stopSpeaking(): void {
-    if (this.synthesizer) {
-      this.synthesizer.close();
-      this.synthesizer = undefined;
-      this.isSpeaking$.next(false);
+    if (this.player) {
+      try {
+        this.player.pause();
+      } catch (error) {
+        console.error('Error al pausar player:', error);
+      }
     }
+
+    if (this.synthesizer) {
+      try {
+        this.synthesizer.close();
+      } catch (error) {
+        console.error('Error al cerrar synthesizer:', error);
+      }
+      this.synthesizer = undefined;
+    }
+
+    this.player = undefined;
+    this.isLoading$.next(false);
+    this.isSpeaking$.next(false);
+    this.isPaused$.next(false);
+    this.audioEnded$.next(); // Emitir evento de audio terminado
+  }
+
+  /**
+   * Verifica si hay audio cargando o reproduciéndose
+   */
+  isSpeakingNow(): boolean {
+    return this.synthesizer !== undefined || this.player !== undefined;
   }
 
   /**
