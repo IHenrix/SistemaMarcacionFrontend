@@ -73,9 +73,8 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
         console.error('Error en Speech Service:', error);
         alert(error);
       }),
-      this.speechService.audioEnded$.subscribe(() => {
-        // Resetear índice cuando el audio termina completamente
-        console.log('Audio terminado - reseteando speakingMessageIndex');
+      this.speechService.audioFinished$.subscribe(() => {
+        console.log('Audio terminado - reseteando índice del mensaje');
         this.speakingMessageIndex = null;
       })
     );
@@ -219,8 +218,7 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
       // Si está cargando → cancelar
       if (this.isLoadingAudio) {
         console.log('Cancelando carga de audio');
-        this.speechService.stopSpeaking();
-        this.speakingMessageIndex = null;
+        this.speechService.stopSpeaking(true); // Emitir audioFinished$ para resetear índice
         return;
       }
 
@@ -239,8 +237,8 @@ export class ChatbotComponent implements AfterViewChecked, OnDestroy {
       }
     }
 
-    // Si hay otro mensaje reproduciéndose, detenerlo
-    this.speechService.stopSpeaking();
+    // Si hay otro mensaje reproduciéndose, detenerlo SIN emitir evento
+    this.speechService.stopSpeaking(false);
 
     // Marcar este mensaje como el que se está reproduciendo
     this.speakingMessageIndex = index;

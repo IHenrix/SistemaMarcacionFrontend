@@ -21,10 +21,11 @@ export class SpeechService {
   public recognizedText$ = new Subject<string>();
   public error$ = new Subject<string>();
   public autoSendMessage$ = new Subject<string>(); // Nuevo: para auto-envío
-  public audioEnded$ = new Subject<void>(); // Nuevo: emite cuando el audio termina completamente
+  public audioFinished$ = new Subject<void>(); // Emite cuando el audio termina completamente
 
   private silenceTimer?: any;
   private lastRecognizedText = '';
+  private audioEndTimer?: any; // Timer para detectar cuando termina el audio
 
   constructor() {
     // Configurar Speech Services
@@ -126,6 +127,9 @@ export class SpeechService {
   speakText(text: string): Promise<void> {
     return new Promise((resolve, reject) => {
       try {
+        // Limpiar timer anterior si existe
+        this.clearAudioEndTimer();
+
         // Indicar que está cargando
         this.isLoading$.next(true);
         this.isPaused$.next(false);
@@ -139,25 +143,33 @@ export class SpeechService {
           text,
           (result) => {
             if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-              console.log('Audio sintetizado correctamente - cambiando a isSpeaking');
+              console.log('✅ Audio sintetizado correctamente - cambiando a isSpeaking');
               // IMPORTANTE: Emitir isSpeaking ANTES de isLoading para evitar race condition
               this.isSpeaking$.next(true);
               this.isLoading$.next(false);
 
-              // Configurar evento cuando termine el audio
-              this.player!.onAudioEnd = () => {
-                console.log('Audio terminado - reseteando estados');
+              // Calcular duración del audio en milisegundos
+              const audioDuration = result.audioDuration / 10000; // AudioDuration está en ticks (100ns), convertir a ms
+              console.log(`⏱️ Duración del audio: ${audioDuration}ms`);
+
+              // Programar evento de fin de audio
+              this.audioEndTimer = setTimeout(() => {
+                console.log('🎵 Audio terminado por duración - reseteando estados');
                 this.isLoading$.next(false);
                 this.isSpeaking$.next(false);
                 this.isPaused$.next(false);
-                this.audioEnded$.next(); // Emitir evento de audio terminado
                 this.synthesizer?.close();
                 this.synthesizer = undefined;
                 this.player = undefined;
+                // Emitir DESPUÉS de actualizar todos los estados
+                setTimeout(() => {
+                  console.log('🔔 Emitiendo audioFinished$');
+                  this.audioFinished$.next();
+                }, 0);
                 resolve();
-              };
+              }, audioDuration);
             } else {
-              console.error('Error en síntesis:', result.errorDetails);
+              console.error('❌ Error en síntesis:', result.errorDetails);
               this.error$.next(`Error en síntesis: ${result.errorDetails}`);
               this.isLoading$.next(false);
               this.isSpeaking$.next(false);
@@ -168,7 +180,7 @@ export class SpeechService {
             }
           },
           (error) => {
-            console.error('Error al sintetizar audio:', error);
+            console.error('❌ Error al sintetizar audio:', error);
             this.error$.next(`Error: ${error}`);
             this.isLoading$.next(false);
             this.isSpeaking$.next(false);
@@ -179,7 +191,7 @@ export class SpeechService {
           }
         );
       } catch (error) {
-        console.error('Error al configurar síntesis:', error);
+        console.error('❌ Error al configurar síntesis:', error);
         this.error$.next('Error al reproducir audio');
         this.isLoading$.next(false);
         this.isSpeaking$.next(false);
@@ -222,8 +234,12 @@ export class SpeechService {
 
   /**
    * Detiene completamente la reproducción de audio
+   * @param emitFinished Si debe emitir el evento audioFinished$ (default: false)
    */
-  stopSpeaking(): void {
+  stopSpeaking(emitFinished: boolean = false): void {
+    // Limpiar timer de fin de audio
+    this.clearAudioEndTimer();
+
     if (this.player) {
       try {
         this.player.pause();
@@ -245,7 +261,11 @@ export class SpeechService {
     this.isLoading$.next(false);
     this.isSpeaking$.next(false);
     this.isPaused$.next(false);
-    this.audioEnded$.next(); // Emitir evento de audio terminado
+
+    // Solo emitir si se indica explícitamente
+    if (emitFinished) {
+      setTimeout(() => this.audioFinished$.next(), 0);
+    }
   }
 
   /**
@@ -284,10 +304,21 @@ export class SpeechService {
   }
 
   /**
+   * Limpia el timer de fin de audio
+   */
+  private clearAudioEndTimer(): void {
+    if (this.audioEndTimer) {
+      clearTimeout(this.audioEndTimer);
+      this.audioEndTimer = undefined;
+    }
+  }
+
+  /**
    * Limpia recursos
    */
   dispose(): void {
     this.clearSilenceTimer();
+    this.clearAudioEndTimer();
     this.stopRecognition();
     this.stopSpeaking();
   }
