@@ -41,7 +41,8 @@ export class ChatbotService {
     };
 
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'X-Skip-Spinner': 'true'
     });
 
     return this.http.post<ChatbotResponse>(this.chatbotUrl, body, { headers });

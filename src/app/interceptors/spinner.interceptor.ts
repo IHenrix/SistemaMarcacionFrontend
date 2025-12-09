@@ -6,13 +6,20 @@ import { SpinnerService } from '@app/services/spinner.service';
 export const spinnerInterceptor: HttpInterceptorFn = (req, next) => {
   const spinnerService = inject(SpinnerService);
 
-  // Muestra el spinner antes de la petición
-  spinnerService.show();
+  // Verificar si la petición tiene el header para omitir el spinner
+  const skipSpinner = req.headers.has('X-Skip-Spinner');
+
+  // Solo muestra el spinner si no tiene el header de omitir
+  if (!skipSpinner) {
+    spinnerService.show();
+  }
 
   return next(req).pipe(
     finalize(() => {
-      // Oculta el spinner cuando termina la petición (éxito o error)
-      spinnerService.hide();
+      // Solo oculta el spinner si lo había mostrado
+      if (!skipSpinner) {
+        spinnerService.hide();
+      }
     })
   );
 };
