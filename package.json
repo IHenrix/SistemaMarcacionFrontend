@@ -22,6 +22,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/animations": "^20.3.12",
     "@angular/cdk": "^20.2.11",
     "@angular/common": "^20.3.12",
     "@angular/compiler": "^20.3.12",
@@ -33,6 +34,7 @@
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@ng-select/ng-select": "^15.2.0",
     "file-saver": "^2.0.5",
+    "ngx-spinner": "^18.0.0",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.26.3",
     "tslib": "^2.3.0",
