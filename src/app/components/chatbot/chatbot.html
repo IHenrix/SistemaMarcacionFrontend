@@ -26,12 +26,33 @@
 
     <!-- Mensajes -->
     <div class="chatbot-messages" #messagesContainer>
-      @for (msg of messages; track msg.timestamp) {
+      @for (msg of messages; track msg.timestamp; let i = $index) {
         <div class="message-wrapper" [class.user-message]="msg.sender === 'user'" [class.bot-message]="msg.sender === 'bot'">
           <div class="message-bubble">
             <p>{{ msg.message }}</p>
             <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
           </div>
+
+          <!-- Botón de audio solo para mensajes del bot -->
+          @if (msg.sender === 'bot') {
+            <button
+              class="audio-button"
+              [class.audio-button-active]="speakingMessageIndex === i && isSpeaking"
+              (click)="speakMessage(msg.message, i)"
+              [disabled]="isSpeaking && speakingMessageIndex !== i"
+              title="Escuchar mensaje"
+            >
+              @if (speakingMessageIndex === i && isSpeaking) {
+                <div class="audio-loading">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              } @else {
+                <i class="fas fa-volume-up"></i>
+              }
+            </button>
+          }
         </div>
       }
 
@@ -49,14 +70,40 @@
 
     <!-- Input -->
     <div class="chatbot-input">
-      <input
-        type="text"
-        [(ngModel)]="userInput"
-        (keypress)="onKeyPress($event)"
+      <button
+        class="chatbot-mic-button"
+        [class.chatbot-mic-recording]="isRecording"
+        (click)="toggleRecording()"
         [disabled]="isLoading"
-        placeholder="Escribe tu mensaje..."
-        class="chatbot-input-field"
-      />
+        title="{{ isRecording ? 'Detener grabación' : 'Grabar mensaje de voz' }}"
+      >
+        @if (isRecording) {
+          <i class="fas fa-stop-circle"></i>
+        } @else {
+          <i class="fas fa-microphone"></i>
+        }
+      </button>
+
+      <div class="chatbot-input-wrapper">
+        @if (isRecording) {
+          <div class="recording-indicator">
+            <span class="recording-dot"></span>
+            <span class="recording-text">Escuchando... Habla ahora</span>
+          </div>
+        }
+        <textarea
+          [(ngModel)]="userInput"
+          (input)="autoResize($event)"
+          (keydown)="onKeyDown($event)"
+          [disabled]="isLoading || isRecording"
+          [placeholder]="isRecording ? '' : 'Escribe tu mensaje...'"
+          class="chatbot-input-field"
+          [class.chatbot-input-recording]="isRecording"
+          rows="1"
+          #textareaInput
+        ></textarea>
+      </div>
+
       <button
         (click)="sendMessage()"
         [disabled]="!userInput.trim() || isLoading"
