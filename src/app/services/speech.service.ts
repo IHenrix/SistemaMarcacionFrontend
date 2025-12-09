@@ -134,13 +134,18 @@ export class SpeechService {
         this.isLoading$.next(true);
         this.isPaused$.next(false);
 
+        // Eliminar emojis del texto antes de sintetizar
+        const cleanText = this.removeEmojis(text);
+        console.log('📝 Texto original:', text);
+        console.log('🧹 Texto sin emojis:', cleanText);
+
         // Crear player con control manual
         this.player = new sdk.SpeakerAudioDestination();
         const audioConfig = sdk.AudioConfig.fromSpeakerOutput(this.player);
         this.synthesizer = new sdk.SpeechSynthesizer(this.speechConfig, audioConfig);
 
         this.synthesizer.speakTextAsync(
-          text,
+          cleanText,
           (result) => {
             if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
               console.log('✅ Audio sintetizado correctamente - cambiando a isSpeaking');
@@ -311,6 +316,18 @@ export class SpeechService {
       clearTimeout(this.audioEndTimer);
       this.audioEndTimer = undefined;
     }
+  }
+
+  /**
+   * Elimina emojis del texto
+   * Utiliza regex para remover todos los emojis Unicode
+   */
+  private removeEmojis(text: string): string {
+    // Regex que cubre los rangos Unicode de emojis
+    const emojiRegex = /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{2300}-\u{23FF}\u{2B50}\u{2B55}\u{231A}\u{231B}\u{2328}\u{23CF}\u{23E9}-\u{23F3}\u{23F8}-\u{23FA}\u{25AA}\u{25AB}\u{25B6}\u{25C0}\u{25FB}-\u{25FE}\u{2934}\u{2935}\u{2B05}-\u{2B07}\u{2B1B}\u{2B1C}\u{3030}\u{303D}\u{3297}\u{3299}\u{FE0F}\u{200D}]/gu;
+
+    // Remover emojis y limpiar espacios múltiples
+    return text.replace(emojiRegex, '').replace(/\s+/g, ' ').trim();
   }
 
   /**
