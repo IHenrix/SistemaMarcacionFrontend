@@ -1,0 +1,69 @@
+<!-- Botón flotante -->
+<div class="chatbot-button" [class.chatbot-button-active]="isOpen" (click)="toggleChat()">
+  @if (!isOpen) {
+    <i class="fas fa-comments"></i>
+  } @else {
+    <i class="fas fa-times"></i>
+  }
+</div>
+
+<!-- Panel del chat -->
+@if (isOpen) {
+  <div class="chatbot-panel">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="chatbot-header-content">
+        <i class="fas fa-robot"></i>
+        <div class="chatbot-header-text">
+          <h3>Asistente de Marcaciones</h3>
+          <span class="chatbot-status">En línea</span>
+        </div>
+      </div>
+      <button class="chatbot-close" (click)="toggleChat()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Mensajes -->
+    <div class="chatbot-messages" #messagesContainer>
+      @for (msg of messages; track msg.timestamp) {
+        <div class="message-wrapper" [class.user-message]="msg.sender === 'user'" [class.bot-message]="msg.sender === 'bot'">
+          <div class="message-bubble">
+            <p>{{ msg.message }}</p>
+            <span class="message-time">{{ formatTime(msg.timestamp) }}</span>
+          </div>
+        </div>
+      }
+
+      <!-- Indicador de escritura -->
+      @if (isLoading) {
+        <div class="message-wrapper bot-message">
+          <div class="message-bubble typing-indicator">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Input -->
+    <div class="chatbot-input">
+      <input
+        type="text"
+        [(ngModel)]="userInput"
+        (keypress)="onKeyPress($event)"
+        [disabled]="isLoading"
+        placeholder="Escribe tu mensaje..."
+        class="chatbot-input-field"
+      />
+      <button
+        (click)="sendMessage()"
+        [disabled]="!userInput.trim() || isLoading"
+        class="chatbot-send-button"
+      >
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+}

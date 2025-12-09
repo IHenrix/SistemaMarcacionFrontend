@@ -4,10 +4,11 @@ import { ActivatedRoute, NavigationEnd, Router, RouterModule, RouterOutlet } fro
 import { filter, map } from 'rxjs';
 import { environment } from '@env/environment';
 import { FooterComponent } from './footer/footer';
+import { ChatbotComponent } from '../chatbot/chatbot';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, SidebarComponent, RouterModule,FooterComponent],
+  imports: [RouterOutlet, SidebarComponent, RouterModule, FooterComponent, ChatbotComponent],
   templateUrl: './layout.html',
   styleUrl: './layout.scss'
 })
