@@ -15,11 +15,7 @@ import { UsuarioService } from '@app/services/usuario.service';
 export class PresencialComponent implements OnInit, OnDestroy {
   protected horaActual = '';
   protected fechaActual = '';
-  protected pruebaExposicion = 1; // 0: normal, 1: demo paso a paso
   protected sinPerfil = false;
-  protected bloqueoMarcacion = false;
-  protected ultimaMarcacionFecha: string | null = null;
-  protected ultimaMarcacionCompleta = false;
 
   private readonly router = inject(Router);
   private readonly marcacionService = inject(MarcacionService);
@@ -39,30 +35,11 @@ export class PresencialComponent implements OnInit, OnDestroy {
   private temporizador: any;
 
   ngOnInit(): void {
-    this.cargarUltimaMarcacion();
     this.actualizarHora();
     this.temporizador = setInterval(() => this.actualizarHora(), 1000);
     this.fechaActual = this.formatearFecha(new Date());
     this.verificarPerfil();
     this.cargarResumenHoy();
-  }
-
-  private cargarUltimaMarcacion() {
-    this.marcacionService.ultima().subscribe({
-      next: (res) => {
-        const data = res.data;
-        if (!data || !data.fecha) return;
-        this.ultimaMarcacionFecha = data.fecha;
-        this.ultimaMarcacionCompleta = !!data.completado;
-        this.setCountersFromMarcaciones(data.marcaciones);
-        if (this.pruebaExposicion === 1) {
-          this.evaluarSiguienteDiaDemo();
-        }
-      },
-      error: () => {
-        // silencioso
-      },
-    });
   }
 
   ngOnDestroy(): void {
@@ -80,23 +57,8 @@ export class PresencialComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.pruebaExposicion === 0 && this.bloqueoMarcacion) {
-      Swal.fire({
-        icon: 'info',
-        title: 'Marcacion registrada',
-        text: 'Ya registraste marcacion hoy. Solo se muestra el resumen.',
-        confirmButtonColor: '#00A5A5',
-      });
-      return;
-    }
-
-    if (this.pruebaExposicion === 1) {
-      this.ejecutarPasoDemo();
-      return;
-    }
-
     const ahora = new Date();
-    const horaActualHumana = this.formatearHora(ahora, true);
+    const horaActualHumana = this.formatearHora(ahora, false);
     const fechaISO = this.fechaISO(ahora);
 
     switch (this.fase) {
@@ -185,124 +147,6 @@ export class PresencialComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Modo demo: paso a paso con offsets aleatorios
-  private ejecutarPasoDemo() {
-    const baseDate = this.obtenerFechaBaseDemo();
-    const fecha = this.fechaISO(baseDate);
-    const tipos: TipoMarcacion[] = ['ENTRADA', 'INICIO_REFRI', 'FIN_REFRI', 'SALIDA'];
-    const objetivos = ['08:00', '13:00', '14:00', '17:00'];
-
-    if (this.fase > 3) {
-      this.finalizado = true;
-      this.textoBoton = 'Marcacion finalizada';
-      this.mostrarResumen();
-      return;
-    }
-
-    const idx = this.fase;
-    const rand = this.randomOffsetMinutes(-20, 20);
-    const horaDemo = this.aplicarOffset(objetivos[idx], rand);
-    const tipo = tipos[idx];
-
-        this.marcacionService.registrar({ tipo, fecha, hora: horaDemo }).subscribe({
-      next: () => {
-        const horaHumana = this.formatearHoraDemo(horaDemo);
-        switch (idx) {
-          case 0:
-            this.inicioJornada = horaHumana;
-            this.evaluarTardanza('ENTRADA', horaHumana);
-            this.textoBoton = 'Iniciar refrigerio';
-            break;
-          case 1:
-            this.inicioRefrigerio = horaHumana;
-            this.evaluarTardanza('INICIO_REFRI', horaHumana);
-            this.textoBoton = 'Finalizar refrigerio';
-            break;
-          case 2:
-            this.finRefrigerio = horaHumana;
-            this.evaluarTardanza('FIN_REFRI', horaHumana);
-            this.textoBoton = 'Finalizar marcacion';
-            break;
-          case 3:
-            this.finJornada = horaHumana;
-            this.evaluarTardanza('SALIDA', horaHumana);
-            this.finalizado = true;
-            this.textoBoton = 'Marcacion finalizada';
-            this.ultimaMarcacionFecha = this.fechaISO(baseDate);
-            this.ultimaMarcacionCompleta = true;
-            break;
-        }
-        this.fase++;
-        this.mostrarAlerta('Marcacion registrada (demo)', horaHumana);
-        if (this.finalizado) {
-          this.mostrarResumen();
-        }
-      },
-      error: (err) =>
-        Swal.fire({
-          icon: 'error',
-          title: 'Demo detenida',
-          text: err.error?.message || 'Error al registrar marcacion demo.',
-          confirmButtonColor: '#00A5A5',
-        }),
-    });
-  }
-
-  private evaluarSiguienteDiaDemo() {
-    if (this.pruebaExposicion !== 1) return;
-    if (!this.ultimaMarcacionFecha || !this.ultimaMarcacionCompleta) return;
-
-    const siguiente = this.sumarDias(this.ultimaMarcacionFecha, 1);
-    Swal.fire({
-      icon: 'question',
-      title: '¿Probar el siguiente dia?',
-      text: `Se generaran marcaciones demo para ${this.formatearFecha(new Date(siguiente))}`,
-      showCancelButton: true,
-      confirmButtonColor: '#00A5A5',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Si, generar',
-      cancelButtonText: 'No, continuar',
-    }).then((res) => {
-      if (res.isConfirmed) {
-        localStorage.setItem('pruebaExposicionBase', siguiente);
-        this.resetDemoState();
-        this.fase = 0;
-        this.finalizado = false;
-      }
-    });
-  }
-
-  private obtenerFechaBaseDemo(): Date {
-    const almacenada = localStorage.getItem('pruebaExposicionBase');
-    if (almacenada) {
-      return new Date(almacenada);
-    }
-    const hoy = new Date();
-    localStorage.setItem('pruebaExposicionBase', hoy.toISOString().slice(0, 10));
-    return hoy;
-  }
-
-  private resetDemoState(limpiarBase = false) {
-    this.fase = 0;
-    this.finalizado = false;
-    this.textoBoton = 'Iniciar marcacion';
-    this.inicioJornada = null;
-    this.inicioRefrigerio = null;
-    this.finRefrigerio = null;
-    this.finJornada = null;
-    if (limpiarBase) {
-      localStorage.removeItem('pruebaExposicionBase');
-    }
-  }
-
-  private aplicarOffset(hhmm: string, offsetMin: number): string {
-    const [h, m] = hhmm.split(':').map(Number);
-    const base = new Date();
-    base.setHours(h, m, 0, 0);
-    base.setMinutes(base.getMinutes() + offsetMin);
-    return this.formatearHora24(base);
-  }
-
   private formatearHora24(fecha: Date): string {
     const hh = String(fecha.getHours()).padStart(2, '0');
     const mm = String(fecha.getMinutes()).padStart(2, '0');
@@ -311,16 +155,6 @@ export class PresencialComponent implements OnInit, OnDestroy {
 
   private fechaISO(fecha: Date): string {
     return fecha.toISOString().slice(0, 10);
-  }
-
-  private sumarDias(fechaISO: string, dias: number) {
-    const d = new Date(fechaISO);
-    d.setDate(d.getDate() + dias);
-    return d.toISOString().slice(0, 10);
-  }
-
-  private randomOffsetMinutes(min: number, max: number) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   private formatearFecha(fecha: Date): string {
@@ -360,58 +194,43 @@ export class PresencialComponent implements OnInit, OnDestroy {
       next: (res) => {
         const datos = res.data;
         if (!datos || !datos.marcaciones || datos.marcaciones.length === 0) return;
-        this.bloqueoMarcacion = this.pruebaExposicion === 0;
-        this.textoBoton = 'Marcacion registrada';
+
+        let ultimaFase = 0;
         for (const m of datos.marcaciones) {
           const horaHumana = this.formatearHoraDemo(m.hora);
-          let ultimoTipo: TipoMarcacion | null = null;
           switch (m.tipo) {
             case 'ENTRADA':
               this.inicioJornada = horaHumana;
-              ultimoTipo = 'ENTRADA';
+              ultimaFase = Math.max(ultimaFase, 1);
+              this.evaluarTardanza('ENTRADA', horaHumana);
               break;
             case 'INICIO_REFRI':
               this.inicioRefrigerio = horaHumana;
-              ultimoTipo = 'INICIO_REFRI';
+              ultimaFase = Math.max(ultimaFase, 2);
+              this.evaluarTardanza('INICIO_REFRI', horaHumana);
               break;
             case 'FIN_REFRI':
               this.finRefrigerio = horaHumana;
-              ultimoTipo = 'FIN_REFRI';
+              ultimaFase = Math.max(ultimaFase, 3);
+              this.evaluarTardanza('FIN_REFRI', horaHumana);
               break;
             case 'SALIDA':
               this.finJornada = horaHumana;
-              this.finalizado = this.pruebaExposicion === 0;
-              this.textoBoton = this.pruebaExposicion === 0 ? 'Marcacion finalizada' : this.textoBoton;
-              ultimoTipo = 'SALIDA';
+              ultimaFase = Math.max(ultimaFase, 4);
+              this.finalizado = true;
+              this.evaluarTardanza('SALIDA', horaHumana);
               break;
           }
-          if (ultimoTipo) {
-            this.evaluarTardanza(ultimoTipo, horaHumana);
-          }
         }
-        // Si ya tiene las cuatro, marcamos como finalizado (en modo normal se bloquea; en demo puede continuar)
-        const completadas = this.inicioJornada && this.inicioRefrigerio && this.finRefrigerio && this.finJornada;
-        if (completadas) {
-          this.finalizado = this.pruebaExposicion === 0;
-          this.textoBoton = this.pruebaExposicion === 0 ? 'Marcacion finalizada' : 'Continuar marcacion';
-          this.ultimaMarcacionFecha = datos.fecha;
-          this.ultimaMarcacionCompleta = true;
-        }
-        // Solo advertencia si ya tuvo marcacion previa; en demo no se bloquea
-        if (this.pruebaExposicion === 0) {
-          Swal.fire({
-            icon: 'info',
-            title: 'Marcaciones de hoy',
-            text: 'Ya existen registros hoy. Se muestra el resumen.',
-            confirmButtonColor: '#00A5A5',
-          });
-        } else if (datos.marcaciones.length > 0) {
-          Swal.fire({
-            icon: 'info',
-            title: 'Ya tienes marcaciones',
-            text: 'Puedes seguir registrando en modo demo.',
-            confirmButtonColor: '#00A5A5',
-          });
+
+        this.fase = ultimaFase;
+
+        // Actualizar texto del botón según la fase
+        if (this.finalizado) {
+          this.textoBoton = 'Marcacion finalizada';
+        } else {
+          const textos = ['Iniciar marcacion', 'Iniciar refrigerio', 'Finalizar refrigerio', 'Finalizar marcacion'];
+          this.textoBoton = textos[this.fase];
         }
       },
       error: () => {
@@ -458,29 +277,6 @@ export class PresencialComponent implements OnInit, OnDestroy {
       return `${match[1]}:${match[2]}`;
     }
     return horaHumana;
-  }
-
-  private setCountersFromMarcaciones(marcaciones: MarcacionItem[]) {
-    if (!marcaciones || marcaciones.length === 0) return;
-    for (const m of marcaciones) {
-      const horaHumana = this.formatearHoraDemo(m.hora);
-      switch (m.tipo) {
-        case 'ENTRADA':
-          this.inicioJornada = this.inicioJornada || horaHumana;
-          break;
-        case 'INICIO_REFRI':
-          this.inicioRefrigerio = this.inicioRefrigerio || horaHumana;
-          break;
-        case 'FIN_REFRI':
-          this.finRefrigerio = this.finRefrigerio || horaHumana;
-          break;
-        case 'SALIDA':
-          this.finJornada = this.finJornada || horaHumana;
-          this.finalizado = this.pruebaExposicion === 0;
-          this.textoBoton = this.pruebaExposicion === 0 ? 'Marcacion finalizada' : this.textoBoton;
-          break;
-      }
-    }
   }
 
   private verificarPerfil() {
