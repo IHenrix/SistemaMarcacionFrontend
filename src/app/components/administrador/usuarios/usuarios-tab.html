@@ -1,0 +1,149 @@
+<div class="admin-wrap">
+  <div class="table-meta header-block">
+    <h2 class="h3-utp">Listado de usuarios</h2>
+  </div>
+
+  <form class="filters-bar" [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+    <div class="filters-grid">
+      <div class="form-group-utp">
+        <label class="label-utp">Nombres</label>
+        <input class="form-control-utp" formControlName="nombres" type="text" (input)="toUpper('nombres')" />
+      </div>
+      <div class="form-group-utp">
+        <label class="label-utp">Apellidos</label>
+        <input class="form-control-utp" formControlName="apellidos" type="text" (input)="toUpper('apellidos')" />
+      </div>
+      <div class="form-group-utp">
+        <label class="label-utp">Usuario</label>
+        <input class="form-control-utp" formControlName="username" type="text" (input)="toUpper('username')" />
+      </div>
+      <div class="form-group-utp">
+        <label class="label-utp">Estado</label>
+        <mat-select class="mat-select-utp" panelClass="mat-select-utp-panel" formControlName="estado">
+          <mat-option value="">Todos</mat-option>
+          <mat-option value="A">Activo</mat-option>
+          <mat-option value="I">Inactivo</mat-option>
+          <mat-option value="B">Bloqueado</mat-option>
+        </mat-select>
+      </div>
+    </div>
+    <div class="filters-actions actions-right">
+      <button class="btn-utp-cyan" type="submit">
+        <i class="fa-solid fa-magnifying-glass icon-utp"></i> Buscar
+      </button>
+      <button class="btn-outline-utp-gray-dark" type="button" (click)="limpiarFiltros()">
+        <i class="fa-solid fa-rotate-left icon-utp"></i> Limpiar
+      </button>
+      <button class="btn-utp-green" type="button" (click)="abrirNuevo()">
+        <i class="fa-solid fa-user-plus icon-utp"></i> Nuevo usuario
+      </button>
+    </div>
+  </form>
+
+  @if (totalRegistros) {
+    <div class="table-search" [formGroup]="filtrosForm">
+      <p class="table-counter big-counter">
+        {{ totalRegistros }} usuario{{ totalRegistros === 1 ? '' : 's' }} registrado{{ totalRegistros === 1 ? '' : 's' }}
+        @if (totalFiltrados !== totalRegistros) {
+          <span class="muted">({{ totalFiltrados }} filtrado{{ totalFiltrados === 1 ? '' : 's' }})</span>
+        }
+      </p>
+      <div class="table-search-row">
+        <div class="page-size">
+          <label class="label-utp">Mostrar</label>
+          <select class="select-control-utp select-page-size" formControlName="pageSize" (change)="cambiarPageSize($any($event.target).value)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+          <span>items</span>
+        </div>
+        <div class="search-inline">
+          <i class="fa-solid fa-magnifying-glass icon-utp"></i>
+          <input
+            class="form-control-utp"
+            formControlName="busqueda"
+            placeholder="Búsqueda rápida"
+            type="text"
+            (input)="aplicarBusquedaRapida()"
+          />
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (usuariosPagina.length) {
+    <table class="table-utp-cyan table-full">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Nombre completo</th>
+          <th>Estado</th>
+          <th>Roles</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (u of usuariosPagina; track u.id_usuario) {
+          <tr>
+            <td>{{ u.username }}</td>
+            <td>{{ u.persona.nombres }} {{ u.persona.apellidos }}</td>
+            <td>
+              <span class="badge-utp" [ngClass]="getEstadoClass(u.estado)">
+                {{ getEstadoLabel(u.estado) }}
+              </span>
+            </td>
+            <td>
+              <div class="roles-column">
+                @for (rol of u.roles; track rol.id_rol) {
+                  <span class="badge-utp badge-utp-gray-light">{{ rol.nombre }}</span>
+                }
+              </div>
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn-sm-utp-cyan" (click)="abrirEditar(u)">
+                  <i class="fa-solid fa-pen-to-square icon-utp"></i> Editar
+                </button>
+                @if (u.estado === 'A') {
+                  <button class="btn-sm-utp-red" (click)="desactivar(u.id_usuario)">
+                    <i class="fa-solid fa-user-slash icon-utp"></i> Desactivar
+                  </button>
+                }
+                @if (u.estado === 'I') {
+                  <button class="btn-sm-utp-green" (click)="activar(u.id_usuario)">
+                    <i class="fa-solid fa-user-check icon-utp"></i> Activar
+                  </button>
+                }
+                @if (u.estado === 'B') {
+                  <button class="btn-sm-utp-gray-dark" (click)="desbloquear(u.id_usuario)">
+                    <i class="fa-solid fa-lock-open icon-utp"></i> Desbloquear
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="table-footer">
+      <div class="page-info">
+        Página {{ page }} de {{ totalPaginas }}
+      </div>
+      <div class="pagination-controls">
+        <button class="btn-outline-utp-gray-dark" type="button" (click)="cambiarPagina(-1)" [disabled]="page === 1">
+          <i class="fa-solid fa-chevron-left icon-utp"></i> Anterior
+        </button>
+        <button class="btn-outline-utp-gray-dark" type="button" (click)="cambiarPagina(1)" [disabled]="page >= totalPaginas">
+          Siguiente <i class="fa-solid fa-chevron-right icon-utp"></i>
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="sin-resultados empty-state">
+      <i class="fa-solid fa-inbox"></i>
+      <p>{{ totalRegistros ? 'No se encontraron usuarios con los filtros aplicados' : 'No hay usuarios registrados' }}</p>
+    </div>
+  }
+</div>

@@ -44,3 +44,100 @@ html {
 .swal2-html-container {
   line-height: normal !important;
 }
+
+/****************************************/
+/*   ANGULAR MATERIAL DIALOG - UTP      */
+/****************************************/
+
+.flat-dialog .mat-mdc-dialog-surface,
+.flat-dialog .mdc-dialog__surface {
+  border-radius: 0 !important;
+  padding: 0;
+}
+
+.text-error {
+  color: #d33;
+  font-size: 0.85rem;
+}
+
+/****************************************/
+/*   ANGULAR MATERIAL SELECT - UTP      */
+/****************************************/
+
+// Estilo UTP para mat-select reutilizable
+.mat-select-utp {
+  background: var(--utp-white);
+  border: 1px solid var(--utp-gray-light);
+  border-radius: 8px;
+  min-height: 46px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 16px;
+
+  .mat-mdc-select-trigger {
+    min-height: 46px;
+    color: var(--utp-gray-dark);
+    font-family: var(--ff-gotham-medium);
+    padding-right: 8px;
+
+    .mat-mdc-select-value {
+      color: var(--utp-gray-dark);
+      font-family: var(--ff-gotham-medium);
+    }
+  }
+
+  .mat-mdc-select-arrow {
+    color: var(--utp-gray);
+  }
+
+  &:hover {
+    border-color: var(--utp-cyan);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--utp-cyan) 20%, #0000);
+  }
+}
+
+// Panel y opciones del mat-select UTP
+.mat-select-utp-panel {
+  border-radius: 10px !important;
+  background: #fff !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+
+  .mat-mdc-option.mdc-list-item {
+    background: #fff !important;
+    .mdc-list-item__primary-text {
+      color: var(--utp-gray-dark) !important;
+      font-family: var(--ff-gotham-medium);
+    }
+  }
+
+  .mat-mdc-option.mdc-list-item:hover {
+    background: color-mix(in srgb, var(--utp-cyan-light) 20%, #fff) !important;
+  }
+
+  .mat-mdc-option.mdc-list-item.mdc-list-item--selected {
+    background: color-mix(in srgb, var(--utp-cyan-light) 35%, #fff) !important;
+  }
+}
+
+// Estilo global para mat-checkbox
+.mat-mdc-checkbox {
+  .mdc-checkbox__background {
+    border-color: var(--utp-gray-dark) !important;
+  }
+
+  &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--utp-cyan) !important;
+    border-color: var(--utp-cyan) !important;
+  }
+
+  .mat-mdc-checkbox-ripple .mat-ripple-element {
+    background-color: var(--utp-cyan) !important;
+  }
+}
+
+.mat-mdc-checkbox-label {
+  font-size: 13px;
+  font-family: var(--ff-gotham-medium);
+  color: var(--utp-gray-dark);
+  white-space: initial;
+}

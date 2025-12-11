@@ -1,0 +1,64 @@
+<div class="modal-container">
+  <div class="modal-header">
+    <h2 class="h3-utp">{{ data.modo === 'editar' ? 'Editar persona' : 'Nueva persona' }}</h2>
+    <button type="button" class="btn-close" aria-label="Cerrar" (click)="cerrar(false)">&times;</button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="guardar()">
+    <section class="modal-section">
+      <header>Datos de la persona</header>
+      <div class="modal-grid">
+        <div class="form-group-utp">
+          <label class="label-utp required">DNI</label>
+          <input class="form-control-utp" formControlName="dni" type="text" maxlength="8" (input)="toUpper('dni')" />
+          @if (submitted && form.get('dni')?.invalid) {
+            <small class="text-error">Requerido</small>
+          }
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp required">Nombres</label>
+          <input class="form-control-utp" formControlName="nombres" type="text" (input)="toUpper('nombres')" />
+          @if (submitted && form.get('nombres')?.invalid) {
+            <small class="text-error">Requerido</small>
+          }
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp required">Apellidos</label>
+          <input class="form-control-utp" formControlName="apellidos" type="text" (input)="toUpper('apellidos')" />
+          @if (submitted && form.get('apellidos')?.invalid) {
+            <small class="text-error">Requerido</small>
+          }
+        </div>
+        <div class="form-group-utp">
+          <label class="label-utp">Teléfono (opcional)</label>
+          <input class="form-control-utp" formControlName="telefono" type="text" />
+        </div>
+        <div class="form-group-utp form-group-utp--full">
+          <label class="label-utp required">Correo</label>
+          <input class="form-control-utp" formControlName="correo" type="email" />
+          @if (submitted && form.get('correo')?.invalid) {
+            <small class="text-error">Correo inválido</small>
+          }
+        </div>
+        <div class="form-group-utp form-group-utp--full">
+          <label class="label-utp">Área (opcional)</label>
+          <mat-select class="mat-select-utp" panelClass="mat-select-utp-panel" formControlName="id_area">
+            <mat-option [value]="null">Sin área</mat-option>
+            @for (area of areas; track area.id_area) {
+              <mat-option [value]="area.id_area">{{ area.nombre }}</mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+    </section>
+
+    <div class="modal-actions">
+      <button class="btn-outline-utp-red" type="button" (click)="cerrar(false)">
+        <i class="fa-solid fa-ban icon-utp"></i> Cancelar
+      </button>
+      <button class="btn-utp-cyan" type="submit" [disabled]="form.invalid">
+        <i class="fa-solid fa-save icon-utp"></i> {{ data.modo === 'editar' ? 'Actualizar' : 'Crear' }}
+      </button>
+    </div>
+  </form>
+</div>

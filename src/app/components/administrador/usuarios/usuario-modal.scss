@@ -1,0 +1,168 @@
+:host ::ng-deep .cdk-overlay-pane .mat-mdc-dialog-surface {
+  border-radius: 0 !important;
+  padding: 0;
+}
+
+.modal-container {
+  padding: 1rem 1.25rem 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 auto;
+  border-radius: 0;
+}
+
+.modal-header {
+  margin: -1rem -1.25rem 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--utp-cyan);
+  color: var(--utp-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--utp-white);
+  font-weight: 700;
+}
+
+.modal-section {
+  margin-bottom: 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 0.75rem 1rem 1rem;
+  background: #fdfdfd;
+}
+
+.modal-section header {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--utp-gray-dark);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.form-group-utp--full {
+  grid-column: 1 / -1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  background: #fff;
+}
+
+.btn-close {
+  border: none;
+  background: transparent;
+  color: var(--utp-white);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+.roles-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.4rem 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  background: #fff;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.role-item {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.input-with-btn {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 0.35rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+}
+
+.option-search {
+  padding: 6px 10px !important;
+  width: 100% !important;
+  display: block;
+
+  .mdc-list-item__primary-text {
+    width: 100%;
+    padding: 0;
+    display: block;
+  }
+
+  .select-search-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--utp-gray-light);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--utp-cyan);
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--utp-cyan) 20%, #0000);
+    }
+  }
+}
+
+.persona-info {
+  grid-column: 1 / -1;
+  background: #f9f9f9;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+
+  p {
+    margin: 0.5rem 0;
+    color: var(--utp-gray-dark);
+
+    strong {
+      color: var(--utp-gray-dark);
+      font-weight: 600;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .roles-list {
+    grid-template-columns: 1fr;
+  }
+}

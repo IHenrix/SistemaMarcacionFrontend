@@ -1,0 +1,12 @@
+<mat-tab-group class="reportes-tabs" (selectedIndexChange)="onTabChange($event)">
+  <mat-tab *ngFor="let tab of tabs; let i = index" [label]="tab.label">
+    @if (loadedTabs[i]) {
+      <div [hidden]="selectedIndex !== i">
+        <ng-container [ngSwitch]="tab.key">
+          <app-personas-tab *ngSwitchCase="'personas'"></app-personas-tab>
+          <app-usuarios-tab *ngSwitchCase="'usuarios'"></app-usuarios-tab>
+        </ng-container>
+      </div>
+    }
+  </mat-tab>
+</mat-tab-group>

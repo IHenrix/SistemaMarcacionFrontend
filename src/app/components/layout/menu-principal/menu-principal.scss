@@ -215,6 +215,29 @@
   background-color: var(--utp-cyan);
 }
 
+/* Administración (morado) */
+#administracion .card-utp-header {
+  background-color: var(--utp-gray-dark);
+}
+#administracion .card-utp-header .circle1 {
+  background-color: var(--utp-gray-dark);
+  left: -30px;
+  top: 12px;
+}
+#administracion .card-utp-header .circle2 {
+  background-color: var(--utp-gray-dark);
+  right: -26px;
+  bottom: 22px;
+}
+#administracion .card-utp-header .circle3 {
+  background-color: var(--utp-gray-dark);
+  bottom: -6px;
+  left: -18px;
+}
+#administracion .card-utp-footer {
+  background-color: var(--utp-gray-dark);
+}
+
 @media (max-width: 1196px) {
   .menu-principal .menu-items .menu-item {
     width: 50%;

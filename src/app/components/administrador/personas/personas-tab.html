@@ -1,0 +1,137 @@
+<div class="admin-wrap">
+  <div class="table-meta header-block">
+    <h2 class="h3-utp">Personas</h2>
+  </div>
+
+  <form class="filters-bar" [formGroup]="filtrosForm" (ngSubmit)="aplicarFiltros()">
+    <div class="filters-grid">
+      <div class="form-group-utp">
+        <label class="label-utp">Nombres</label>
+        <input class="form-control-utp" formControlName="nombres" type="text" (input)="toUpper('nombres')" />
+      </div>
+      <div class="form-group-utp">
+        <label class="label-utp">Apellidos</label>
+        <input class="form-control-utp" formControlName="apellidos" type="text" (input)="toUpper('apellidos')" />
+      </div>
+      <div class="form-group-utp">
+        <label class="label-utp">Estado</label>
+        <mat-select class="mat-select-utp" panelClass="mat-select-utp-panel" formControlName="estado">
+          <mat-option [value]="1">Activo</mat-option>
+          <mat-option [value]="0">Inactivo</mat-option>
+        </mat-select>
+      </div>
+      <div class="form-group-utp form-group-utp--inline">
+        <label class="label-utp">Sin usuario</label>
+        <mat-checkbox formControlName="sinUsuario">Solo disponibles</mat-checkbox>
+      </div>
+    </div>
+    <div class="filters-actions actions-right">
+      <button class="btn-utp-cyan" type="submit">
+        <i class="fa-solid fa-magnifying-glass icon-utp"></i> Buscar
+      </button>
+      <button class="btn-outline-utp-gray-dark" type="button" (click)="limpiarFiltros()">
+        <i class="fa-solid fa-rotate-left icon-utp"></i> Limpiar
+      </button>
+      <button class="btn-utp-green" type="button" (click)="abrirNuevo()">
+        <i class="fa-solid fa-user-plus icon-utp"></i> Nueva persona
+      </button>
+    </div>
+  </form>
+
+  @if (totalRegistros) {
+    <div class="table-search" [formGroup]="filtrosForm">
+      <p class="table-counter big-counter">
+        {{ totalRegistros }} persona{{ totalRegistros === 1 ? '' : 's' }} registradas
+        @if (totalFiltrados !== totalRegistros) {
+          <span class="muted">({{ totalFiltrados }} filtrado{{ totalFiltrados === 1 ? '' : 's' }})</span>
+        }
+      </p>
+      <div class="table-search-row">
+        <div class="page-size">
+          <label class="label-utp">Mostrar</label>
+          <select class="select-control-utp select-page-size" formControlName="pageSize" (change)="cambiarPageSize($any($event.target).value)">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+          </select>
+          <span>items</span>
+        </div>
+        <div class="search-inline">
+          <i class="fa-solid fa-magnifying-glass icon-utp"></i>
+          <input
+            class="form-control-utp"
+            formControlName="busqueda"
+            placeholder="Búsqueda rápida"
+            type="text"
+            (input)="aplicarBusquedaRapida()"
+          />
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (personasPagina.length) {
+    <table class="table-utp-cyan table-full">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (p of personasPagina; track p.id_persona) {
+          <tr>
+            <td>{{ p.nombres }} {{ p.apellidos }}</td>
+            <td>{{ p.dni }}</td>
+            <td>{{ p.correo }}</td>
+            <td>{{ p.telefono || '-' }}</td>
+            <td>
+              <span class="badge-utp" [ngClass]="{ 'badge-utp-green': p.estado === 1, 'badge-utp-red': p.estado === 0 }">
+                {{ p.estado === 1 ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn-sm-utp-cyan" (click)="abrirEditar(p)">
+                  <i class="fa-solid fa-pen-to-square icon-utp"></i> Editar
+                </button>
+                @if (p.estado === 1) {
+                  <button class="btn-sm-utp-red" (click)="desactivar(p)">
+                    <i class="fa-solid fa-user-slash icon-utp"></i> Desactivar
+                  </button>
+                } @else {
+                  <button class="btn-sm-utp-green" (click)="activar(p)">
+                    <i class="fa-solid fa-rotate-left icon-utp"></i> Activar
+                  </button>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+
+    <div class="table-footer">
+      <div class="page-info">
+        Página {{ page }} de {{ totalPaginas }}
+      </div>
+      <div class="pagination-controls">
+        <button class="btn-outline-utp-gray-dark" type="button" (click)="cambiarPagina(-1)" [disabled]="page === 1">
+          <i class="fa-solid fa-chevron-left icon-utp"></i> Anterior
+        </button>
+        <button class="btn-outline-utp-gray-dark" type="button" (click)="cambiarPagina(1)" [disabled]="page >= totalPaginas">
+          Siguiente <i class="fa-solid fa-chevron-right icon-utp"></i>
+        </button>
+      </div>
+    </div>
+  } @else {
+    <div class="sin-resultados empty-state">
+      <i class="fa-solid fa-box-open"></i>
+      <p>{{ totalRegistros ? 'No se encontraron personas con los filtros' : 'No hay personas registradas' }}</p>
+    </div>
+  }
+</div>

@@ -1,0 +1,82 @@
+:host ::ng-deep .cdk-overlay-pane .mat-mdc-dialog-surface {
+  border-radius: 0 !important;
+  padding: 0;
+}
+
+.modal-container {
+  padding: 1rem 1.25rem 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0 auto;
+  border-radius: 0;
+}
+
+.modal-header {
+  margin: -1rem -1.25rem 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--utp-cyan);
+  color: var(--utp-white);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--utp-white);
+  font-weight: 700;
+}
+
+.modal-section {
+  margin-bottom: 1rem;
+  border: 1px solid #e6e6e6;
+  border-radius: 4px;
+  padding: 0.75rem 1rem 1rem;
+  background: #fdfdfd;
+}
+
+.modal-section header {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--utp-gray-dark);
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.form-group-utp--full {
+  grid-column: 1 / -1;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  background: #fff;
+}
+
+.btn-close {
+  border: none;
+  background: transparent;
+  color: var(--utp-white);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .modal-grid {
+    grid-template-columns: 1fr;
+  }
+}

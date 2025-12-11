@@ -87,5 +87,27 @@
         </div>
       </div>
     </div>
+
+    <div class="menu-item" *ngIf="isAdmin">
+      <div class="card-utp" id="administracion">
+        <div class="card-utp-header">
+          <i class="fas fa-users-cog"></i>
+          <div class="circle1"></div>
+          <div class="circle2"></div>
+          <div class="circle3"></div>
+        </div>
+        <div class="card-utp-body">
+          <div class="card-body-title">
+            <h3>Administración</h3>
+          </div>
+        </div>
+        <div class="card-utp-footer">
+          <p>Gestiona personas, usuarios y roles</p>
+          <button class="btn-outline-utp-white" [routerLink]="['/sistema/administracion']">
+            Ingresar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

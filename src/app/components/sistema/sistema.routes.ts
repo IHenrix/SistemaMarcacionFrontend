@@ -39,6 +39,14 @@ export const SISTEMA_ROUTES: Routes = [
     data: { color: 'var(--utp-red)' },
   },
   {
+    path: 'administracion',
+    loadComponent: () =>
+      import('../administrador/administrador').then((m) => m.AdministradorComponent),
+    title: 'Administración',
+    data: { color: 'var(--utp-gray-dark)' },
+    canActivate: [adminGuard],
+  },
+  {
     path: '**',
     loadComponent: () =>
       import('../../shared/errors/not-found-interno/not-found-interno').then(
