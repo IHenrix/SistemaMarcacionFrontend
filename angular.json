@@ -18,12 +18,18 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js",
+              "src/polyfills.ts"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": [
               "sweetalert2",
-              "file-saver"
+              "file-saver",
+              "microsoft-cognitiveservices-speech-sdk",
+              "https-proxy-agent",
+              "agent-base"
             ],
             "assets": [
               {
@@ -48,8 +54,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "750kB",
-                  "maximumError": "1.2MB"
+                  "maximumWarning": "1.5MB",
+                  "maximumError": "1.7MB"
                 },
                 {
                   "type": "anyComponentStyle",
