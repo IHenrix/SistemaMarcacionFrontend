@@ -10,6 +10,18 @@ export const appRoutes: Routes = [
     title: 'Iniciar sesión',
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./components/forgot-password/forgot-password').then(m => m.ForgotPasswordComponent),
+    title: 'Recuperar contraseña',
+  },
+  {
+    path: 'reset-password',
+    loadComponent: () =>
+      import('./components/reset-password/reset-password').then(m => m.ResetPasswordComponent),
+    title: 'Nueva contraseña',
+  },
+  {
     path: '404',
     loadComponent: () =>
       import('./shared/errors/not-found-externo/not-found-externo')

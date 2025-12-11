@@ -5,6 +5,22 @@ import { Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { LoginRequest, LoginResponse, Usuario } from '@app/models/auth.model';
 
+// Interfaces para recuperación de contraseña
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+}
+
+export interface ApiResponse {
+  success: boolean;
+  message: string;
+  data?: any;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -77,6 +93,29 @@ export class AuthService {
 
   isAdmin(): boolean {
     return this.hasRole('ADMINISTRADOR');
+  }
+
+  // =============== RECUPERACIÓN DE CONTRASEÑA ===============
+
+  forgotPassword(payload: ForgotPasswordRequest): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      `${this.apiUrl}/auth/forgot-password.php`,
+      payload
+    );
+  }
+
+  validateResetToken(token: string): Observable<ApiResponse> {
+    return this.http.get<ApiResponse>(
+      `${this.apiUrl}/auth/validate-reset-token.php`,
+      { params: { token } }
+    );
+  }
+
+  resetPassword(payload: ResetPasswordRequest): Observable<ApiResponse> {
+    return this.http.post<ApiResponse>(
+      `${this.apiUrl}/auth/reset-password.php`,
+      payload
+    );
   }
 
 
